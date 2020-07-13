@@ -16,7 +16,7 @@
       </div>
       <div class="login-form">
           <el-tabs v-model="activeName" @tab-click="handleClick">
-            <el-tab-pane label="账号密码登录" name="first" v-if="!isLogin">
+            <el-tab-pane label="账号密码登录" name="account" v-if="!isLogin">
               <div class="account-form">
                 <el-input v-model="loginForm.name" auto-complete="new-password" placeholder="请输入账号">
                   <template slot="prefix">
@@ -55,7 +55,7 @@
                  </div>
               </div>
             </el-tab-pane>
-            <el-tab-pane label="手机动态登录" name="second" v-if="!isLogin">
+            <el-tab-pane label="手机动态登录" name="phone" v-if="!isLogin">
                <div class="account-form">
                 <el-input v-model="loginPhoneForm.number" auto-complete="new-password" placeholder="请输入手机号">
                   <template slot="prefix">
@@ -97,7 +97,7 @@
                  </div>
               </div>
             </el-tab-pane>
-            <el-tab-pane label="账号注册" name="three" v-if="isLogin">
+            <el-tab-pane label="账号注册" name="register" v-if="isLogin">
                <div class="account-form">
                 <el-input v-model="registerForm.number" auto-complete="new-password" placeholder="请输入手机号">
                   <template slot="prefix">
@@ -155,7 +155,7 @@
     },
     data() {
       return {
-        activeName: 'first',
+        activeName: this.$route.query.tag || 'account',
         isPassing: false,
         isShowPwd: false,
         loginForm: {
@@ -178,6 +178,9 @@
         disabledCode: false
       }
     },
+    mounted() {
+      this.isLogin = this.activeName === 'register' ? true : false
+    },
     methods: {
       handleLogin() { // 登录
         if(!this.loginForm.name) {
@@ -192,6 +195,7 @@
           this.$message.error('请滑动验证~')
           return
         }
+        localStorage.setItem('token', '1234')
         this.$router.push({path: '/index'})
 
       },
@@ -231,12 +235,12 @@
       },
       goRegister() {
         this.isLogin = true
-        this.activeName = 'three'
+        this.activeName = 'register'
         this.initData()
       },
       goLogin() {
         this.isLogin = false
-        this.activeName = 'first'
+        this.activeName = 'account'
         this.initData()
       },
       initData() {
@@ -377,5 +381,26 @@
   .el-input--prefix .el-input__inner {
     padding-left: 42px;
   }
+}
+.login {
+  .el-tabs {
+  .el-tabs__nav {
+    width: 100%;
+    display: flex;
+  }
+  .el-tabs__item {
+    font-size: 20px;
+    color: #999999;
+    text-align: center;
+    margin-bottom: 8px;
+    flex: 1;
+  }
+  .el-tabs__item.is-active {
+    color: #303133;
+  }
+  .el-tabs__active-bar {
+    background-color: #FE6A00 !important;
+  }
+}
 }
 </style>

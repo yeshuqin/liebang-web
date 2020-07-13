@@ -1,36 +1,8 @@
-@charset "UTF-8";
-@import url(/Users/gigi/webspace/webStudy/liebang-admin/src/assets/css/iconfont/iconfont.css);
+@import url(/Users/gigi/webspace/liebang/liebang-web/src/assets/css/iconfont/iconfont.css);
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
-
-/*滚动条整体部分,必须要设置*/
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-/*滚动条的轨道*/
-/*滚动条的滑块按钮*/
-::-webkit-scrollbar-thumb {
-  border-radius: 8px;
-  background-color: #e5e5e5;
-  box-shadow: inset 0 0 5px #e5e5e5;
-}
-
-/*滚动条的上下两端的按钮*/
-::-webkit-scrollbar-button {
-  height: 0;
-  background-color: transparent;
-}
-
-html {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  overflow-y: auto;
 }
 
 body {
@@ -38,7 +10,7 @@ body {
   font-family: "PingFangSC-Regular,PingFang SC", "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB";
   font-style: normal;
   color: #000000;
-  background-color: #f5f5f5;
+  background: #f3f6f9;
   width: 100%;
   overflow-y: auto;
   height: 100%;
@@ -96,7 +68,15 @@ textarea {
   float: right;
 }
 
-.cf::after {
+.textL {
+  text-align: left;
+}
+
+.textR {
+  text-align: right;
+}
+
+.clearfix:after {
   content: "";
   display: table;
   clear: both;
@@ -108,8 +88,8 @@ textarea {
 @font-face {
   font-family: 'iconfont';
   /* project id 1906516 */
-  src: url("//at.alicdn.com/t/font_1906516_h0q3g65coou.eot");
-  src: url("//at.alicdn.com/t/font_1906516_h0q3g65coou.eot?#iefix") format("embedded-opentype"), url("//at.alicdn.com/t/font_1906516_h0q3g65coou.woff2") format("woff2"), url("//at.alicdn.com/t/font_1906516_h0q3g65coou.woff") format("woff"), url("//at.alicdn.com/t/font_1906516_h0q3g65coou.ttf") format("truetype"), url("//at.alicdn.com/t/font_1906516_h0q3g65coou.svg#iconfont") format("svg");
+  src: url("//at.alicdn.com/t/font_1906516_1c9zwjz2g63j.eot");
+  src: url("//at.alicdn.com/t/font_1906516_1c9zwjz2g63j.eot?#iefix") format("embedded-opentype"), url("//at.alicdn.com/t/font_1906516_1c9zwjz2g63j.woff2") format("woff2"), url("//at.alicdn.com/t/font_1906516_1c9zwjz2g63j.woff") format("woff"), url("//at.alicdn.com/t/font_1906516_1c9zwjz2g63j.ttf") format("truetype"), url("//at.alicdn.com/t/font_1906516_1c9zwjz2g63j.svg#iconfont") format("svg");
 }
 
 .iconfont {
@@ -128,17 +108,6 @@ textarea {
 .line {
   text-align: center;
   color: #999;
-}
-
-/* 在输入类型=“number”时禁用webkit的自旋按钮？ */
-input[type=number]::-webkit-outer-spin-button,
-input[type=number]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-input[type=number] {
-  -moz-appearance: textfield;
 }
 
 .mb20 {
@@ -171,17 +140,9 @@ h3 {
   color: #000000;
 }
 
-.el-tabs .el-tabs__nav {
-  width: 100%;
-  display: flex;
-}
-
 .el-tabs .el-tabs__item {
-  font-size: 20px;
   color: #999999;
   text-align: center;
-  margin-bottom: 8px;
-  flex: 1;
 }
 
 .el-tabs .el-tabs__item.is-active {
@@ -195,12 +156,19 @@ h3 {
 .el-button--primary, .el-button--primary:hover {
   background: #FE6A00 !important;
   border-color: #FE6A00 !important;
+  color: #ffffff !important;
 }
 
 .el-button--default, .el-button--default:hover {
   background: #ffffff;
   border-color: #FE6A00;
   color: #FE6A00;
+}
+
+.el-input--medium .el-input__inner {
+  height: 40px;
+  line-height: 40px;
+  box-sizing: border-box;
 }
 
 .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner {
@@ -226,6 +194,50 @@ h2 {
   margin: 0 auto;
 }
 
+.font12 {
+  font-size: 12px;
+}
+
+.font14 {
+  font-size: 14px;
+}
+
+.font16 {
+  font-size: 16px;
+}
+
+.font18 {
+  font-size: 18px;
+}
+
+.font20 {
+  font-size: 20px;
+}
+
+.font22 {
+  font-size: 22px;
+}
+
+.font24 {
+  font-size: 24px;
+}
+
+.font26 {
+  font-size: 26px;
+}
+
+.font28 {
+  font-size: 28px;
+}
+
+.font36 {
+  font-size: 36px;
+}
+
+.font000 {
+  color: #000000;
+}
+
 .font333 {
   color: #333333;
 }
@@ -239,7 +251,7 @@ h2 {
 }
 
 .fontImp {
-  color: #FE6A00;
+  color: #FE6A00 !important;
 }
 
 .red {
@@ -264,6 +276,26 @@ h2 {
 
 .mb100 {
   margin-bottom: 100px;
+}
+
+.mr6 {
+  margin-right: 6px;
+}
+
+.mt10 {
+  margin-top: 10px !important;
+}
+
+.mb10 {
+  margin-bottom: 10px !important;
+}
+
+.mr10 {
+  margin-right: 10px !important;
+}
+
+.bold {
+  font-weight: bold;
 }
 
 .swiper-button-prev, .swiper-button-next {

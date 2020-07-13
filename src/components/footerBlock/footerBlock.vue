@@ -29,41 +29,23 @@
           </li>
         </ul>
       </div>
-      <!-- 咨询弹框 -->
-      <el-dialog title="咨询专家" :visible.sync="showCounselDialog" custom-class="counse-dialog">
-        <div class="body">
-            <el-form :model="counseFrom"  label-width="100px">
-              <el-form-item label="咨询内容：">
-                <el-input v-model="counseFrom.name" type="textarea" :rows="6"></el-input>
-              </el-form-item>
-              <el-form-item label="咨询问题：">
-                <el-select v-model="counseFrom.name" clearable filterable placeholder="请选择" style="width:100%">
-                  <el-option label="区域一" value="shanghai"></el-option>
-                  <el-option label="区域二" value="beijing"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="联系方式：">
-                <el-input v-model="counseFrom.phone" placeholder="请输入手机号"></el-input>
-              </el-form-item>
-            </el-form>
-            <el-button type="primary" class="btn">预约咨询</el-button>
-        </div>
-          <div class="footer">
-
-          </div>
-      </el-dialog>
+      <quest-dialog :showCounselDialog.sync="showCounselDialog"></quest-dialog>
   </div>
 </template>
 
 <script>
+  import questDialog from '@/components/questDialog/index'
   export default {
+    components: {
+      questDialog
+    },
     data() {
       return {
-          showCounselDialog: false,
-          counseFrom: {
-            name: ''
-          }
+         showCounselDialog: false,
+         name: ''
       }
+    },
+    methods: {
     }
   }
 </script>
@@ -75,6 +57,7 @@
     background-image: url('../../assets/img/footer-bg1.png');
     background-size: 100% 100%;
     text-align: center;
+    z-index: 1000;
     color: #fff;
     .top {
       height:260px;
@@ -126,36 +109,6 @@
     }
     li:last-child {
       margin-right: 0;
-    }
-  }
-</style>
-
-<style lang="scss">
-  .counse-dialog {
-    width:691px;
-    box-shadow:0px 4px 12px 0px rgba(0,0,0,0.2);
-    border-radius:4px;
-    .el-dialog__header {
-      color: #000;
-      font-weight: bold;
-      border: 1px solid rgba(0,0,0,0.09);
-    }
-    .el-dialog__body {
-      padding: 0;
-    }
-    .body {
-      padding: 22px 120px 38px 80px;
-    }
-    .btn {
-      width: 100%;
-      height: 44px;
-      line-height: 44px;
-    }
-    .footer {
-      height: 75px;
-      width: 100%;
-      background-image: url('../../assets/img/question-bg.png');
-      background-size: 100% 100%;
     }
   }
 </style>

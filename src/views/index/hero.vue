@@ -49,12 +49,36 @@
     </div>
     <div class="info-wrap">
       <div class="user">
-        <img src="https://file2.pingxiaobao.com/dev/2006/08/3a06b514288efd2804606c2a6caa9cfb.jpg" alt="">
-        <span>Hi，欢迎来到猎邦</span>
-        <div class="button-wrap">
-           <el-button type="primary">登 录</el-button>
-           <el-button>注 册</el-button>    
+         <el-row>
+          <el-col :span="10">
+            <img :src="info.picture" alt="">
+          </el-col>
+         <el-col :span="14">
+            <div style="margin-top:26px" class="bold" v-if="!isLogin">Hi，欢迎来到猎邦</div>
+            <div class="mt10" v-else> 
+              <span>Hi，{{info.name}}</span> <br>
+              <span class="font666">欢迎来到猎邦</span>
+            </div>
+          </el-col>
+        </el-row>
+        <div class="button-wrap" v-if="!isLogin">
+           <el-button type="primary" class="btn" @click="goLogin">登 录</el-button>
+           <el-button class="btn" @click="goLogin('register')">注 册</el-button>    
         </div>
+        <el-row class="hero-menu" v-else>
+          <el-col :span="12">
+            <div @click="goPage('order')">
+                <span class="iconfont">&#xe652;</span>
+                <div>我的订单</div>
+            </div>
+          </el-col>
+         <el-col :span="12">
+            <div @click="goPage('schedule')">
+              <span class="iconfont">&#xe625;</span>
+              <div>进度查询</div>
+            </div>
+          </el-col>
+        </el-row>
       </div>
       <ul class="info-list">
         <div class="title clearfix">
@@ -71,7 +95,32 @@
   export default {
     data () {
       return {
-        showCategory: false
+        showCategory: false,
+        isLogin: localStorage.getItem('token') || '',
+        info:  {
+          name: '琴哥哥',
+          picture: 'https://file2.pingxiaobao.com/dev/2006/08/3a06b514288efd2804606c2a6caa9cfb.jpg'
+        }
+      }
+    },
+    methods: {
+      goPage(pageName) {
+        if(this.isLogin) {
+          this.$router.push({name: pageName})
+          return
+        }
+        this.$confirm('你还未登录，是否跳转到登录页?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$router.push({name: 'login'})
+        }).catch(() => {
+
+        });
+      },
+      goLogin(tag) {
+        this.$router.push({name: 'login', query: {tag: tag}})
       }
     }
   }
@@ -190,7 +239,7 @@
     width: 262px;
     .user {
       text-align: center;
-      padding-top: 12px;
+      padding: 12px 35px;
       background: #fff;
       margin-bottom: 6px;
       img {
@@ -201,6 +250,12 @@
       }
       .button-wrap {
         padding: 31px 0 19px;
+        .btn {
+          width: 90px;
+          height: 34px;
+          line-height: 34px;
+          padding: 0;
+        }
       }
     }
     .info-list {
@@ -222,6 +277,17 @@
         text-overflow: ellipsis;
         cursor: pointer;
       }
+    }
+  }
+  .hero-menu {
+    margin-top: 20px;
+    color: #666666;
+    cursor: pointer;
+    .iconfont {
+      font-size: 20px;
+      color: #FF6B29;
+      margin-bottom: 7px;
+      display: block;
     }
   }
 }

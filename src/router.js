@@ -36,6 +36,36 @@ export default new Router({
           path: 'upload',
           name: 'upload',
           component: () => import('./views/trade/upload.vue'),
+        },
+        {
+          path: 'order',
+          name: 'order',
+          component: () => import('./views/order/orderList.vue'),
+        },
+        {
+          path: 'orderDetail',
+          name: 'orderDetail',
+          component: () => import('./views/order/orderDetail.vue'),
+        },
+        {
+          path: 'goodsDetail',
+          name: 'goodsDetail',
+          component: () => import('./views/goods/goodsDetail.vue'),
+        },
+        {
+          path: 'confirmOrder',
+          name: 'confirmOrder',
+          component: () => import('./views/order/confirmOrder.vue'),
+        },
+        {
+          path: 'playOrder',
+          name: 'playOrder',
+          component: () => import('./views/order/playOrder.vue'),
+        },
+        {
+          path: 'statusOrder',
+          name: 'statusOrder',
+          component: () => import('./views/order/statusOrder.vue'),
         }
       ]
     },

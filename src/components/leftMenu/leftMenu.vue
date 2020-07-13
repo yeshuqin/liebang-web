@@ -23,13 +23,15 @@
           交易中心
         </div>
         <ul class="menu-left-item-list">
-          <li>我的订单</li>
+          <li :class="{active: currenPath === '/order'}">
+            <router-link :to="{name: 'order'}">我的订单</router-link>
+          </li>
           <li :class="{active: currenPath === '/schedule'}">
             <router-link :to="{name: 'schedule'}">进度查询</router-link>
           </li>
         </ul>
       </div>
-      <div class="menu-left-item">
+      <!-- <div class="menu-left-item">
         <div class="menu-left-item-title">
           <span class="iconfont">&#xe691;</span>
           消息中心
@@ -40,7 +42,7 @@
           <li>我的足迹</li>
           <li>我的优惠</li>
         </ul>
-      </div>
+      </div> -->
     </div>
 </template>
 
@@ -54,7 +56,7 @@
      },
      computed: {
        currenPath:function() {
-         return this.$route.path
+         return this.active || this.$route.path
        }
      },
      created() {

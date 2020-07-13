@@ -83,8 +83,8 @@
             <el-table-column
               label="操作状态">
               <template slot-scope="scope">
-                <span v-if="scope.row.status === 1" class="fontImp">刷新进度</span>
-                <span v-if="scope.row.status === 2" class="fontImp">上传资料</span>
+                <span v-if="scope.row.status === 1" class="fontImp cursor">刷新进度</span>
+                <span v-if="scope.row.status === 2" class="fontImp cursor" @click="goUpload(scope.row)">上传资料</span>
               </template>
             </el-table-column>
           </el-table>
@@ -171,6 +171,9 @@
     methods: {
       handleSelectionChange() {
 
+      },
+      goUpload() {
+        this.$router.push({name: 'upload'})
       }
     }
   }
