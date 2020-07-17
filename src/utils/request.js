@@ -3,13 +3,13 @@ import { Message } from 'element-ui'
 import store from '@/store'
 // import { getToken } from '@/utils/auth'
 
-axios.defaults.baseURL = 'http://120.92.79.156/api/'
-
+axios.defaults.baseURL = 'http://localhost:8080/api/'
+console.log(store, 'request')
 axios.interceptors.request.use(
   function (config) {
     // 在请求发出之前进行一些操作
     // config.headers = { "Content-Type": "multipart/form-data" };
-    if (store.getters.token) {
+    if (localStorage.getItem('token')) {
       config.headers['token'] = localStorage.getItem('token')
     }
     return config
@@ -22,15 +22,16 @@ axios.interceptors.request.use(
 // 添加一个响应拦截器
 axios.interceptors.response.use(
   function (res) {
+    console.log(res, '添加一个响应拦截器')
     if (res.data.code === 40001) {
       Message({
         message: res.data.msg,
         type: 'error',
         duration: 5 * 1000
       })
-      store.dispatch('user/resetToken').then(() => {
-        location.reload()
-      })
+      // store.dispatch('user/resetToken').then(() => {
+      //   location.reload()
+      // })
     }
     return res
   },

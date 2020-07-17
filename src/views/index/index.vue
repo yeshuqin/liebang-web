@@ -4,35 +4,33 @@
     <hero></hero>
     <div class="jinpai-list">
        <el-row type="flex" justify="space-between">
-          <el-col :span="8"></el-col>
-          <el-col :span="8"></el-col>
-          <el-col :span="8"></el-col>
+          <el-col :span="8" v-for="item in jinpaiList" :key="item.id">
+            <a :href="item.linkUrl" target="_blank">
+              <img :src="item.picUrl" alt="" style="width:100%;height:100%">
+            </a>
+          </el-col>
       </el-row>
     </div>
     <div class="main">
-      <div class="card-list" v-for="(item, index) in 3" :key="index">
-        <div class="title">工商服务</div>
+      <div class="card-list" v-for="(item, index) in hotSpuList" :key="index">
+        <div class="title">{{item.cate.name}}</div>
         <div class="title-desc">
-          <span>公司注册</span>
-          <span>公司注册</span>
-          <span>公司注册</span>
-          <span>公司注册</span>
+          <span v-for="(desc, index) in item.cate.synopsis" :key="index">{{desc}}</span>
         </div>
         <div class="card-list-main">
-          <div class="card-list-main-l"></div>
+          <div class="card-list-main-l">
+            <img :src="item.cate.picUrl" alt="">
+          </div>
           <div class="card-list-main-r">
-            <div class="card-list-item" v-for="(item, index) in 6" :key="index">
+            <div class="card-list-item" v-for="spu in item.spuList" :key="spu.id">
               <div>
-                <span class="card-tag">极速申报</span>
-                <span class="card-tag">极速申报</span>
+                <span class="card-tag" v-for="(tag, index) in spu.tags" :key="index">{{tag}}</span>
               </div>
-              <h3>商标注册申请</h3>
+              <h3>{{spu.name}}</h3>
               <div class="card-desc">
-                <p>便捷简易，简单高效</p>
-                <p>递交迅速，反馈及时</p>
-                <p>全流程掌控，随时查看进度</p>
+                <p v-html="spu.synopsis"></p>
               </div>
-              <div class="money-wrap"><span class="money">¥300</span>起</div>
+              <div class="money-wrap"><span class="money">¥{{spu.minPrice}}</span>起</div>
             </div>
           </div>
         </div>
@@ -90,7 +88,37 @@
     },
     data () {
       return {
-       
+        jinpaiList: [], //广告位列表
+        hotSpuList: []
+      }
+    },
+    created() {
+      this.getJinpaiBannerList()
+      this.getCateSpuList()
+    },
+    methods: {
+      getJinpaiBannerList() {
+         this.$http.send(this.$api.bannerList, {
+           code: '金牌顾问',
+           number: 3
+         }).then(res => {
+           this.jinpaiList = res.data
+        })
+      },
+      getCateSpuList() {
+        this.$http.send(this.$api.spuCateSpu, {
+           cateNum: 3,
+           spuNum: 6
+         }).then(res => {
+           this.hotSpuList = []
+           res.data.forEach(item => {
+             item.cate.synopsis = item.cate.synopsis.split(',') || []
+             item.spuList.forEach(spu => {
+               spu.tags = spu.tags.split(',') || []
+             })
+             this.hotSpuList.push(item)
+           })
+        })
       }
     }
   }
@@ -134,9 +162,11 @@
       width: 100%;
       .card-list-main-l {
         width: 300px;
-        background: blue;
-        background-image: url('../../assets/card-bg.png');
-        background-size: cover;
+        // background-size: cover;
+        img {
+          width: 100%;
+          height: 100%;
+        }
       }
       .card-list-main-r {
         flex: 1;

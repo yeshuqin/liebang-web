@@ -4,12 +4,10 @@
      <div class="category-wrap">
        <div class="button">精选爆款</div>
         <ul class="category-list">
-          <li class="category-item" v-for="(item, index) in 6" :key="index">
-            <h3>工商服务 <i class="el-icon-arrow-right"></i></h3>
+          <li class="category-item" v-for="(item, index) in cateSpuList" :key="index">
+            <h3 @click="showCategory = !showCategory">{{item.cate.name}} <i class="el-icon-arrow-right"></i></h3>
             <p class="category-type">
-              <span>公司注册</span>
-              <span>公司注册</span>
-              <span>公司注册</span>
+              <span v-for="spu in item.spuList" :key="spu.id" @click="handleGoGoodsDetail(spu)">{{spu.name}}</span>
             </p>
           </li>
         </ul>
@@ -21,33 +19,39 @@
         </div>
         <transition name="el-fade-in">
            <div class="category-index" v-show="showCategory">
-              <h3>
-                全部服务
-                <span class="el-icon-error close" @click="showCategory = false"></span>
-              </h3>
-              <ul class="goods-list">
-                <li v-for="(item, index) in 30" :key="index">公司注册</li>
-              </ul>
-            </div>
+              <span class="el-icon-error close" @click="showCategory = false"></span>
+              <div class="category-index-list">
+                <div v-for="(item, index) in allCateSpuList" :key="index">
+                 <h3>
+                  {{item.cate.name}}
+                </h3>
+                <ul class="goods-list">
+                  <li v-for="spu in item.spuList" :key="spu.id" @click="handleGoGoodsDetail(spu)">{{spu.name}}</li>
+                </ul>
+              </div>
+              </div>
+           </div>
         </transition>
      </div>
     <!-- 轮播图 -->
     <div class="banner-wrap">
       <el-carousel trigger="click" height="403px">
-        <el-carousel-item v-for="item in 4" :key="item">
-          <img src="https://file2.pingxiaobao.com/dev/2006/08/3a06b514288efd2804606c2a6caa9cfb.jpg" alt="" style="width:100%;height:100%">
+        <el-carousel-item v-for="item in bannerList" :key="item.id">
+           <a :href="item.linkUrl" target="_blank">
+            <img :src="item.picUrl" alt="" style="width:100%;height:100%">
+          </a>
         </el-carousel-item>
       </el-carousel>
-      <el-row class="ad-list">
-        <el-col :span="4" class="ad-item" v-for="(item, index) in 5" :key="index">
-          <img src="https://file2.pingxiaobao.com/dev/2006/08/3a06b514288efd2804606c2a6caa9cfb.jpg" alt="">
-          <p>品牌设计</p>
-          <span>LOGO/宣传品/VI</span>
+      <el-row class="ad-list" type="flex" justify="space-between">
+        <el-col :span="4" class="ad-item cursor" v-for="(item, index) in spuList" :key="index" @click.native="handleGoGoodsDetail(item)">
+          <img :src="item.primaryPic" alt="">
+          <p>{{item.name}}</p>
+          <!-- <span>LOGO/宣传品/VI</span> -->
         </el-col>
-        <el-col :span="4" class="more">
+        <!-- <el-col :span="4" class="more">
           <span class="el-icon-arrow-right"></span>
           <div>更多</div>
-        </el-col>
+        </el-col> -->
       </el-row>
     </div>
     <div class="info-wrap">
@@ -103,8 +107,18 @@
         info:  {
           name: '琴哥哥',
           picture: 'https://file2.pingxiaobao.com/dev/2006/08/3a06b514288efd2804606c2a6caa9cfb.jpg'
-        }
+        },
+        bannerList: [], //轮播图列表
+        cateSpuList: [], //报考推荐类别商品
+        allCateSpuList: [], //全部类别商品
+        spuList: [] //首页橱窗商品推荐
       }
+    },
+    created() {
+      this.getCateSpuList()
+      this.getAllCateSpuList()
+      this.getSpuList()
+      this.getBannerList()
     },
     methods: {
       goPage(pageName) {
@@ -124,6 +138,42 @@
       },
       goLogin(tag) {
         this.$router.push({name: 'login', query: {tag: tag}})
+      },
+      getCateSpuList() {
+        this.$http.send(this.$api.spuCateSpu, {
+           cateNum: 6,
+           spuNum: 3
+         }).then(res => {
+           this.cateSpuList = res.data
+        })
+      },
+      getAllCateSpuList() {
+        this.$http.send(this.$api.spuCateSpu, {
+           cateNum: 10,
+           spuNum: 10
+         }).then(res => {
+           this.allCateSpuList = res.data
+        })
+      },
+      getSpuList() {
+        this.$http.send(this.$api.spuPage, {
+           showcaseId: '1284165023534460930',
+           current: 1,
+           size: 5
+         }).then(res => {
+           this.spuList = res.data.records
+        })
+      },
+      getBannerList() {
+        this.$http.send(this.$api.bannerList, {
+           code: 'banner',
+           number: 4
+         }).then(res =>{
+           this.bannerList = res.data
+        })
+      },
+      handleGoGoodsDetail(obj) {
+        this.$router.push({name: 'goodsDetail', query: {id: obj.id}})
       }
     }
   }
@@ -158,6 +208,9 @@
          overflow: hidden;
          h3 {
            padding-top: 12px;
+           font-weight:bold;
+           margin-bottom: 5px;
+           cursor: pointer;
          }
          .category-type {
            color: #999999;
@@ -167,6 +220,7 @@
            overflow: hidden;
            span {
              padding-right: 6px;
+             cursor: pointer;
            }
          }
        }
@@ -175,18 +229,37 @@
        margin-top: 23px;
        padding: 0 12px;
        cursor: pointer;
+       position:absolute;
+       width: 100%;
+       left: 0;
+       font-weight:bold;
+       bottom: 26px;
      }
    }
   .category-index {
     position: absolute;
     width:708px;
-    height:403px;
+    height:513px;
     background: #ffffff;
+    padding-top: 30px;
+    box-sizing: border-box;
     box-shadow:2px 2px 8px 2px rgba(230,230,230,0.92);
     border-radius:1px;
     left: 220px;
     z-index: 100;
     top: 0;
+    .category-index-list {
+      height: 483px;
+      overflow-y: auto;
+    }
+    .close {
+       position: absolute;
+       right: 20px;
+       color: #999999;
+       cursor: pointer;
+       top: 10px;
+       font-size: 18px;
+    }
     h3 {
      height: 51px;
      line-height: 51px;
@@ -194,21 +267,14 @@
      padding-left: 27px;
      margin-bottom: 12px;
      position: relative;
-     .close {
-       position: absolute;
-       right: 20px;
-       color: #999999;
-       cursor: pointer;
-       top: 20px;
-       font-size: 18px;
-     }
+     font-weight: 600;
     }
     .goods-list {
       overflow: hidden;
       padding-left: 27px;
       li {
         float: left;
-        width: 25%;
+        width: 20%;
         color: #999999;
         cursor: pointer;
         margin-bottom: 12px;
@@ -219,6 +285,7 @@
     flex: 1;
     margin: 0 10px;
     .ad-list {
+      padding: 0 20px;
       height: 102px;
       background: #fff;
       margin-top: 8px;
@@ -230,6 +297,7 @@
         height: 52px;
         border-radius: 50%;
         margin-top: 8px;
+        margin-bottom: 8px;
       }
       span {
         color: #444444;
