@@ -18,7 +18,7 @@
           <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="账号密码登录" name="account" v-if="!isLogin">
               <div class="account-form">
-                <el-input v-model="loginForm.name" auto-complete="new-password" placeholder="请输入账号">
+                <el-input v-model="loginForm.phone" auto-complete="new-password" placeholder="请输入账号">
                   <template slot="prefix">
                     <span class="iconfont">&#xe651;</span>
                   </template>
@@ -57,13 +57,13 @@
             </el-tab-pane>
             <el-tab-pane label="手机动态登录" name="phone" v-if="!isLogin">
                <div class="account-form">
-                <el-input v-model="loginPhoneForm.number" auto-complete="new-password" placeholder="请输入手机号">
+                <el-input v-model="phone" auto-complete="new-password" placeholder="请输入手机号">
                   <template slot="prefix">
                     <span class="iconfont">&#xe651;</span>
                   </template>
                 </el-input>
                 <div>
-                  <el-input v-model="loginPhoneForm.code" auto-complete="new-password" placeholder="请输入验证码" style="width:180px;">
+                  <el-input v-model="loginForm.code" auto-complete="new-password" placeholder="请输入验证码" style="width:180px;">
                     <template slot="prefix">
                       <span class="iconfont">&#xe64f;</span>
                     </template>
@@ -99,7 +99,7 @@
             </el-tab-pane>
             <el-tab-pane label="账号注册" name="register" v-if="isLogin">
                <div class="account-form">
-                <el-input v-model="registerForm.number" auto-complete="new-password" placeholder="请输入手机号">
+                <el-input v-model="phone" auto-complete="new-password" placeholder="请输入手机号">
                   <template slot="prefix">
                     <span class="iconfont">&#xe651;</span>
                   </template>
@@ -126,7 +126,7 @@
                 <div style="margin-top:16px">
                    <el-checkbox v-model="registerForm.checked"></el-checkbox> 同意并遵守《服务条款》和《隐私条款》
                 </div>
-                 <el-button type="danger" class="login-btn" @click="handleLoginPhone" style="margin-top:20px">注 册</el-button>
+                 <el-button type="danger" class="login-btn" @click="handleRegister" style="margin-top:20px">注 册</el-button>
                  <div class="tip">
                    <el-row type="flex"  justify="space-between">
                      <el-col :span="12">
@@ -158,16 +158,14 @@
         activeName: this.$route.query.tag || 'account',
         isPassing: false,
         isShowPwd: false,
+        phone: '',
         loginForm: {
-          name: '',
-          password: ''
-        },
-        loginPhoneForm: {
-          number: '',
+          phone: '',
+          password: '',
           code: ''
         },
         registerForm: {
-          number: '',
+          phone: '',
           code: '',
           password: '',
           checked: false
@@ -181,9 +179,27 @@
     mounted() {
       this.isLogin = this.activeName === 'register' ? true : false
     },
+    watch: {
+      activeName(val) {
+        this.isPassing = false
+        this.isShowPwd = false
+        this.phone = ''
+        this.loginForm = {
+          phone: '',
+          password: '',
+          code: ''
+        }
+        this.registerForm = {
+          phone: '',
+          code: '',
+          password: '',
+          checked: false
+        }
+      }
+    },
     methods: {
       handleLogin() { // 登录
-        if(!this.loginForm.name) {
+        if(!this.loginForm.phone) {
           this.$message.error('请输入账号~')
           return
         }
@@ -195,27 +211,78 @@
           this.$message.error('请滑动验证~')
           return
         }
-        localStorage.setItem('token', '1234')
-        this.$router.push({path: '/index'})
-
+        let password = md5(this.loginForm.password)
+        this.$http.send(this.$api.login, {
+          password,
+          phone: this.loginForm.phone
+        }).then(res => {
+          console.log(res)
+          localStorage.setItem('token', res.data.token)
+          localStorage.setItem('name', res.data.name)
+          localStorage.setItem('phone', res.data.phone)
+          this.$router.push({path: '/index'})
+          this.$message.success('登录成功~')
+        })
       },
       handleLoginPhone() {
-        if(!this.loginPhoneForm.number) {
+        if(!this.phone) {
           this.$message.error('请输入手机号~')
           return
         }
-        if(!this.isPhoneNumber(this.loginPhoneForm.number)) {
+        if(!this.isPhoneNumber(this.phone)) {
           this.$message.error('请输入正确的手机号')
           return
         }
-        if(!this.loginPhoneForm.code) {
+        if(!this.loginForm.code) {
           this.$message.error('请输入验证码~')
           return
         }
-        this.$router.push({path: '/index'})
+        let password = md5(this.loginForm.password)
+        this.$http.send(this.$api.login, {
+          code: this.loginForm.code,
+          phone: this.phone
+        }).then(res => {
+          console.log(res)
+          localStorage.setItem('token', res.data.token)
+          localStorage.setItem('name', res.data.name)
+          localStorage.setItem('phone', res.data.phone)
+          this.$router.push({path: '/index'})
+          this.$message.success('登录成功~')
+        })
+      },
+      handleRegister() {
+        if(!this.phone) {
+          this.$message.error('请输入手机号~')
+          return
+        }
+        if(!this.isPhoneNumber(this.phone)) {
+          this.$message.error('请输入正确的手机号')
+          return
+        }
+        if(!this.registerForm.code) {
+          this.$message.error('请输入验证码~')
+          return
+        }
+        if(!this.registerForm.password) {
+          this.$message.error('请输入密码~')
+          return
+        }
+        if(!this.registerForm.checked) {
+          this.$message.error('请同意协议~')
+          return
+        }
+        let password = md5(this.registerForm.password)
+         this.$http.send(this.$api.register, Object.assign({}, this.registerForm, {
+           password,
+           phone: this.phone
+         })).then(res => {
+           this.$message.success('注册成功~')
+           this.activeName = 'account'
+           this.isLogin = false
+        })
       },
       handleSendCode() { // 发送验证码
-        if(!this.isPhoneNumber(this.loginPhoneForm.number)) {
+        if(!this.isPhoneNumber(this.phone)) {
           this.$message.error('请输入正确的手机号')
           return
         }
@@ -223,15 +290,19 @@
           return
         }
         this.disabledCode = true
-        this.timer = setInterval(() => {
-          if(this.time == 1){
-            clearInterval(this.timer);  
-            this.disabledCode = false 
-            this.time = 60
-          }else{
-            this.time--;
-          }
-        }, 1000)
+        this.$http.send(this.$api.code, {
+          phone: this.phone
+        }).then(res => {
+           this.timer = setInterval(() => {
+            if(this.time == 1){
+              clearInterval(this.timer);  
+              this.disabledCode = false 
+              this.time = 60
+            }else{
+              this.time--;
+            }
+          }, 1000)
+        })
       },
       goRegister() {
         this.isLogin = true
@@ -277,9 +348,10 @@
       .logo {
           width:119px;
           height:23px;
-          background: #FE6A00;
           float: left;
           margin-top: 18px;
+          background: url('../../assets/img/logo.png');
+          background-size: 100% 100%;
         }
       .line {
           width:1px;
@@ -309,6 +381,7 @@
       height:480px;
       background: #FE6A00;
       background-image: url('../../assets/img/denglu.png');
+      background-size: 100% 100%;
     }
     .login-form {
       width:422px;

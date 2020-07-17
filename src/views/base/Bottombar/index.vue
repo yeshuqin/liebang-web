@@ -66,7 +66,7 @@
   box-sizing: border-box;
   text-align: left;
   .bottom_main {
-    width: 900px;
+    width: 1200px;
     margin: 0 auto;
     border-bottom: 1px solid #ccc;
   }

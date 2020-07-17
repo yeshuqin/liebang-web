@@ -5,7 +5,11 @@ import store from './store';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/css/base.css'
+import http from '@/utils/request'
+import api from '@/utils/api'
 
+Vue.prototype.$http = http
+Vue.prototype.$api = api
 Vue.use(ElementUI)
 Vue.config.productionTip = false;
 

@@ -21,7 +21,10 @@
         </div>
         <transition name="el-fade-in">
            <div class="category-index" v-show="showCategory">
-              <h3>全部服务</h3>
+              <h3>
+                全部服务
+                <span class="el-icon-error close" @click="showCategory = false"></span>
+              </h3>
               <ul class="goods-list">
                 <li v-for="(item, index) in 30" :key="index">公司注册</li>
               </ul>
@@ -190,6 +193,15 @@
      border-bottom: 1px solid #EDEDED;
      padding-left: 27px;
      margin-bottom: 12px;
+     position: relative;
+     .close {
+       position: absolute;
+       right: 20px;
+       color: #999999;
+       cursor: pointer;
+       top: 20px;
+       font-size: 18px;
+     }
     }
     .goods-list {
       overflow: hidden;

@@ -1,6 +1,7 @@
 <template>
   <div class="topbar">
     <div class="topbar_banner">
+      <img src="../../../assets/img/banner.png" alt="">
     </div>
     <el-row class="topbar_desc">
       <el-col :span="12" class="l">
@@ -157,12 +158,18 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .topbar {
   background: #fff;
   .topbar_banner {
     height: 80px;
-    background: #FE6A00;
+    background: #FF6B01FF;
+    img {
+      width: 1200px;
+      height: 80px;
+      display: block;
+      margin: 0 auto;
+    }
   }
   .topbar_desc {
     width: 1200px;
@@ -190,15 +197,18 @@
       display: inline-block;
       width: 120px;
       height: 22.5px;
-      background: #FE6A00;
+      // background: #FE6A00;
+      background:url('../../../assets/img/logo.png') ;
+      background-size: 100% 100%;
       margin-right: 40px;
       position: relative;
+      cursor: pointer;
       top: -32px;
     }
     .search_wrapper {
       display: inline-block;
     }
-     /deep/ .el-input__inner {
+     &.el-input__inner {
       width:450px;
       height:40px;
       background:rgba(255,255,255,1);
