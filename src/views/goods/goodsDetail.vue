@@ -4,15 +4,15 @@
     <div class="wrap">
        <div class="info">
          <div class="l">
-           <img src="https://file2.pingxiaobao.com/dev/2006/29/97e9b67ae59b01ba50308c09b78a55ee.jpg" alt="">
+           <img :src="detailObj.primaryPic" alt="">
          </div>
          <div class="r">
-           <h1 class="font28 mb20">计算机软件著作权登记申请</h1>
+           <h1 class="font28 mb20">{{detailObj.name}}</h1>
            <div class="desc">
              <div class="desc-item">
                <span>价格：</span>
-               <span class="fontImp font24">￥1499</span>
-               <span class="old-price">1200</span>
+               <span class="fontImp font24">￥{{detailObj.minPrice}}</span>
+               <span class="old-price">{{detailObj.maxPrice}}</span>
              </div>
              <div class="desc-item">
                <span>说明：</span>
@@ -45,10 +45,10 @@
              </li>
            </ul>
            <div class="font16">
-              <el-checkbox v-model="checked"></el-checkbox> 我已阅读理解并接受 <span class="fontImp">《计算机软件著作登记申请相关协议》</span>
+              <el-checkbox v-model="checked"></el-checkbox> 我已阅读理解并接受 <span class="fontImp">《{{detailObj.name}}相关协议》</span>
            </div>
            <div style="margin-top:27px">
-             <el-button type="primary" class="btn">立即购买</el-button>
+             <el-button type="primary" class="btn" @click="goBuy">立即购买</el-button>
              <el-button class="btn" @click="showCounselDialog = true">
                <span class="iconfont font22">&#xe694;</span>
                专家咨询
@@ -76,38 +76,74 @@
     },
     data() {
       return {
-        infoList: {
-          '产品内容': 'https://file2.pingxiaobao.com/dev/2006/29/97e9b67ae59b01ba50308c09b78a55ee.jpg',
-          '产品作用': 'https://file2.pingxiaobao.com/dev/2006/29/97e9b67ae59b01ba50308c09b78a55ee.jpg',
-          '服务优势': 'https://file2.pingxiaobao.com/dev/2006/29/97e9b67ae59b01ba50308c09b78a55ee.jpg',
-          '办理流程': 'https://file2.pingxiaobao.com/dev/2006/29/97e9b67ae59b01ba50308c09b78a55ee.jpg',
-          '所需资料': 'https://file2.pingxiaobao.com/dev/2006/29/97e9b67ae59b01ba50308c09b78a55ee.jpg',
-          '常见问题': 'https://file2.pingxiaobao.com/dev/2006/29/97e9b67ae59b01ba50308c09b78a55ee.jpg',
-        },
+        infoList: {},
+        detailObj: {},
+        skuMapList: {},
         showCounselDialog: false,
-        attributeList: {
-          '颜色': ['红', '绿', '蓝', '白'],
-          '尺寸': ['小', '中', '大'],
-          '属性': ['软', '硬']
-        },
-        attributeMap: {
-          '颜色': '',
-          '尺寸': '',
-          '属性': ''
-        },
+        attributeList: {},
+        attributeMap: {},
         activeName: '产品内容',
-        checked: true
+        checked: true,
+        id: this.$route.query.id
+      }
+    },
+    created() {
+      this.getDetail()
+    },
+    watch: {
+      $route(val) {
+        this.id = val.query.id
+        this.getDetail()
       }
     },
     methods: {
       handleAttr(value,attr) {
-        console.log(value,attr)
         if(this.attributeMap[value] === attr) {
           this.attributeMap[value] = ''
         }else {
           this.attributeMap[value] = attr
         }
-        console.log(this.attributeMap)
+      },
+      getDetail() {
+         this.$http.send(this.$api.spuDetail, {
+           id: this.id
+         }).then(res => {
+           this.detailObj = res.data
+           this.infoList = JSON.parse(res.data.introduction)
+           let ObjMap = {}
+           res.data.skuList.forEach(item => {
+              this.skuMapList[item.attribute] = item
+              let obj = JSON.parse(item.attribute)
+              for(let i in obj) {
+                if(!(ObjMap[i] instanceof Array)) {
+                  ObjMap[i] = []
+                }
+                if(!ObjMap[i].includes(obj[i])) {
+                  ObjMap[i].push(obj[i])
+                }
+              }
+            })
+            this.attributeList = ObjMap
+            for(let attr in ObjMap) {
+              this.$set(this.attributeMap, attr, '')
+            }
+          })
+      },
+      goBuy() {
+        for(let attr in this.attributeMap) {
+          if(!this.attributeMap[attr]) {
+            this.$message.error(`${attr}属性不能为空~`)
+            return 
+          }
+        }
+        if(!this.checked) {
+           this.$message.error('请勾选协议~')
+            return 
+        }
+        let attributeValue = JSON.stringify(this.attributeMap)
+        let skuId = this.skuMapList[attributeValue].id
+        // console.log(attributeValue, skuId)
+        this.$router.push({name: 'confirmOrder', query: {id: skuId}})
       }
     }
   }
@@ -121,6 +157,7 @@
  .wrap {
    background: #ffffff;
    padding: 30px;
+   margin-bottom: 30px;
    .info {
      display: flex;
      .l {
@@ -190,6 +227,7 @@
        box-sizing: border-box;
        margin-right: 10px;
        margin-bottom: 10px;
+       cursor: pointer;
        &.active {
          color: #FF5C00FF;
          border-color: #FF5C00FF;

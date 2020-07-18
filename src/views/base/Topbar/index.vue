@@ -25,14 +25,15 @@
           filterable
           remote
           reserve-keyword
+          clearable
           placeholder="请输入关键词"
           :remote-method="remoteMethod"
           :loading="loading">
           <el-option
             v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
+            :key="item.id"
+            :label="item.name"
+            :value="item.id">
           </el-option>
         </el-select>
         <div class="search-input" @click="handleSearch">
@@ -64,24 +65,6 @@
         input: '',
         loading: false,
         value: '',
-        states: ["Alabama", "Alaska", "Arizona",
-        "Arkansas", "California", "Colorado",
-        "Connecticut", "Delaware", "Florida",
-        "Georgia", "Hawaii", "Idaho", "Illinois",
-        "Indiana", "Iowa", "Kansas", "Kentucky",
-        "Louisiana", "Maine", "Maryland",
-        "Massachusetts", "Michigan", "Minnesota",
-        "Mississippi", "Missouri", "Montana",
-        "Nebraska", "Nevada", "New Hampshire",
-        "New Jersey", "New Mexico", "New York",
-        "North Carolina", "North Dakota", "Ohio",
-        "Oklahoma", "Oregon", "Pennsylvania",
-        "Rhode Island", "South Carolina",
-        "South Dakota", "Tennessee", "Texas",
-        "Utah", "Vermont", "Virginia",
-        "Washington", "West Virginia", "Wisconsin",
-        "Wyoming"],
-        list: [],
         options: []
       }
     },
@@ -91,10 +74,13 @@
           this.loading = true;
           setTimeout(() => {
             this.loading = false;
-            this.options = this.list.filter(item => {
-              return item.label.toLowerCase()
-                .indexOf(query.toLowerCase()) > -1;
-            });
+             this.$http.send(this.$api.spuPage, {
+                name: query,
+                size: 10,
+                current: 1
+              }).then(res => {
+                  this.options = res.data.records
+                })
           }, 200);
         } else {
           this.options = [];
@@ -147,13 +133,10 @@
           this.$message.error('请输入关键字')
           return
         }
-        this.$router.push({name: 'goodsDetail'})
+        this.$router.push({name: 'goodsDetail', query: {id: this.value}})
       }
     },
     mounted() {
-        this.list = this.states.map(item => {
-          return { value: `value:${item}`, label: `${item}` }
-        })
     }
   }
 </script>
@@ -208,7 +191,7 @@
     .search_wrapper {
       display: inline-block;
     }
-     &.el-input__inner {
+     .el-input__inner {
       width:450px;
       height:40px;
       background:rgba(255,255,255,1);

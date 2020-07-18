@@ -11,5 +11,11 @@ export default {
   //SPU查询API
  spuCateSpu: 'spu/cateSpu', //查询类别与SPU列表
  spuDetail: 'spu/detail', // 查询SPU详情
- spuPage: 'spu/page' // 分页查询SPU列表
+ spuPage: 'spu/page', // 分页查询SPU列表
+ spuSku: '/spu/sku', // 查询SKU详情
+ 
+ // 订单交易API
+ orderDetail: 'order/detail', //订单详情
+ orderPay: 'order/pay', //订单支付
+ orderSubmit: 'order/submit' // 订单提交
 }

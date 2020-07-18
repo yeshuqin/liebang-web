@@ -24,33 +24,47 @@
         :data="tableData"
         style="width: 100%">
         <el-table-column
-          prop="1"
+          prop="spuName"
           label="产品名称">
         </el-table-column>
         <el-table-column
-          prop="2"
+          prop="name"
           width="200px"
           label="配置详情">
         </el-table-column>
         <el-table-column
           prop="3"
           label="付费方式">
+          <template>
+            预付款
+          </template>
         </el-table-column>
         <el-table-column
-          prop="4"
           label="数量">
+          <template>
+            1
+          </template>
         </el-table-column>
         <el-table-column
           prop="5"
           label="优惠金额">
+          <template>
+            ¥0
+          </template>
         </el-table-column>
         <el-table-column
-          prop="6"
-          label="资费">
+          prop="salePrice"
+          label="价格">
+           <template slot-scope="props">
+            ¥{{props.row.salePrice}}
+          </template>
         </el-table-column>
         <el-table-column
-          prop="7"
+          prop="salePrice"
           label="小计">
+          <template slot-scope="props">
+            ¥{{props.row.salePrice}}
+          </template>
         </el-table-column>
       </el-table>
       <el-row class="info" type="flex" justify="space-between">
@@ -338,23 +352,36 @@
           }]
         }],
         tableData: [
-          {
-            1: '软件著作权登记',
-            2: '加急自助（35个工作日）',
-            3: '预付款',
-            4: '1',
-            5: '¥30',
-            6: '¥30',
-            7: '¥30'
-          }
+          // {
+          //   1: '软件著作权登记',
+          //   2: '加急自助（35个工作日）',
+          //   3: '预付款',
+          //   4: '1',
+          //   5: '¥30',
+          //   6: '¥30',
+          //   7: '¥30'
+          // }
         ],
         form: {
           name: '',
           status: '个人'
-        }
+        },
+        id: this.$route.query.id,
+        detailObj: {}
       }
     },
+    created() {
+      this.getDetail()
+    },
     methods: {
+      getDetail() {
+        this.$http.send(this.$api.spuSku, {
+           id: this.id
+         }).then(res => {
+           this.detailObj = res.data
+           this.tableData.push(res.data)
+          })
+      },
       goBuy() {
         this.$router.push({name: 'playOrder'})
       }

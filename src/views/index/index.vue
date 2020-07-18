@@ -28,9 +28,10 @@
               </div>
               <h3>{{spu.name}}</h3>
               <div class="card-desc">
-                <p v-html="spu.synopsis"></p>
+                <p v-for="(desc, index) in spu.synopsis" :key="index">{{desc}}</p>
               </div>
               <div class="money-wrap"><span class="money">¥{{spu.minPrice}}</span>起</div>
+              <el-button type="primary" size="small" class="buy_btn" @click="handleGoGoodsDetail(spu)">立即购买</el-button>
             </div>
           </div>
         </div>
@@ -39,18 +40,21 @@
         <div class="title">热点资讯</div>
         <div class="title-desc">
           <span>公司注册</span>
-          <span>公司注册</span>
-          <span>公司注册</span>
-          <span>公司注册</span>
+          <span>公司注销</span>
+          <span>公司变更</span>
+          <span>公司租赁</span>
         </div>
-        <ul class="new-wrap">
-          <li v-for="(item, index) in 4" :key="index">
-            <img src="../../assets/logo.png" alt="">
+        <ul class="case-wrap">
+          <li v-for="(item, index) in hotList" :key="index">
+             <a :href="item.linkUrl" target="_blank">
+              <img :src="item.picUrl" alt="" style="width:100%;height:100%">
+            </a>
+            <!-- <img src="../../assets/logo.png" alt="">
             <div class="new-item">
               <h3>云栖号头条：浙江省和阿里等开发“企业码”平台11111</h3>
               <p>传感器好比人的眼耳口鼻，但又不仅仅只是人的感官那 么简单，它甚至能够采集到更多的有用信息。</p>
               <div class="time">2020-04-23</div>
-            </div>
+            </div> -->
           </li>
         </ul>
       </div>
@@ -58,13 +62,15 @@
         <div class="title">最新案例</div>
         <div class="title-desc">
           <span>公司注册</span>
-          <span>公司注册</span>
-          <span>公司注册</span>
-          <span>公司注册</span>
+          <span>公司注销</span>
+          <span>公司变更</span>
+          <span>公司租赁</span>
         </div>
         <ul class="case-wrap">
-          <li v-for="(item, index) in 4" :key="index">
-            <img src="../../assets/case-img.png" alt="">
+          <li v-for="(item, index) in caseList" :key="index">
+            <a :href="item.linkUrl" target="_blank">
+              <img :src="item.picUrl" alt="">
+            </a>
           </li>
         </ul>
       </div>
@@ -89,14 +95,21 @@
     data () {
       return {
         jinpaiList: [], //广告位列表
-        hotSpuList: []
+        hotSpuList: [],
+        caseList: [], //最新案例
+        hotList: [] //热点资讯
       }
     },
     created() {
       this.getJinpaiBannerList()
       this.getCateSpuList()
+      this.getCaseList()
+      this.getHotList()
     },
     methods: {
+       handleGoGoodsDetail(obj) {
+        this.$router.push({name: 'goodsDetail', query: {id: obj.id}})
+      },
       getJinpaiBannerList() {
          this.$http.send(this.$api.bannerList, {
            code: '金牌顾问',
@@ -115,9 +128,26 @@
              item.cate.synopsis = item.cate.synopsis.split(',') || []
              item.spuList.forEach(spu => {
                spu.tags = spu.tags.split(',') || []
+               spu.synopsis = JSON.parse(spu.synopsis).split('\n') || spu.synopsis
              })
              this.hotSpuList.push(item)
            })
+        })
+      },
+      getCaseList() {
+        this.$http.send(this.$api.bannerList, {
+           code: 'case',
+           number: 4
+         }).then(res => {
+           this.caseList = res.data
+        })
+      },
+      getHotList() {
+        this.$http.send(this.$api.bannerList, {
+           code: 'hot',
+           number: 4
+         }).then(res => {
+           this.hotList = res.data
         })
       }
     }
@@ -181,6 +211,7 @@
           color: #000000;
           padding: 18px 0 0 22px;
           box-sizing: border-box;
+          position: relative;
           .card-tag {
             padding: 0 6px;
             display: inline-block;
@@ -189,6 +220,16 @@
             border-radius:4px;
             border:1px solid rgba(216,216,216,1);
             margin-right: 10px;
+          }
+          .buy_btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+          }
+          .money-wrap {
+            position: absolute;
+            left: 22px;
+            bottom: 10px;
           }
           h3 {
             font-size: 16px;
@@ -201,7 +242,8 @@
               font-size: 13px;
               color: #9A9A9A;
               font-weight: 400;
-              line-height:18px
+              line-height:18px;
+              margin-bottom: 3px;
             }
           }
            .money {
