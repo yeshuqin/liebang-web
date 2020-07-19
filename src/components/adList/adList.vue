@@ -6,12 +6,12 @@
       </div>
       <div class="swiper-container">
           <div class="swiper-wrapper hot-ad-list">
-            <div class="swiper-slide" v-for="item in 11" :key="item">
-              <li class="hot-ad-list-item">
-                <img src="https://file2.pingxiaobao.com/dev/2006/08/3a06b514288efd2804606c2a6caa9cfb.jpg" alt="">
-                <h2 class="name">公司社保代缴</h2>
-                <p class="desc">一键代缴，省时省力</p>
-                <p class="money">¥19999.00</p>
+            <div class="swiper-slide" v-for="(item,index) in dataList" :key="index">
+              <li class="hot-ad-list-item" @click="handleGoGoodsDetail(item)">
+                 <img :src="item.primaryPic" alt="">
+                  <h2 class="name">{{item.name}}</h2>
+                  <p class="desc">{{item.tags}}</p>
+                  <p class="money">¥{{item.minPrice}}</p>
               </li>
             </div>
           </div>
@@ -28,15 +28,30 @@
 
 <script>
   export default {
+    props: {
+      dataList: {
+        type: Array,
+        default() {
+          return []
+        }
+      }
+    },
     data() {
       return {
 
       }
     },
     mounted() {
-      this.initSwiper()
+      this.$nextTick(() => {
+        this.initSwiper()
+      })
+    },
+    computed: {
     },
     methods: {
+      handleGoGoodsDetail(obj) {
+        this.$router.push({name: 'goodsDetail', query: {id: obj.id}})
+      },
       initSwiper() {
          var mySwiper = new Swiper ('.swiper-container', {
             loop: true, // 循环模式选项
@@ -45,6 +60,8 @@
             slidesPerGroup: 5,
             loop: true,
             loopFillGroupWithBlank: true,
+            observer:true,
+            // observeParents:false,
             navigation: {
               nextEl: '.swiper-button-next',
               prevEl: '.swiper-button-prev',
@@ -71,6 +88,7 @@
       background: #ffffff;
       text-align: center;
       overflow: hidden;
+      cursor: pointer;
       img {
         width: 160px;
         height: 160px;

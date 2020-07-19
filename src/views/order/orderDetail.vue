@@ -7,8 +7,8 @@
           <div class="order-detail">
             <div class="order-detail-top">
               <div class="l">
-                <p class="font999">订单号：304456778900</p>
-                <h1 class="fontImp status font22">已完成</h1>
+                <p class="font999">订单号：{{id}}</p>
+                <h1 class="fontImp status font22">{{statusNameMapList[infoObj.status]}}</h1>
                 <span class="font12">手机订单</span>
               </div>
               <div class="r">
@@ -16,8 +16,12 @@
                   <span class="iconfont fontImp">&#xe7fd;</span>
                   请及时关注订单详细信息，已确保您能及时收到货品
                 </div>
-                <el-steps :active="2" align-center class="step">
-                  <el-step title="提交订单" description="2019-12-04 11:52:35">
+                <!-- 订单状态(0:待支付,11:待上传资料,12:待资料审核,13:资料审核失败,1:待发货,2:待收货,3:已完成) -->
+                <el-steps :active="activeStep" align-center class="step">
+                  <el-step title="提交订单">
+                    <template slot="description">
+                      2020-01-04 11:52:35
+                    </template>
                     <template slot="icon"> 
                       <span class="iconfont">&#xe696;</span>
                     </template>
@@ -27,19 +31,35 @@
                       <span class="iconfont">&#xe63d;</span>
                     </template>  
                   </el-step>
-                  <el-step title="商品出库" description="2020-01-04 11:52:35">
+                  <el-step>
+                     <template slot="title"> 
+                     <span v-if="infoObj.status === 11">待上传资料</span>
+                     <span v-else-if="infoObj.status === 12">待资料审核</span>
+                     <span v-else-if="infoObj.status === 13">资料审核失败</span>
+                     <span v-else-if="infoObj.status === 1">资料审核成功</span>
+                     <span v-else>审核资料</span>
+                    </template>
+                     <template slot="description"> 
+                      <span>2020-01-04 11:52:35</span>
+                    </template>
                     <template slot="icon"> 
                       <span class="iconfont">&#xe611;</span>
                     </template>
                   </el-step>
-                  <el-step title="等待收货" description="2020-01-04 11:52:35">
+                  <el-step title="发货">
                      <template slot="icon"> 
                       <span class="iconfont">&#xe605;</span>
                     </template>
+                    <template slot="description"> 
+                      <span>2020-01-04 11:52:35</span>
+                    </template>
                   </el-step>
-                  <el-step title="完成" description="2020-01-04 11:52:35">
+                  <el-step title="完成">
                      <template slot="icon"> 
                       <span class="iconfont">&#xe6a7;</span>
+                    </template>
+                    <template slot="description"> 
+                      <span>2020-01-04 11:52:35</span>
                     </template>
                   </el-step>
                 </el-steps>
@@ -66,15 +86,15 @@
                 <ul class="list">
                   <li>
                     <span class="label">收货人：</span>
-                    <span class="value">张三</span>
+                    <span class="value">{{infoObj.name}}</span>
                   </li>
                   <li>
                     <span class="label">地址：</span>
-                    <span class="value">上海市浦东新区金科路 1000弄3号楼603</span>
+                    <span class="value">{{infoObj.province}}{{infoObj.city}}{{infoObj.county}}{{infoObj.town}}{{infoObj.address}}</span>
                   </li>
                   <li>
                     <span class="label">手机号码：</span>
-                    <span class="value">134****7800</span>
+                    <span class="value">{{infoObj.phone}}</span>
                   </li>
                 </ul>
               </div>
@@ -87,7 +107,7 @@
                   </li>
                   <li>
                     <span class="label">运费：</span>
-                    <span class="value">¥0.00</span>
+                    <span class="value">¥{{infoObj.freightAmount}}</span>
                   </li>
                 </ul>
               </div>
@@ -96,11 +116,11 @@
                 <ul class="list">
                   <li>
                     <span class="label">商品总额： </span>
-                    <span class="value">¥3299.00</span>
+                    <span class="value">¥{{infoObj.salePrice}}</span>
                   </li>
                   <li>
                     <span class="label">应付总额：</span>
-                    <span class="value">¥2700.00</span>
+                    <span class="value">¥{{infoObj.realAmount}}</span>
                   </li>
                 </ul>
               </div>
@@ -133,28 +153,28 @@
             <el-row class="body">
               <el-col :span="7">
                 <div class="img-wrap fl">
-                  <img src="https://file2.pingxiaobao.com/dev/2006/29/97e9b67ae59b01ba50308c09b78a55ee.jpg" alt="">
+                  <img :src="infoObj.skuPic" alt="">
                 </div>
                 <div class="fl good-name">
-                  <p class="font666">计算机软件著作权申请</p>
+                  <p class="font666">{{infoObj.skuName}}</p>
                   <p class="font12">加急自助</p>
                   <p class="font12">10个工作日</p>
                 </div>
               </el-col>
               <el-col :span="3">
-                ￥999
+                ￥{{infoObj.salePrice}}
+              </el-col>
+              <el-col :span="3">
+                {{infoObj.quantity}}
+              </el-col>
+              <el-col :span="3">
+                {{infoObj.discountAmount}}
               </el-col>
               <el-col :span="3">
                 1
               </el-col>
               <el-col :span="3">
-                500
-              </el-col>
-              <el-col :span="3">
-                1
-              </el-col>
-              <el-col :span="3">
-                ￥499
+                ￥{{infoObj.realAmount}}
                 <div>手机订单</div>
               </el-col>
               <el-col :span="2">
@@ -166,29 +186,29 @@
               <ul>
                 <li>
                 <span class="label">商品总额：</span>
-                  <span class="value">¥999.00</span>
+                  <span class="value">¥{{infoObj.salePrice}}</span>
                 </li>
                 <li>
                   <span class="label">优惠金额：</span>
-                  <span class="value">¥999.00</span>
+                  <span class="value">¥{{infoObj.discountAmount}}</span>
                 </li>
                 <li>
                   <span class="label">运 费：</span>
-                  <span class="value">¥999.00</span>
+                  <span class="value">¥{{infoObj.freightAmount}}</span>
                 </li>
                 <li class="fontImp">
                   <span class="label fontImp">应付总额：</span>
-                  <span class="value">¥999.00</span>
+                  <span class="value">¥{{infoObj.salePrice * infoObj.quantity}}</span>
                 </li>
               </ul>
             </ul>
           </div>
       </div>
     </div>
-     <ad-list class="mb90">
+     <ad-list class="mb90" :dataList="hotList">
        <h2>热卖单品</h2>
     </ad-list> 
-    <ad-list class="mb90">
+    <ad-list class="mb90" :dataList="likeList">
        <h2>猜你喜欢</h2>
     </ad-list> 
   </div>
@@ -204,7 +224,7 @@
     },
     data() {
       return {
-        activeName: '1',
+        activeStep: 1,
         formInline: {
           name: ''
         },
@@ -223,10 +243,66 @@
             status: 4,
           }
         ],
-        checked: true
+        statusNameMapList: {
+          0: '待支付',
+          11: '待上传资料',
+          12: '待资料审核',
+          13: '资料审核失败',
+          1: '待发货',
+          2: '待收货',
+          3: '已完成'
+        },
+        checked: true,
+        id: this.$route.query.id,
+        infoObj: {},
+        hotList: [],
+        likeList: []
       }
     },
+    created() {
+      this.getDetail()
+      this.getHotList()
+      this.getLikeList()
+    },
     methods: {
+      getDetail() {
+        this.$http.send(this.$api.orderDetail, {
+          id: this.id
+        }).then(res => {
+          console.log(res)
+          this.infoObj = res.data
+          this.infoObj.status = 5
+          if(this.infoObj.status === 0) {
+            this.activeStep = 1
+          }else if(this.infoObj.status === 11 || this.infoObj.status === 12 || this.infoObj.status === 13) {
+            this.activeStep = 2
+          }else if(this.infoObj.status === 1) {
+            this.activeStep = 3
+          }else if(this.infoObj.status === 2) {
+            this.activeStep = 4
+          }else {
+            this.activeStep = 5
+          }
+        })
+      },
+      getHotList() {
+        this.$http.send(this.$api.spuPage, {
+           showcaseId: '1284753668595380225',
+           current: 1,
+           size: 10
+         }).then(res => {
+           this.hotList = res.data.records
+        })
+      },
+      getLikeList() {
+        this.$http.send(this.$api.spuPage, {
+           showcaseId: '1284760453913899009',
+           current: 1,
+           size: 10
+         }).then(res => {
+           this.likeList = res.data.records
+        })
+      },
       handleSelectionChange() {
 
       },

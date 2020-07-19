@@ -35,7 +35,9 @@
         </el-col>
          <el-col :span="4">
             <div class="title"><a href="javascript:void(0)">客服服务</a></div>
-            <span class="phone">点击咨询客服</span>
+            <span class="phone">
+              <span class="iconfont" style="font-size:18px;">&#xe8c3;</span>
+              点击咨询客服</span>
             <p class="work-time">工作时间：周一至周日09:00-18:00</p>
         </el-col>
         <el-col :span="4" style="text-align:center">
@@ -92,8 +94,9 @@
   .code {
     width: 90px;
     height: 90px;
-    border: 1px solid #ccc;
     margin: 0 auto;
+    background: url('../../../assets/img/code.png');
+    background-size: 100% 100%;
   }
   .code_tip {
     margin: 12px 0;

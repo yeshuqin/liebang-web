@@ -42,13 +42,13 @@
         <div class="hot-tag">
           <span>热门搜索:</span>
           <span>工商服务</span>
-          <span>工商服务</span>
-          <span>工商服务</span>
-          <span>工商服务</span>
+          <span>商标注册</span>
+          <span>专利申请</span>
+          <span>项目申报</span>
         </div>
       </div>
     </div>
-    <quest-dialog :showCounselDialog="showCounselDialog" @closeDialog="closeDialog"></quest-dialog>
+    <quest-dialog :showCounselDialog.sync="showCounselDialog"></quest-dialog>
   </div>
 </template>
 
@@ -124,9 +124,6 @@
         }).catch(() => {
 
         });
-      },
-      closeDialog() {
-        this.showCounselDialog = false
       },
       handleSearch() {
         if(!this.value) {

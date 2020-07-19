@@ -11,8 +11,8 @@
            <div class="desc">
              <div class="desc-item">
                <span>价格：</span>
-               <span class="fontImp font24">￥{{detailObj.minPrice}}</span>
-               <span class="old-price">{{detailObj.maxPrice}}</span>
+               <span class="fontImp font24">￥{{detailObj.minPrice | filterMoney}}</span>
+               <span class="old-price">{{detailObj.maxPrice | filterMoney}}</span>
              </div>
              <div class="desc-item">
                <span>说明：</span>
@@ -45,7 +45,7 @@
              </li>
            </ul>
            <div class="font16">
-              <el-checkbox v-model="checked"></el-checkbox> 我已阅读理解并接受 <span class="fontImp">《{{detailObj.name}}相关协议》</span>
+              <el-checkbox v-model="checked"></el-checkbox> 我已阅读理解并接受 <span class="fontImp">《{{detailObj.name}}服务协议》</span>
            </div>
            <div style="margin-top:27px">
              <el-button type="primary" class="btn" @click="goBuy">立即购买</el-button>

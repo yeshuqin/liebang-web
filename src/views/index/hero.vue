@@ -58,7 +58,7 @@
       <div class="user">
          <el-row>
           <el-col :span="10">
-            <img :src="info.picture" alt="">
+            <img src="../../assets/img/user.jpg" alt="">
           </el-col>
          <el-col :span="14">
             <div style="margin-top:26px" class="bold" v-if="!isLogin">Hi，欢迎来到猎邦</div>
@@ -106,7 +106,7 @@
         isLogin: localStorage.getItem('token') || '',
         info:  {
           name: '琴哥哥',
-          picture: 'https://file2.pingxiaobao.com/dev/2006/08/3a06b514288efd2804606c2a6caa9cfb.jpg'
+          picture: ''
         },
         bannerList: [], //轮播图列表
         cateSpuList: [], //报考推荐类别商品

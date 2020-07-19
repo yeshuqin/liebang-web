@@ -111,10 +111,10 @@
           </div>
       </div>
     </div>
-     <ad-list class="mb90">
+    <ad-list class="mb90" :dataList="hotList">
        <h2>热卖单品</h2>
     </ad-list> 
-    <ad-list class="mb90">
+    <ad-list class="mb90" :dataList="likeList">
        <h2>猜你喜欢</h2>
     </ad-list> 
   </div>
@@ -149,8 +149,14 @@
             status: 4,
           }
         ],
-        checked: true
+        checked: true,
+        hotList: [],
+        likeList: []
       }
+    },
+    created() {
+      this.getHotList()
+      this.getLikeList()
     },
     methods: {
       handleSelectionChange() {
@@ -161,7 +167,25 @@
       },
       handleGoDetail(status) {
         this.$router.push({name: 'orderDetail', query: {id: status}})
-      }
+      },
+      getHotList() {
+        this.$http.send(this.$api.spuPage, {
+           showcaseId: '1284753668595380225',
+           current: 1,
+           size: 10
+         }).then(res => {
+           this.hotList = res.data.records
+        })
+      },
+      getLikeList() {
+        this.$http.send(this.$api.spuPage, {
+           showcaseId: '1284760453913899009',
+           current: 1,
+           size: 10
+         }).then(res => {
+           this.likeList = res.data.records
+        })
+      },
     }
   }
 </script>

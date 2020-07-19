@@ -66,10 +66,10 @@
         </div>
       </div>
     </div>
-    <ad-list class="mb70">
+    <ad-list class="mb70" :dataList="hotList">
        <h2>行业必备服务</h2>
     </ad-list> 
-    <ad-list class="mb100">
+    <ad-list class="mb100" :dataList="hotList">
       <h2>专业为您推荐</h2>
     </ad-list>
     <footer-block></footer-block>
@@ -92,16 +92,26 @@
           name: '',
           region: ''
         },
-        checkedBox: [1, 2]
+        checkedBox: [1, 2],
+        hotList: []
       }
     },
-    mounted() {
-  
+    created() {
+      this.getHotList()
     },
     methods: {
       submitForm() {
 
-      }
+      },
+      getHotList() {
+        this.$http.send(this.$api.spuPage, {
+           showcaseId: '1284753668595380225',
+           current: 1,
+           size: 10
+         }).then(res => {
+           this.hotList = res.data.records
+        })
+      },
     }
   }
 </script>
@@ -110,6 +120,7 @@
 .user {
   display: flex;
   margin-top: 11px;
+  margin-bottom: 54px;
   .el-select {
     width: 100%;;
   }
@@ -119,7 +130,6 @@
   .user-info {
     display: flex;
     min-height: 400px;
-    margin-bottom: 54px;
     .user-l {
       width: 500px;
       background: #ffffff;

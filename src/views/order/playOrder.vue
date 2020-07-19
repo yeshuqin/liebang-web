@@ -20,13 +20,13 @@
     <div class="main">
       <h2>支付订单信息</h2>
       <ul class="main-list">
-        <li class="clearfix">
-          <span class="fl">订单编号：2020042816450002367</span>
-          <span class="fr">应付：<i class="fontImp">¥3969.00</i></span>
+        <li class="clearfix" style="color:#333333FF;">
+          <span class="fl">订单编号：{{orderId}}</span>
+          <span class="fr">应付：<i class="fontImp">¥{{detailObj.salePrice | filterMoney}}</i></span>
         </li>
         <li class="clearfix">
-          <span class="fl">软件著作权登记 <i>加急自助（35个工作日）</i></span>
-          <span class="fr">¥3969.00</span>
+          <span class="fl">{{detailObj.spuName}} <i>{{detailObj.name}}</i></span>
+          <span class="fr">¥{{detailObj.salePrice | filterMoney}}</span>
         </li>
       </ul>
       <div class="border"></div>
@@ -38,15 +38,15 @@
           <span class="font999 font12">（支付更快捷，一步验证，无需网银）</span>
         </div>
         <div class="play-wrap">
-          <div class="play-btn">
+          <div class="play-btn" :class="{active: type === 2}" @click="handleType(2)">
             <i class="iconfont ali fl">&#xe663;</i>
             <span class="fl">支付宝</span>
           </div>
-          <div class="play-btn">
+          <div class="play-btn" :class="{active: type === 3}" @click="handleType(3)">
             <i class="iconfont wechat fl">&#xe607;</i>
             <span class="fl">微信支付</span>
           </div>
-          <div class="play-btn" @click="dialogVisible = true">
+          <div class="play-btn" :class="{active: type === 1}" @click="handleType(1)">
             <i class="iconfont card fl">&#xe6c4;</i>
             <span class="fl">对公转账</span>
           </div>
@@ -54,8 +54,8 @@
       </div>
       <div class="cash-wrap clearfix">
          <div class="fr">
-          <p class="money fontImp font36">¥2999.00</p>
-          <span class="font666 font16">优惠¥30</span>
+          <p class="money fontImp font36">¥{{detailObj.salePrice | filterMoney}}</p>
+          <span class="font666 font16">优惠¥0</span>
         </div>
         <div class="font16 fr font999" style="margin-top:12px">
           应付金额：
@@ -88,11 +88,11 @@
         </li>
         <li>
           <span class="label">汇款金额：</span>
-          <span class="value">¥369.00</span>
+          <span class="value">¥{{detailObj.salePrice | filterMoney}}</span>
         </li>
         <li>
           <span class="label">汇款备注：</span>
-          <span class="value">计算机软件登记申请</span>
+          <span class="value">{{detailObj.spuName}}</span>
         </li>
       </ul>
       <h2 class="font333 font16 mb10">2.升级账号</h2>
@@ -114,27 +114,40 @@
       return {
         dialogVisible: false,
         checked: true,
-        tableData: [
-          {
-            1: '软件著作权登记',
-            2: '加急自助（35个工作日）',
-            3: '预付款',
-            4: '1',
-            5: '¥30',
-            6: '¥30',
-            7: '¥30'
-          }
-        ],
-        form: {
-          name: '',
-          status: '个人'
-        }
+        tableData: [],
+        detailObj: {},
+        id: '',
+        orderId: '',
+        type: '', //支付类型
       }
+    },
+    created() {
+      let {id, orderId} = this.$route.query
+      this.id =  id
+      this.orderId = orderId
+      this.getDetail()
     },
     methods: {
       goStep() {
-        this.$router.push({name: 'statusOrder'})
-      }
+        // this.$router.push({name: 'statusOrder'})
+        if(!this.type) {
+          this.$message.error('请选择支付方式~')
+          return
+        }
+        if(this.type === 1) {
+          this.dialogVisible = true
+        }
+      },
+      handleType(type) {
+        this.type = type
+      },
+      getDetail() {
+        this.$http.send(this.$api.spuSku, {
+           id: this.id
+         }).then(res => {
+           this.detailObj = res.data
+          })
+      },
     }
   }
 </script>
@@ -143,8 +156,8 @@
 .play-order {
   padding-bottom: 85px;
   h2 {
-    padding: 12px 0 12px 34px;
-    font-weight: bold;
+    padding: 12px 0 12px 21px;
+    font-weight: 600;
   }
   .title-warp {
     height: 54px;
@@ -253,6 +266,9 @@
       justify-content: center;
       float: left;
       cursor: pointer;
+      &.active {
+         border:1px solid rgba(254,106,0,1);
+      }
       .iconfont {
         margin-right: 5px;
         font-size: 24px;

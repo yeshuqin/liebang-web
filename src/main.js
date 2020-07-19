@@ -24,6 +24,11 @@ Vue.prototype.isPhoneNumber = (phoneNumber) => {
   return true
 }
 
+Vue.filter('filterMoney', function (value) {
+  if (!value) return 0
+  return (value / 100).toFixed(2)
+})
+
 let whiteList = ['/login']
 router.beforeEach(async(to, from, next) => {
 
@@ -42,6 +47,7 @@ router.beforeEach(async(to, from, next) => {
       next('/login')
     }
   }
+  window.scrollTo(0,0)
 })
 
 router.afterEach(() => {

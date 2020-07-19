@@ -22,16 +22,14 @@ axios.interceptors.request.use(
 // 添加一个响应拦截器
 axios.interceptors.response.use(
   function (res) {
-    console.log(res, '添加一个响应拦截器')
     if (res.data.code === 40001) {
       Message({
         message: res.data.msg,
         type: 'error',
         duration: 5 * 1000
       })
-      // store.dispatch('user/resetToken').then(() => {
-      //   location.reload()
-      // })
+      localStorage.removeItem('token')
+      location.reload()
     }
     return res
   },
@@ -77,7 +75,6 @@ axios.interceptors.response.use(
 // )
 
 const send = function(url, data = {}, methods = 'post') {
-  console.log(data, 'data==')
   return new Promise((resolve, reject) => {
     axios({
       method: methods,
