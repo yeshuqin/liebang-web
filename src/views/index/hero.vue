@@ -105,7 +105,7 @@
         showCategory: false,
         isLogin: localStorage.getItem('token') || '',
         info:  {
-          name: '琴哥哥',
+          name: localStorage.getItem('phone') || '',
           picture: ''
         },
         bannerList: [], //轮播图列表

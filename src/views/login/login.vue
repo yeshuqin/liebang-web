@@ -25,14 +25,14 @@
                 </el-input>
                 <el-input v-model="loginForm.password" auto-complete="new-password" :type="isShowPwd ? 'text' : 'password'" placeholder="请输入密码">
                   <template slot="prefix">
-                    <span class="iconfont">&#xe64f;</span>
+                    <span class="iconfont" style="font-size:24px;">&#xe622;</span>
                   </template>
                   <template slot="suffix">
                     <span class="iconfont" @click="handleView">{{isShowPwd ? '&#xe6cc;' : '&#xe601;'}}</span>
                   </template>
                 </el-input>
                  <drag-verify
-                  ref="dragVerify"
+                  ref="dragVerify1"
                   :width="320"
                   :isPassing.sync="isPassing"
                   text="请按住滑块拖动"
@@ -62,19 +62,19 @@
                     <span class="iconfont">&#xe651;</span>
                   </template>
                 </el-input>
-                <div>
-                  <el-input v-model="loginForm.code" auto-complete="new-password" placeholder="请输入验证码" style="width:180px;">
+                <div class="clearfix">
+                  <el-input class="fl" v-model="loginForm.code" auto-complete="new-password" placeholder="请输入验证码" style="width:180px;">
                     <template slot="prefix">
                       <span class="iconfont">&#xe64f;</span>
                     </template>
                    </el-input>
-                   <span class="code-btn" @click="handleSendCode">
-                     <span v-if="!disabledCode" class="fontImp">发送验证码</span>
-                     <span v-else><span class="fontImp">{{time}}</span> 秒重新发送</span>
+                   <span class="code-btn fr" @click="handleSendCode">
+                     <span v-if="!disabledCode" class="fontImp">获取验证码</span>
+                     <span v-else>重新获取({{time}}s）</span>
                    </span>
                 </div>
                  <drag-verify
-                  ref="dragVerify"
+                  ref="dragVerify2"
                   :width="320"
                   :isPassing.sync="isPassing"
                   text="请按住滑块拖动"
@@ -104,20 +104,20 @@
                     <span class="iconfont">&#xe651;</span>
                   </template>
                 </el-input>
-                <div>
-                  <el-input v-model="registerForm.code" auto-complete="new-password" placeholder="请输入验证码" style="width:180px;">
+                <div class="clearfix">
+                  <el-input class="fl" v-model="registerForm.code" auto-complete="new-password" placeholder="请输入验证码" style="width:180px;">
                     <template slot="prefix">
                       <span class="iconfont">&#xe64f;</span>
                     </template>
                    </el-input>
-                   <span class="code-btn" @click="handleSendCode">
-                     <span v-if="!disabledCode" class="fontImp">发送验证码</span>
-                     <span v-else><span class="fontImp">{{time}}</span> 秒重新发送</span>
+                   <span class="code-btn fr" @click="handleSendCode">
+                     <span v-if="!disabledCode" class="fontImp">获取验证码</span>
+                     <span v-else>重新获取({{time}}s）</span>
                    </span>
                 </div>
                 <el-input v-model="registerForm.password" auto-complete="new-password" :type="isShowPwd ? 'text' : 'password'" placeholder="请输入密码">
                   <template slot="prefix">
-                    <span class="iconfont">&#xe64f;</span>
+                    <span class="iconfont" style="font-size:24px;">&#xe622;</span>
                   </template>
                   <template slot="suffix">
                     <span class="iconfont" @click="handleView">{{isShowPwd ? '&#xe6cc;' : '&#xe601;'}}</span>
@@ -184,6 +184,12 @@
         this.isPassing = false
         this.isShowPwd = false
         this.phone = ''
+        if(this.$refs.dragVerify1 !== undefined) {
+          this.$refs.dragVerify1.reset();
+        } 
+        if(this.$refs.dragVerify2 !== undefined) {
+          this.$refs.dragVerify2.reset();
+        }   
         this.loginForm = {
           phone: '',
           password: '',
@@ -237,6 +243,10 @@
           this.$message.error('请输入验证码~')
           return
         }
+         if(!this.isPassing) {
+          this.$message.error('请滑动验证~')
+          return
+        }
         let password = md5(this.loginForm.password)
         this.$http.send(this.$api.login, {
           code: this.loginForm.code,
@@ -268,7 +278,7 @@
           return
         }
         if(!this.registerForm.checked) {
-          this.$message.error('请同意协议~')
+          this.$message.error('请同意并遵守《服务条款》和《隐私条款》')
           return
         }
         let password = md5(this.registerForm.password)
@@ -427,7 +437,7 @@
     width:136px;
     height:50px;
     line-height: 50px;
-    color: #999999;
+    color: #BBBBBBFF;
     border-radius:1px;
     border:1px solid rgba(217,217,217,1);
     display: inline-block;
@@ -443,7 +453,7 @@
     }
   }
   .el-input__prefix, .el-input__suffix {
-    top: 15px;
+    top: 14px;
     left: 14px;
   }
   .el-input__suffix {
