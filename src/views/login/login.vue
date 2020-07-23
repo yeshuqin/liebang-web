@@ -68,7 +68,7 @@
                       <span class="iconfont">&#xe64f;</span>
                     </template>
                    </el-input>
-                   <span class="code-btn fr" @click="handleSendCode">
+                   <span class="code-btn fr" @click="handleSendCode(2)">
                      <span v-if="!disabledCode" class="fontImp">获取验证码</span>
                      <span v-else>重新获取({{time}}s）</span>
                    </span>
@@ -110,7 +110,7 @@
                       <span class="iconfont">&#xe64f;</span>
                     </template>
                    </el-input>
-                   <span class="code-btn fr" @click="handleSendCode">
+                   <span class="code-btn fr" @click="handleSendCode(1)">
                      <span v-if="!disabledCode" class="fontImp">获取验证码</span>
                      <span v-else>重新获取({{time}}s）</span>
                    </span>
@@ -291,7 +291,7 @@
            this.isLogin = false
         })
       },
-      handleSendCode() { // 发送验证码
+      handleSendCode(type) { // 发送验证码
         if(!this.isPhoneNumber(this.phone)) {
           this.$message.error('请输入正确的手机号')
           return
@@ -301,7 +301,8 @@
         }
         this.disabledCode = true
         this.$http.send(this.$api.code, {
-          phone: this.phone
+          phone: this.phone,
+          type: type
         }).then(res => {
            this.timer = setInterval(() => {
             if(this.time == 1){

@@ -162,6 +162,8 @@
      display: flex;
      .l {
        width: 450px;
+       height: 450px;
+       background: #eee;
        img {
          width: 450px;
          height: 450px;

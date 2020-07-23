@@ -16,17 +16,17 @@
                     </el-tabs>  
                  </el-col>
                  <el-col :span="4">
-                   <el-input placeholder="搜索" size='mini' suffix-icon="el-icon-search"></el-input>
+                   <el-input placeholder="搜索" size='mini' v-model="formInline.id" suffix-icon="el-icon-search"></el-input>
                  </el-col>
                </el-row>
             </div>
             <div class="order-table">
               <el-row class="order-table-header" style="margin-bottom:25px;">
-                <el-col :span="5">
-                   <el-checkbox v-model="checked">全选</el-checkbox> 
-                   <span style="margin-left:6px;">删除</span>
-                </el-col>
-                <el-col :span="7">
+                <!-- <el-col :span="5"> -->
+                   <!-- <el-checkbox v-model="checked">全选</el-checkbox>  -->
+                   <!-- <span style="margin-left:6px;">删除</span> -->
+                <!-- </el-col> -->
+                <el-col :span="10" style="text-align:left;">
                   产品名称
                 </el-col>
                 <el-col :span="2">
@@ -44,59 +44,69 @@
                 <el-col :span="2">
                   订单状态
                 </el-col>
-                <el-col :span="2" class="textR">
+                <el-col :span="3" class="textR">
                   操作
                 </el-col>
               </el-row>
-              <div class="order-table-list" v-for="item in orderList" :key="item">
+              <div class="order-table-list" v-for="item in orderList" :key="item.id">
                 <div>
                   <el-row class="order-table-header">
-                    <el-col :span="5">
-                      <el-checkbox v-model="checked" class="mr10"></el-checkbox> <span class="font999">2019-06-18 10:33:21</span>
+                    <!-- <el-col :span="5"> -->
+                      <!-- <el-checkbox v-model="checked" class="mr10"></el-checkbox> <span class="font999">{{item.createTime}}</span> -->
+                    <!-- </el-col> -->
+                    <el-col :span="17" style="text-align: left;">
+                      <span class="font000">订单号：{{item.id}}</span>
                     </el-col>
-                    <el-col :span="17">
-                      <span class="font000">订单号：2019061823040</span>
-                    </el-col>
-                    <el-col :span="2" class="textR">
-                      <i class="el-icon-delete"></i>
-                    </el-col>
+                    <!-- <el-col :span="2" class="textR">
+                      <i class="el-icon-delete" @click="handleDelete(item.id)"></i>
+                    </el-col> -->
                   </el-row>
                 </div>
                 <div style="opacity:0">1</div>
                 <div>
                   <el-row class="order-table-body">
                     <el-col :span="5">
-                      <img src="https://file2.pingxiaobao.com/dev/2006/29/97e9b67ae59b01ba50308c09b78a55ee.jpg" alt="" class="order-img">
+                      <div class="order-img">
+                        <img :src="item.skuPic" alt="" class="">
+                      </div>
                     </el-col>
-                    <el-col :span="7">
+                    <el-col :span="5" style="text-align: left;">
                       <div class="desc">
-                        <p>得力不卡纸打印机11</p>
-                        <p>白色 560*660cm</p>
+                        <p>{{item.skuName}}</p>
+                        <p>{{item.attribute}}</p>
                       </div>
                     </el-col>
                     <el-col :span="2">
-                      ￥3999
+                      ￥{{item.salePrice | filterMoney}}
                     </el-col>
                     <el-col :span="2">
-                      1
+                      {{item.quantity}}
                     </el-col>
                     <el-col :span="2">
-                      ¥100
+                      ¥{{item.discountAmount}}
                     </el-col>
                     <el-col :span="2">
-                      <span class="money font999">¥3899</span>
-                      <p class="font999">手机订单</p>
+                      <span class="money font999">¥{{item.realAmount}}</span>
                     </el-col>
                     <el-col :span="2">
-                      <span class="font999" v-if="item.status === 4">已完成</span>
-                      <span class="font999">代付款</span>
-                      <span class="font999">待收货</span>
-                      <span class="font999">已取消</span>
+                      <!-- // 0:待支付,11:待上传资料,12:待资料审核,13:资料审核失败,1:待发货,2:待收货,3:已完成,4:已取消 -->
+                      <span class="font999" v-if="item.status === 4">已取消</span>
+                      <span class="font999" v-if="item.status === 3">已完成</span>
+                      <span class="font999" v-if="item.status === 0">待付款</span>
+                      <span class="font999" v-else>进行中</span>
                       <p @click="handleGoDetail(4)" class="cursor">订单详情</p>
                     </el-col>
-                    <!-- <el-col :span="2">
-                      取消订单
-                    </el-col> -->
+                    <el-col :span="3">
+                      <div v-if="item.status === 4">
+                        <el-button @click="handleGoBuy(item)" size="mini">重新购买</el-button>
+                      </div>
+                       <div v-if="item.status === 0">
+                        <el-button @click="handleGoBuy(item)" size="mini">重新购买</el-button>
+                        <span class="cursor" @click="hanldeCancel(item.id)">取消订单</span>
+
+                        <!-- 11-- 上传资料按钮  12-- 更新资料  13.重新上传   1-空  2-空 -->
+                      </div>
+                    </el-col>
                   </el-row>
                 </div>
               </div>
@@ -132,7 +142,10 @@
       return {
         activeName: '1',
         formInline: {
-          name: ''
+          id: '',
+          orderBy: 0,
+          orderType: 0,
+          statusList: [] // 0:待支付,11:待上传资料,12:待资料审核,13:资料审核失败,1:待发货,2:待收货,3:已完成,4:已取消
         },
         statusItem: {
           1: '资料上传中',
@@ -151,10 +164,13 @@
         ],
         checked: true,
         hotList: [],
-        likeList: []
+        likeList: [],
+        current: 1,
+        size: 20
       }
     },
     created() {
+      this.getOrderList()
       this.getHotList()
       this.getLikeList()
     },
@@ -163,10 +179,49 @@
 
       },
       handleTabClick() {
-
+        let statusList = []
+        if(this.activeName === '1') {
+          statusList = []
+        }else if(this.activeName === '2') {
+          statusList = [0]
+        }else if(this.activeName === '3') {
+          statusList = [11, 12, 13, 1, 2]
+        }else {
+          statusList = [3]
+        }
+        this.formInline.statusList = statusList
+        this.getOrderList()
+      },
+      handleGoBuy(obj) {
+        this.$router.push({name: 'goodsDetail', query: {id: obj.spuId}})
+      },
+      hanldeCancel(id) {
+        this.$confirm('此操作将取消该订单, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$http.send(this.$api.orderCancel, {
+            id: id
+          }).then(res => {
+           this.$message.success('操作成功~')
+           this.getOrderList()
+          }).catch(res => {
+            this.$message.error(res.message)
+          })
+        }).catch(() => {});
       },
       handleGoDetail(status) {
         this.$router.push({name: 'orderDetail', query: {id: status}})
+      },
+      getOrderList() {
+        let params = Object.assign({} , this.formInline, {
+           current: this.current,
+           size: this.size
+         })
+         this.$http.send(this.$api.orderPage, params).then(res => {
+           this.orderList = res.data.records
+        })
       },
       getHotList() {
         this.$http.send(this.$api.spuPage, {
@@ -203,6 +258,7 @@
       margin-top: 10px;
     }
     .order-table{
+      text-align: center;
       .order-table-header {
         width:978px;
         height:34px;
@@ -233,9 +289,15 @@
           padding-top: 12px;
         }
         .order-img {
-          width: 126px;
-          height: 126px;
+          background:rgba(255,255,255,1);
+          border:1px solid rgba(234,234,234,1);
+          width:130px;
+          height:130px; 
           margin: 3px 0 0 40px;
+          img {
+            width: 100%;
+            height: 100%;
+          }
         }
         .desc {
           color: #868686;
@@ -257,4 +319,15 @@
     }
   }
 }
+</style>
+
+<style lang="scss">
+  .order-wrap {
+    .el-tabs__nav-wrap::after {
+       background: none;
+    }
+    .el-tabs .el-tabs__item.is-active {
+      color: #FE6A00 !important;
+    }
+  }
 </style>

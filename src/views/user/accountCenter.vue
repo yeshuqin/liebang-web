@@ -68,6 +68,29 @@
           </li>
         </ul>
     </div>
+     <!-- 安全验证 -->
+    <el-dialog title="安全验证" :visible.sync="showCodeDialog" :append-to-body="true" :close-on-click-modal="false" custom-class="counse-dialog" :before-close="closeDialog">
+      <div class="body">
+          <h2 class="mb20">为确保是您本人的操作，请先验证手机</h2>
+          <el-form :model="userFrom" size="medium" label-width="100px">
+            <el-form-item label="联系方式：" required>
+              <el-input v-model="userFrom.phone" placeholder="请输入手机号"></el-input>
+              <div class="clearfix mt10">
+                <el-input v-model="userFrom.code" class="fl" auto-complete="new-password" placeholder="请输入验证码" style="width:210px;">
+                  </el-input>
+                  <span class="code-btn fr" @click="handleSendCode">
+                    <span v-if="!disabledCode">发送验证码</span>
+                    <span v-else><span class="fontImp">{{time}}</span> 秒重新发送</span>
+                  </span>
+              </div>
+            </el-form-item>
+          </el-form>
+          <el-button type="primary" class="btn" @click="handleSumbit">预约咨询</el-button>
+      </div>
+      <div class="footer">
+
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -79,6 +102,12 @@
     },
     data() {
       return {
+        showCodeDialog: true,
+        disabledCode: false,
+        userFrom: {
+          phone: '',
+          code: ''
+        },
         percentage: 60,
         customColors: [
           {color: '#FF001C', percentage: 35},
@@ -99,6 +128,9 @@
       },
       goIdentity() {
         this.$router.push({name: 'identity'})
+      },
+      handleSumbit() {
+
       }
     }
   }

@@ -87,13 +87,18 @@
           </el-col>
         </el-row>
       </div>
-      <ul class="info-list">
+      <div class="info-list">
         <div class="title clearfix">
           <span class="fl">最新咨询</span>
           <span class="el-icon-arrow-right fr"></span>
         </div>
-        <li v-for="(item, index) in 20" :key="index">[产品]怎么去设计厉害的名片才能lalala</li>
-      </ul>
+        <ul>
+          <li v-for="(item, index) in 20" :key="index">
+            <span style="margin-rigth:5px">[产品]</span>
+            怎么去设计厉害的名片才能厉害的名片才厉害的名片才厉害的名片才
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -159,7 +164,7 @@
         this.$http.send(this.$api.spuPage, {
            showcaseId: '1284165023534460930',
            current: 1,
-           size: 5
+           size: 6
          }).then(res => {
            this.spuList = res.data.records
         })
@@ -239,7 +244,7 @@
   .category-index {
     position: absolute;
     width:708px;
-    height:513px;
+    height:403px;
     background: #ffffff;
     padding-top: 30px;
     box-sizing: border-box;
@@ -249,7 +254,7 @@
     z-index: 100;
     top: 0;
     .category-index-list {
-      height: 483px;
+      height: 373px;
       overflow-y: auto;
     }
     .close {
@@ -321,6 +326,7 @@
       text-align: center;
       padding: 12px 35px;
       background: #fff;
+      height: 158px;
       margin-bottom: 6px;
       img {
         width: 62px;
@@ -340,12 +346,20 @@
     }
     .info-list {
       background: #fff;
-      height: 349px;
-      overflow-y: auto;
-      padding: 0 8px;;
+      height: calc(100% - 164px);
+      padding: 0 8px;
       .title {
-        padding: 6px 0;
+        height: 40px;
+        font-size: 16px;
+        line-height: 40px;
         border-bottom: 1px solid #E8E8E8;
+        .el-icon-arrow-right {
+          line-height: 40px;
+        }
+      }
+      ul {
+        height: calc(100% - 40px);
+        overflow-y: auto;
       }
       li {
         line-height: 20px;

@@ -66,10 +66,10 @@
         </div>
       </div>
     </div>
-    <ad-list class="mb70" :dataList="hotList">
-       <h2>行业必备服务</h2>
+    <ad-list class="mb70" :dataList="serveList">
+      <h2>行业必备服务</h2>
     </ad-list> 
-    <ad-list class="mb100" :dataList="hotList">
+    <ad-list class="mb100" :dataList="professionalList">
       <h2>专业为您推荐</h2>
     </ad-list>
     <footer-block></footer-block>
@@ -93,25 +93,37 @@
           region: ''
         },
         checkedBox: [1, 2],
+        serveList: [],
+        professionalList: [],
         hotList: []
       }
     },
     created() {
-      this.getHotList()
+      this.getServeList()
+      this.getProfessionalList()
     },
     methods: {
       submitForm() {
 
       },
-      getHotList() {
+      getServeList() {
         this.$http.send(this.$api.spuPage, {
-           showcaseId: '1284753668595380225',
+           showcaseId: '1285837920850276354',
            current: 1,
            size: 10
          }).then(res => {
-           this.hotList = res.data.records
+           this.serveList = res.data.records
         })
       },
+      getProfessionalList() {
+        this.$http.send(this.$api.spuPage, {
+           showcaseId: '1284778321799933954',
+           current: 1,
+           size: 10
+         }).then(res => {
+           this.professionalList = res.data.records
+        })
+      }
     }
   }
 </script>

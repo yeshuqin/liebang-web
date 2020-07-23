@@ -203,6 +203,7 @@
       text-align: center;
       line-height: 40px;
       display: inline-block;
+      cursor: pointer;
       .el-button {
         width:80px;
       }
