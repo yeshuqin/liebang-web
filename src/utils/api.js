@@ -5,6 +5,8 @@ export default {
   login: 'account/login', // 账号登录
   logout: 'account/logout', // 账号退出
 
+  uploadFile: '/api/upload/file', // 文件上传
+
   // 广告位查询API
   bannerList: 'banner/list', //查询指定广告位列表
   

@@ -11,23 +11,14 @@
                 <h2>新手福利，名额有限，领完即止</h2>
                   <ul class="user-checklist">
                     <el-checkbox-group v-model="checkedBox">
-                        <li>
-                          <el-checkbox :label="1">网络文化经营许可证</el-checkbox>
-                        </li>
-                        <li>
-                          <el-checkbox :label="2">ICP许可证（互联网信息服务许可证）</el-checkbox>
-                        </li>
-                        <li>
-                          <el-checkbox :label="3">IT公司注册</el-checkbox>
-                        </li>
-                        <li>
-                          <el-checkbox :label="4">企业社保代缴</el-checkbox>
+                        <li v-for="(item, index) in welfareList" :key="index">
+                          <el-checkbox :label="item.id">{{item.name}}</el-checkbox>
                         </li>
                       </el-checkbox-group>
                   </ul>
             </div>
             <div style="text-align:center;margin-top:38px">
-              <el-button type="primary" class="btn">立即领取</el-button>
+              <el-button type="primary" class="btn" @click="goSave">立即领取</el-button>
             </div>
         </template>
         <template v-else>
@@ -51,13 +42,30 @@
     },
     data() {
       return {
+        welfareList: [],
         checkedBox: [],
         pass: true
       }
     },
+    created() {
+      this.getNewWelfareList()
+    },
     methods: {
-      goIdentity() {
-        this.$router.push({name: 'identity'})
+      getNewWelfareList() {
+        this.$http.send(this.$api.spuPage, {
+           showcaseId: '1287036089298636802',
+           current: 1,
+           size: 4
+         }).then(res => {
+           this.welfareList = res.data.records
+           this.checkedBox = this.welfareList.map(item => {
+             return item.id
+           })
+        })
+      },
+      goSave() {
+        console.log(this.checkedBox)
+        this.$router.push({name: 'goodsDetail', query: {id: this.welfareList[0].id}})
       }
     }
   }

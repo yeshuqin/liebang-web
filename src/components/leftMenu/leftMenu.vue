@@ -26,9 +26,9 @@
           <li :class="{active: currenPath === '/order'}">
             <router-link :to="{name: 'order'}">我的订单</router-link>
           </li>
-          <li :class="{active: currenPath === '/schedule'}">
+          <!-- <li :class="{active: currenPath === '/schedule'}">
             <router-link :to="{name: 'schedule'}">进度查询</router-link>
-          </li>
+          </li> -->
         </ul>
       </div>
       <!-- <div class="menu-left-item">
@@ -73,7 +73,7 @@
   background: #ffffff;
   // text-align: center;
   margin-right: 20px;
-  min-height: 400px;
+  max-height: 500px;
   .menu-left-item {
     margin-bottom: 14px;
     padding-left: 28px;

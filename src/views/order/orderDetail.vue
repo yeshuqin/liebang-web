@@ -9,7 +9,7 @@
               <div class="l">
                 <p class="font999">订单号：{{id}}</p>
                 <h1 class="fontImp status font22">{{statusNameMapList[infoObj.status]}}</h1>
-                <span class="font12">手机订单</span>
+                <!-- <span class="font12">手机订单</span> -->
               </div>
               <div class="r">
                 <div class="tip font12 font999">
@@ -20,13 +20,16 @@
                 <el-steps :active="activeStep" align-center class="step">
                   <el-step title="提交订单">
                     <template slot="description">
-                      2020-01-04 11:52:35
+                      {{infoObj.createTime || ''}}
                     </template>
                     <template slot="icon"> 
                       <span class="iconfont">&#xe696;</span>
                     </template>
                   </el-step>
                   <el-step title="付款成功">
+                    <template slot="description">
+                      {{infoObj.payTime || ''}}
+                    </template>
                    <template slot="icon"> 
                       <span class="iconfont">&#xe63d;</span>
                     </template>  
@@ -40,7 +43,7 @@
                      <span v-else>审核资料</span>
                     </template>
                      <template slot="description"> 
-                      <span>2020-01-04 11:52:35</span>
+                      <!-- <span>2020-01-04 11:52:35</span> -->
                     </template>
                     <template slot="icon"> 
                       <span class="iconfont">&#xe611;</span>
@@ -51,7 +54,7 @@
                       <span class="iconfont">&#xe605;</span>
                     </template>
                     <template slot="description"> 
-                      <span>2020-01-04 11:52:35</span>
+                      <span>{{infoObj.deliverTime || ''}}</span>
                     </template>
                   </el-step>
                   <el-step title="完成">
@@ -59,7 +62,7 @@
                       <span class="iconfont">&#xe6a7;</span>
                     </template>
                     <template slot="description"> 
-                      <span>2020-01-04 11:52:35</span>
+                      <span>{{infoObj.completeTime || ''}}</span>
                     </template>
                   </el-step>
                 </el-steps>
@@ -107,7 +110,7 @@
                   </li>
                   <li>
                     <span class="label">运费：</span>
-                    <span class="value">¥{{infoObj.freightAmount}}</span>
+                    <span class="value">¥{{infoObj.freightAmount | filterMoney}}</span>
                   </li>
                 </ul>
               </div>
@@ -116,11 +119,11 @@
                 <ul class="list">
                   <li>
                     <span class="label">商品总额： </span>
-                    <span class="value">¥{{infoObj.salePrice}}</span>
+                    <span class="value">¥{{infoObj.salePrice | filterMoney}}</span>
                   </li>
                   <li>
                     <span class="label">应付总额：</span>
-                    <span class="value">¥{{infoObj.realAmount}}</span>
+                    <span class="value">¥{{infoObj.realAmount | filterMoney}}</span>
                   </li>
                 </ul>
               </div>
@@ -150,55 +153,73 @@
                 操作
               </el-col>
             </el-row>
-            <el-row class="body">
-              <el-col :span="7">
-                <div class="img-wrap fl">
-                  <img :src="infoObj.skuPic" alt="">
-                </div>
-                <div class="fl good-name">
-                  <p class="font666">{{infoObj.skuName}}</p>
-                  <p class="font12">加急自助</p>
-                  <p class="font12">10个工作日</p>
-                </div>
-              </el-col>
-              <el-col :span="3">
-                ￥{{infoObj.salePrice}}
-              </el-col>
-              <el-col :span="3">
-                {{infoObj.quantity}}
-              </el-col>
-              <el-col :span="3">
-                {{infoObj.discountAmount}}
-              </el-col>
-              <el-col :span="3">
-                1
-              </el-col>
-              <el-col :span="3">
-                ￥{{infoObj.realAmount}}
-                <div>手机订单</div>
-              </el-col>
-              <el-col :span="2">
-                <div>立即付款</div>
-                <div>取消订单</div>
-              </el-col>
-            </el-row>
+            <div class="body">
+              <el-row class="body-main">
+                <el-col :span="7">
+                  <div class="img-wrap fl">
+                    <img :src="infoObj.skuPic" alt="">
+                  </div>
+                  <div class="fl good-name">
+                    <p class="font666">{{infoObj.skuName}}</p>
+                    <p class="font12">{{infoObj.attribute}}</p>
+                  </div>
+                </el-col>
+                <el-col :span="3">
+                  ￥{{infoObj.salePrice | filterMoney}}
+                </el-col>
+                <el-col :span="3">
+                  {{infoObj.quantity}}
+                </el-col>
+                <el-col :span="3">
+                  {{infoObj.discountAmount | filterMoney}}
+                </el-col>
+                <el-col :span="3">
+                  {{payTypeList[infoObj.payType]}}
+                </el-col>
+                <el-col :span="3">
+                  ￥{{infoObj.realAmount | filterMoney}}
+                </el-col>
+                <el-col :span="2">
+                  <div v-if="infoObj.status === 4">
+                    <el-button @click="handleGoBuy(item)" size="mini">重新购买</el-button>
+                  </div>
+                  <div v-if="infoObj.status === 0">
+                    <div class="cursor" @click="handleGoPay">立即付款</div>
+                    <div class="cursor" @click="hanldeCancel">取消订单</div>
+                  </div>
+                  <div v-if="infoObj.status === 3">
+                    <el-button @click="handleGoBuy(item)" type="default" size="mini" class="mb6">再次购买</el-button>
+                  </div>
+                  <div v-if="infoObj.status === 11">
+                    <el-button @click="handleGoupload(item)" size="mini" class="mb6">上传资料</el-button>
+                  </div>
+                  <div v-if="infoObj.status === 12">
+                    <el-button @click="handleGoupload(item)" size="mini" class="mb6">更新资料</el-button>
+                  </div>
+                  <div v-if="infoObj.status === 13">
+                    <el-button @click="handleGoupload(item)" size="mini" class="mb6">重新上传</el-button>
+                  </div>
+                </el-col>
+              </el-row>
+            </div>
+            
             <ul class="goods-list">
               <ul>
                 <li>
-                <span class="label">商品总额：</span>
-                  <span class="value">¥{{infoObj.salePrice}}</span>
+                  <span class="label">商品总额：</span>
+                  <span class="value">¥{{infoObj.salePrice | filterMoney}}</span>
                 </li>
                 <li>
                   <span class="label">优惠金额：</span>
-                  <span class="value">¥{{infoObj.discountAmount}}</span>
+                  <span class="value">¥{{infoObj.discountAmount | filterMoney}}</span>
                 </li>
                 <li>
-                  <span class="label">运 费：</span>
-                  <span class="value">¥{{infoObj.freightAmount}}</span>
+                  <span class="label">运&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;费：</span>
+                  <span class="value">¥{{infoObj.freightAmount | filterMoney}}</span>
                 </li>
                 <li class="fontImp">
                   <span class="label fontImp">应付总额：</span>
-                  <span class="value">¥{{infoObj.salePrice * infoObj.quantity}}</span>
+                  <span class="value">¥{{(infoObj.salePrice * infoObj.quantity) | filterMoney}}</span>
                 </li>
               </ul>
             </ul>
@@ -252,6 +273,11 @@
           2: '待收货',
           3: '已完成'
         },
+        payTypeList: {
+          1: '对公转账',
+          2: '支付宝',
+          3: '微信支付'
+        },
         checked: true,
         id: this.$route.query.id,
         infoObj: {},
@@ -271,7 +297,7 @@
         }).then(res => {
           console.log(res)
           this.infoObj = res.data
-          this.infoObj.status = 5
+          console.log(this.infoObj, 'infoObj')
           if(this.infoObj.status === 0) {
             this.activeStep = 1
           }else if(this.infoObj.status === 11 || this.infoObj.status === 12 || this.infoObj.status === 13) {
@@ -302,6 +328,31 @@
          }).then(res => {
            this.likeList = res.data.records
         })
+      },
+      handleGoBuy(obj) {
+        this.$router.push({name: 'goodsDetail', query: {id: this.infoObj.spuId}})
+      },
+      handleGoupload () {
+        this.$router.push({name: 'upload', query: {id: this.infoObj.spuId}})
+      },
+      hanldeCancel(id) {
+        this.$confirm('此操作将取消该订单, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$http.send(this.$api.orderCancel, {
+            id: this.id
+          }).then(res => {
+           this.$message.success('操作成功~')
+           this.getDetail()
+          }).catch(res => {
+            this.$message.error(res.message)
+          })
+        }).catch(() => {});
+      },
+      handleGoPay (obj) {
+        this.$router.push({name: 'playOrder', query: {id: this.infoObj.skuId, orderId: this.id}})
       },
       handleSelectionChange() {
 
@@ -402,26 +453,32 @@
       text-align: center;
       .header {
         margin-bottom: 5px;
+        color: #9F9F9FFF;
       }
       .body {
-        padding: 25px 0 10px 0;
-        border-top: 1px solid #EDEDFF;
-        border-bottom: 1px solid #EDEDFF;
+        padding: 0 14px;
+        
+        color: #666666FF;
+        .body-main {
+          padding: 25px 0 10px;
+          border-top: 1px solid #EDEDFF;
+          border-bottom: 1px solid #EDEDFF;
+        }
         .good-name {
           text-align: left;
           margin-left: 12px;
-          color: #999999;
+          color: #868686FF;
         }
         .img-wrap {
           width:62px;
           height:62px;
+          overflow: hidden;
           border-radius:1px;
           border:1px solid rgba(234,234,234,1);
-          margin-left: 20px;
+          margin-left: 8px;
           img {
             margin-top: 2px;
             width: 55px;
-            height: 55px;
           }
         }
       }
@@ -438,6 +495,11 @@
           width: 152px;
           display: inline-block;
           color: #666666;
+        }
+        .value {
+          width: 50px;
+          display: inline-block;
+          text-align: right;
         }
       }
     }

@@ -14,7 +14,7 @@
       <el-row style="padding:10px 24px">
         <p class="tip-text">营业执照（仅支持三证合一）</p>
         <el-col :span="12"> 
-          <Upload class="identity-upload" :limit="20" :show-file-list="false" :image-url="imageUrl" @handleSuccess="handleSuccess">
+          <Upload class="identity-upload" :limit="20" :show-file-list="false" :image-url="companyFile" @handleSuccess="handleSuccess">
             <p>请上传营业执照</p>
           </Upload>
         </el-col>
@@ -27,6 +27,7 @@
         </el-col>
       </el-row>
       <div style="text-align:center;margin-top:90px">
+        <el-button class="btn mr20" disabled>上一步</el-button>
         <el-button type="primary" class="btn" @click="handleGoStep">下一步</el-button>
       </div>
     </div>
@@ -35,39 +36,33 @@
 <script>
   import Upload from '@/components/Upload/index'
   export default {
+    props: {
+      companyFile: {
+        type: String,
+        default: ''
+      }
+    },
     components: {
       Upload
     },
     data() {
       return {
-        percentage: 60,
-        customColors: [
-          {color: '#FF001C', percentage: 35},
-          {color: '#FE6A00', percentage: 70},
-          {color: '#5cb87a', percentage: 100}
-        ],
-        imageUrl: ''
       }
     },
+    mounted() {
+    },
     methods: {
-      format(percentage) {
-        if(percentage<35) {
-          return '低'
-        }else if(percentage<70) {
-          return '中'
-        }else {
-          return '高'
-        }
-      },
       handleSuccess(response) {
-        alert('a')
-        this.imageUrl = 'https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png'
-      },
-      goIdentity() {
-        this.$router.push({name: 'identity'})
+        this.companyFile = response.data
       },
       handleGoStep() {
-        this.$emit('handleGoStep', 1)
+        if(!this.companyFile) {
+          this.$message.error('请上传营业执照~')
+          return
+        }
+        this.$emit('handleGoStep', 2, {
+          companyFile: this.companyFile
+        })
       }
     }
   }

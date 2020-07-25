@@ -83,6 +83,8 @@ const send = function(url, data = {}, methods = 'post') {
     }).then(res => {
       if (res.data.code === 0) {
         resolve(res.data)
+      } else if (res.data.code === 40001) {
+        resolve(res.data)
       } else {
         reject(res.data)
         Message({

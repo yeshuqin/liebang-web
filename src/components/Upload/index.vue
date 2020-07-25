@@ -1,8 +1,8 @@
 <template>
   <div class="upload">
     <el-upload
-      action="https://jsonplaceholder.typicode.com/posts/"
-      name="image"
+      :action="$api.uploadFile"
+      name="file"
       :on-preview="handlePictureCardPreview"
       :on-remove="handleRemove"
       :on-error="handleError"
@@ -12,10 +12,11 @@
       :on-exceed="handleExceed"
       :file-list="filelist"
       :limit="limit"
+      :headers="headers"
       list-type="picture-card"
     >
       <img v-if="imageUrl" :src="imageUrl" class="avatar">
-      <div v-else>
+      <div v-else style="padding-top:40px;">
          <i class="iconfont icon-add">&#xe604;</i>
          <slot></slot>
       </div>
@@ -50,6 +51,9 @@ export default {
   },
   data() {
     return {
+      headers: {
+        token: localStorage.getItem('token')
+      },
       dialogImageUrl: '',
       dialogVisible: false
     }
@@ -66,7 +70,16 @@ export default {
       console.log(err)
     },
     handleSuccess(response, file, fileList) {
-      this.$emit('handleSuccess', response, file, fileList)
+      if(response.code === 0) {
+        this.$emit('handleSuccess', response, file, fileList)
+      }else {
+         if (response.code === 40001) {
+           localStorage.removeItem('token')
+           this.$router.push({name: 'login'})
+           location.reload()
+         }
+        this.$message.error(response.msg, 5000)
+      }
     },
     beforeAvatarUpload(file) {
       // this.$emit('beforeAvatarUpload')
@@ -95,7 +108,6 @@ export default {
 <style lang="scss" scoped>
 .avatar{
  width:397px;
- height:179px;
  border-radius: 6px;
 }
 .icon-add {

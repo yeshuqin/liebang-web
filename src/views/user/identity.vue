@@ -5,16 +5,15 @@
         <h3 class="title">企业实名认证</h3>
         <el-steps :active="active" class="tab-list">
           <el-step title="上传企业信息" icon="iconfont iconqiyexinxi">
-            <slot name="icon">嘻嘻嘻</slot>
           </el-step>
           <el-step title="上传法人信息" icon="iconfont iconcardid"></el-step>
           <el-step title="确认企业信息" icon="iconfont iconquerenhetongquerenhetongqueding"></el-step>
           <el-step title="认证审核结果" icon="iconfont iconshenhe"></el-step>
         </el-steps>
-        <step1 v-show="active === 0" @handleGoStep="handleGoStep"></step1>
-        <step2 v-show="active === 1" @handleGoStep="handleGoStep"></step2>
-        <step3 v-show="active === 2" @handleGoStep="handleGoStep"></step3>
-        <step4 v-show="active === 3"></step4>
+        <step1 v-show="active === 1" @handleGoStep="handleGoStep" :companyFile="edit.companyFile"></step1>
+        <step2 v-show="active === 2" @handleGoStep="handleGoStep" :idFrontageFile="edit.idFrontageFile" :idReverseFile="edit.idReverseFile"></step2>
+        <step3 v-show="active === 3" @handleGoStep="handleGoStep" :edit="edit"></step3>
+        <step4 v-show="active === 4" @handleGoStep="handleGoStep"></step4>
     </div>
   </div>
 </template>
@@ -35,12 +34,43 @@
     },
     data() {
       return {
-        active: 3
+        active: 1,
+        edit: {
+          companyCode: '', // 企业代码  
+          companyFile: '', //企业执照
+          companyName: '', //企业名称
+          endDate: '', //企业结束日期
+          idCard: '', //身份证号码
+          idFrontageFile: '', //身份证正面照
+          idReverseFile: '', //身份证反面照
+          legalPhone: '', //法人手机号
+          name: '', //真实姓名
+          startDate: '', //企业开始日期
+          verifyCode: '' //验证码
+        }
       }
     },
+    created() {
+      this.getInfor()
+    },
     methods: {
-      handleGoStep(active) {
-        this.active = active
+      handleGoStep(active, obj) {
+        this.edit = Object.assign(this.edit, obj)
+        if (active === 4) {
+          console.log('提交~~')
+          this.$http.send(this.$api.userAuth, this.edit).then(res => {
+            this.active = active
+          })
+        }else {
+          this.active = active
+        }
+      },
+      getInfor() {
+        this.$http.send(this.$api.userInfo, {}).then(res => {
+           if(res.data) {
+             this.edit = res.data
+           }
+        })
       }
     }
   }
@@ -72,20 +102,24 @@
    .identity-wrap {
     .btn {
       width: 200px;
-      height: 48px;
-      line-height: 48px;
+      // height: 48px;
+      // line-height: 48px;
     }
     .identity-upload {
         width:397px;
         height:179px;
+        overflow: hidden;
         .el-upload--picture-card {
           width:397px;
           height:179px;
           line-height: inherit;
           border-radius:1px;
-          padding-top: 40px;
+          // padding-top: 40px;
           color: #666666;
           border:1px solid rgba(211,211,211,1);
+          img {
+            width: 100%;
+          }
         }
       }
     .alert {

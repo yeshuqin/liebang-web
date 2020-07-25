@@ -12,6 +12,7 @@
         <span @click="goUser">个人中心</span>
         <!-- <span @click="goOrder">我的订单</span> -->
         <span @click="goAsk">客服服务</span>
+        <span @click="goLogout">退出</span>
       </el-col>
     </el-row>
     <div class="topbar_search">
@@ -74,13 +75,13 @@
           this.loading = true;
           setTimeout(() => {
             this.loading = false;
-             this.$http.send(this.$api.spuPage, {
-                name: query,
-                size: 10,
-                current: 1
-              }).then(res => {
-                  this.options = res.data.records
-                })
+            this.$http.send(this.$api.spuPage, {
+              name: query,
+              size: 10,
+              current: 1
+            }).then(res => {
+              this.options = res.data.records
+            })
           }, 200);
         } else {
           this.options = [];
@@ -131,6 +132,22 @@
           return
         }
         this.$router.push({name: 'goodsDetail', query: {id: this.value}})
+      },
+      goLogout() {
+        this.$confirm('是否确定退出登录?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$http.send(this.$api.logout, {}).then(res => {
+              localStorage.removeItem('token')
+              this.$message.success('退出成功')
+              this.$router.push({name: 'login'})
+              location.reload()
+            })
+        }).catch(() => {
+
+        });
       }
     },
     mounted() {

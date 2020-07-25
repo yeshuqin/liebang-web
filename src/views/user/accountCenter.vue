@@ -69,7 +69,7 @@
         </ul>
     </div>
      <!-- 安全验证 -->
-    <el-dialog title="安全验证" :visible.sync="showCodeDialog" :append-to-body="true" :close-on-click-modal="false" custom-class="counse-dialog" :before-close="closeDialog">
+    <el-dialog title="安全验证" :visible.sync="showCodeDialog" :append-to-body="true" :close-on-click-modal="false" custom-class="counse-dialog">
       <div class="body">
           <h2 class="mb20">为确保是您本人的操作，请先验证手机</h2>
           <el-form :model="userFrom" size="medium" label-width="100px">
@@ -102,7 +102,7 @@
     },
     data() {
       return {
-        showCodeDialog: true,
+        showCodeDialog: false,
         disabledCode: false,
         userFrom: {
           phone: '',
