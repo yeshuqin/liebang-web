@@ -69,7 +69,7 @@
           </el-col>
         </el-row>
         <div class="button-wrap" v-if="!isLogin">
-           <el-button type="primary" class="btn" @click="goLogin">登 录</el-button>
+           <el-button type="primary" class="btn" @click="goLogin('account')">登 录</el-button>
            <el-button class="btn" @click="goLogin('register')">注 册</el-button>    
         </div>
         <el-row class="hero-menu" v-else>
@@ -80,9 +80,9 @@
             </div>
           </el-col>
          <el-col :span="12">
-            <div @click="goPage('schedule')">
+            <div @click="goPage('user')">
               <span class="iconfont">&#xe625;</span>
-              <div>进度查询</div>
+              <div>个人中心</div>
             </div>
           </el-col>
         </el-row>

@@ -1,53 +1,69 @@
 <template>
   <div class="upload-file-wrap content-wrap">
     <div class="step"> 
-      进度查询/上传资料
+      上传资料
     </div>
-    <h2 class="title-warp">计算机软即著作申请</h2> 
+    <h2 class="title-warp">{{infoObj.skuName}}</h2> 
     <div class="upload-list">
-      <div class="upload-item" v-for="(item, index) in 10" :key="item">
+        <div v-for="(item, index) in materialList" :key="index" class="upload-item" :class="{active: item.status === 1}" >
           <span class="index">{{index+1}}</span>
-          <el-button class="status-btn" size="small">未上传</el-button>
-          <p class="tip">请填写申请书</p>
+          <el-button class="status-btn" size="small">{{item.status === 0 ? '未上传' : '已完成'}}</el-button>
+          <p class="tip">{{item.name}}</p>
           <div class="img-wrap">
-            <img src="https://file2.pingxiaobao.com/dev/2006/29/97e9b67ae59b01ba50308c09b78a55ee.jpg" alt="">
+            <img :src="item.picUrl" alt="">
           </div>
           <div class="btn-wrap">
-             <el-button size="mini" @click="handleUpload"><i class="iconfont">&#xe723;</i>下载模版</el-button>
-             <el-button size="mini" @click="handleUpload"><i class="iconfont">&#xe71d;</i>上传文件</el-button>
+              <el-button size="mini">
+                <a :href="fileObj.templateUrl">
+                <i class="iconfont">&#xe723;</i>下载模版</a>
+              </el-button>
+             <el-button size="mini" @click="handleUpload(item)"><i class="iconfont">&#xe71d;</i>上传文件</el-button>
           </div>
-      </div>
+        </div>
     </div>
-
     <!-- 上传文件 -->
-    <el-dialog title="上传文件" :visible.sync="showFileDialog" append-to-body="true" close-on-click-modal="false" custom-class="showFileDialog">
+    <el-dialog title="上传文件" :visible.sync="showFileDialog" :append-to-body="true" :close-on-click-modal="false" custom-class="showFileDialog">
       <div class="download-wrap">
         <el-row>
-          <el-col :span="1">
+          <el-col :span="2">
              <i class="iconfont fontImp">&#xe723;</i>
           </el-col>
-          <el-col :span="23">
-            <span class="font666">下载模版</span>(计算机软即著作申请)
+          <el-col :span="22">
+            <span class="font666">下载模版</span>({{infoObj.skuName}})
             <p>为提高导入的成功率，请下载并使用系统提供的模版。</p>
-            <el-button type="primary" size="mini"><i class="iconfont">&#xe723;</i>下载模版</el-button>
+            <el-button type="primary" size="mini">
+              <a :href="fileObj.templateUrl"><i class="iconfont">&#xe723;</i>下载模版</a>
+            </el-button>
           </el-col>
         </el-row>
       </div>
       <div class="upload-wrap">
         <el-row>
-          <el-col :span="1">
+          <el-col :span="2">
              <i class="iconfont fontImp">&#xe71d;</i>
           </el-col>
-          <el-col :span="23">
+          <el-col :span="22">
             <span class="font666">上传文件</span>
             <p class="font12">仅支持xlsx、xls、csv，文件大小≤4M。</p>
-            <el-button size="mini"><i class="iconfont">&#xe71d;</i>上传文件</el-button>
+             <el-upload
+              :action="$api.uploadFile"
+              name="file"
+              :limit="1"
+              :on-remove="handleFileRemove"
+              :on-error="handleError"
+              :headers="headers"
+              :before-upload="beforeUpload"
+              :on-success="handleFileSuccess"
+              :file-list="fileList"
+            >
+              <el-button size="mini"><i class="iconfont">&#xe71d;</i>上传文件</el-button>
+            </el-upload>
           </el-col>
         </el-row>
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="showFileDialog = false" size="mini">取 消</el-button>
-        <el-button type="primary" @click="showFileDialog = false" size="mini">确 定</el-button>
+        <el-button type="primary" @click="handleSumbit" size="mini">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -57,12 +73,91 @@
   export default {
     data() {
       return {
-        showFileDialog: false
+        showFileDialog: false,
+        infoObj: {},
+        materialList: [],
+        id: this.$route.query.id,
+        fileObj: {
+          fileUrl: '',
+          id: '',
+          templateUrl: ''
+        },
+        headers: {
+          token: localStorage.getItem('token')
+        },
+        fileList: []
+      }
+    },
+    created() {
+      this.getDetail()
+    },
+    watch: {
+      showFileDialog(val) {
+        this.fileList = []
       }
     },
     methods: {
-      handleUpload() {
+      handleUpload(row) {
         this.showFileDialog = true
+        this.fileObj = row
+      },
+      handleFileSuccess(response, file, fileList) { //材料上传资料
+        if(response.code === 0) {
+          this.fileObj.fileUrl = response.data
+          this.fileObj.fileName = file.name
+        }else {
+          if (response.code === 40001) {
+            localStorage.removeItem('token')
+            this.$router.push({name: 'login'})
+              location.reload()
+          }
+          this.$message.error(response.msg, 5000)
+        }
+      },
+      beforeUpload(file) {
+         console.log(file)
+            var testmsg = file.name.substring(file.name.lastIndexOf('.')+1)
+            const extension = testmsg === 'xls'
+            const extension2 = testmsg === 'xlsx'
+            const extension3 = testmsg === 'csv'
+            const isLt4M = file.size / 1024 / 1024 < 4
+            if(!extension && !extension2 && !extension3) {
+                this.$message({
+                    message: '上传文件只能是 xlsx、xls、csv格式!',
+                    type: 'warning'
+                });
+            }
+            if(!isLt4M) {
+                this.$message({
+                    message: '上传文件大小不能超过 4MB!',
+                    type: 'warning'
+                });
+            }
+            return (extension || extension2) && isLt4M
+      },
+      handleFileRemove() {
+        this.fileObj.fileUrl = ''
+      },
+      handleError() {
+
+      },
+      handleSumbit() {
+        this.$http.send(this.$api.orderUpload, {
+          id: this.id,
+          materialList: [this.fileObj]
+        }).then(res => {
+          this.$message.success('上传成功~')
+          this.showFileDialog = false
+          this.getDetail()
+        })
+      },
+      getDetail() {
+        this.$http.send(this.$api.orderDetail, {
+          id: this.id
+        }).then(res => {
+          this.infoObj = res.data
+          this.materialList = res.data.materialList || []
+        })
       }
     }
   }
@@ -71,6 +166,11 @@
 <style lang="scss" scoped>
 .upload-file-wrap {
   margin-bottom: 20px;
+  .btn-wrap {
+    a {
+      color: rgba(0, 0, 0, 0.65) !important;
+    }
+  }
   .step {
     font-weight: 400px;
     margin-top: 16px;

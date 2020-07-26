@@ -131,6 +131,9 @@
       },
       handleSumbit() {
 
+      },
+      handleSendCode() {
+        
       }
     }
   }

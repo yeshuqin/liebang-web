@@ -6,23 +6,38 @@
       <ul class="info_list">
         <li>
           <span class="label">企业名称:</span>
-          <span class="value">{{edit.companyName}}</span>
+          <el-input class="value" placeholder="请输入企业名称" v-model="edit.companyName" style="width:380px;"></el-input>
+          <!-- <span >{{edit.companyName}}</span> -->
         </li>
          <li>
           <span class="label">信用代码:</span>
-          <span class="value">{{edit.companyCode}}</span>
+           <el-input class="value" placeholder="请输入信用代码" v-model="edit.companyCode" style="width:380px;"></el-input>
+          <!-- <span class="value">{{edit.companyCode}}</span> -->
         </li>
          <li>
           <span class="label">姓名:</span>
-          <span class="value">{{edit.name}}</span>
+          <el-input class="value" placeholder="请输入姓名" v-model="edit.name" style="width:380px;"></el-input>
+          <!-- <span class="value">{{edit.name}}</span> -->
         </li>
          <li>
           <span class="label">身份证号码:</span>
-          <span class="value">{{edit.idCard}}</span>
+          <el-input class="value" placeholder="请输入身份证号码" v-model="edit.idCard" style="width:380px;"></el-input>
+          <!-- <span class="value">{{edit.idCard}}</span> -->
         </li>
          <li>
           <span class="label">有效期限:</span>
-          <span class="value">{{edit.startDate}}-{{edit.endDate}}</span>
+          <!-- <span class="value">{{edit.startDate}}-{{edit.endDate}}</span> -->
+          <el-date-picker
+            v-model="dataArr"
+            type="daterange"
+            align="right"
+            unlink-panels
+            range-separator="至"
+            value-format="yyyy.MM.dd"
+            style="width:380px;"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期">
+          </el-date-picker>
         </li>
         <li style="margin-top:40px;">
           <span class="label">法人手机:</span>
@@ -62,11 +77,15 @@
         timer: null,
         time: 60,
         legalPhone: '',
-        verifyCode: ''
+        verifyCode: '',
+        dataArr: []
       }
     },
-    created() {
-
+    watch: {
+      edit(val) {
+        console.log(val, 'val')
+        this.dataArr = [this.edit.startDate, this.edit.endDate]
+      }
     },
     methods: {
       handleSendCode() { // 发送验证码
@@ -97,10 +116,20 @@
         this.$emit('handleGoStep', 2, {})
       },
       handleSumbitAuth() {
-        this.$emit('handleGoStep', 4, {
+        if(!this.isPhoneNumber(this.legalPhone)) {
+          this.$message.error('请输入正确的手机号')
+          return
+        }
+        if(this.dataArr) {
+          this.edit.startDate = this.dataArr[0]
+          this.edit.endDate = this.dataArr[1]
+        }
+        console.log(this.edit)
+        console.log(this.dataArr)
+        this.$emit('handleGoStep', 4, Object.assign({}, this.edit, {
           legalPhone: this.legalPhone,
           verifyCode: this.verifyCode
-        })
+        }))
       }
     }
   }

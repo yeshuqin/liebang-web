@@ -214,7 +214,7 @@
         this.$router.push({name: 'goodsDetail', query: {id: obj.spuId}})
       },
       handleGoUpload (obj) {
-        this.$router.push({name: 'upload', query: {id: obj.spuId}})
+        this.$router.push({name: 'upload', query: {id: obj.id}})
       },
       hanldeCancel(id) {
         this.$confirm('此操作将取消该订单, 是否继续?', '提示', {

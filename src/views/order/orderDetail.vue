@@ -101,12 +101,16 @@
                   </li>
                 </ul>
               </div>
-              <div class="item">
+              <div class="item" v-if="infoObj.expressName">
                 <p class="title">配送信息</p>
                 <ul class="list">
                   <li>
-                    <span class="label">配送方式：</span>
-                    <span class="value">普通快递</span>
+                    <span class="label">物流公司：</span>
+                    <span class="value">{{infoObj.expressName}}</span>
+                  </li>
+                  <li>
+                    <span class="label">物流单号：</span>
+                    <span class="value">{{infoObj.expressNo}}</span>
                   </li>
                   <li>
                     <span class="label">运费：</span>

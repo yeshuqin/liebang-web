@@ -3,7 +3,7 @@ import { Message } from 'element-ui'
 import store from '@/store'
 // import { getToken } from '@/utils/auth'
 
-axios.defaults.baseURL = 'http://localhost:8080/api/'
+axios.defaults.baseURL = `${location.origin}/api/`
 console.log(store, 'request')
 axios.interceptors.request.use(
   function (config) {
