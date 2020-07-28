@@ -4,6 +4,7 @@ export default {
   code: 'account/code', // 获取验证码
   login: 'account/login', // 账号登录
   logout: 'account/logout', // 账号退出
+  
 
   uploadFile: '/api/upload/file', // 文件上传
 
@@ -26,5 +27,6 @@ export default {
 
  userAuth: 'user/auth', // 企业认证
  userInfo: 'user/info', // 查询当前用户信息
- userUpdate: 'user/update' // 修改用户信息
+ userUpdate: 'user/update', // 修改用户信息
+ userAfq: 'user/afq' // 提交问题咨询
 }
