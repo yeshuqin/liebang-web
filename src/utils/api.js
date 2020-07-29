@@ -28,5 +28,9 @@ export default {
  userAuth: 'user/auth', // 企业认证
  userInfo: 'user/info', // 查询当前用户信息
  userUpdate: 'user/update', // 修改用户信息
- userAfq: 'user/afq' // 提交问题咨询
+ userAfq: 'user/afq', // 提交问题咨询
+
+  // 系统相关API
+  systemNodeList: 'system/nodeList', // 查询地址节点列表
+  systemExpressList: 'system/expressList' // 查询物流供应商列表
 }

@@ -83,7 +83,7 @@
               <el-input v-model="formInline.name" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="所在地区:" required>
-              <el-cascader :options="options" clearable></el-cascader>
+              <el-cascader :options="options" ref="tree" :props="cascaderProps" v-model="attressArr" clearable style="width:100%;"></el-cascader>
             </el-form-item>
             <el-form-item label="详细地址:" required>
               <el-input v-model="formInline.address" placeholder="请输入"></el-input>
@@ -147,16 +147,39 @@
 </template>
 
 <script>
+  let that = ''
   export default {
     data() {
       return {
         checked: true,
         options: [],
+        cascaderProps: {
+          value: 'id',
+          label: 'nodeName',
+          lazy: true,
+          lazyLoad (node, resolve) {
+            const { level, value} = node;
+            that.$http.send(that.$api.systemNodeList, {
+              level: level+1,
+              parentId: value
+            }).then(res => {
+              const nodes = res.data
+              nodes.forEach(item => {
+                that.originIdMap[item.id] = item.nodeName
+              })
+              resolve(nodes);
+            }).catch(res => {
+              resolve([])
+            })
+            resolve([])
+          }
+        },
+        originIdMap: {},
         tableData: [],
         formInline: {
           address: '',
-          city: '深圳市',
-          county: '宝安区',
+          city: '',
+          county: '',
           invoiceCode: '',
           invoiceContent: '',
           invoiceDesc: '',
@@ -164,32 +187,54 @@
           invoiceType: 2,
           name: '',
           phone: '',
-          province: '广东省',
+          province: '',
           skuId: '',
-          town: '西乡街道'
+          town: ''
         },
         id: this.$route.query.id,
         detailObj: {},
-        checkType: true
+        checkType: true,
+        attressArr: []
       }
     },
     created() {
       this.getDetail()
+      that = this
     },
     methods: {
       getDetail() {
         this.$http.send(this.$api.spuSku, {
            id: this.id
          }).then(res => {
-           this.detailObj = res.data
-           this.tableData.push(res.data)
-          })
+          this.detailObj = res.data
+          this.tableData.push(res.data)
+        })
+      },
+      getsystemNodeList() {
+        this.$http.send(this.$api.systemNodeList, {
+           level: 1,
+           parentId: ''
+         }).then(res => {
+          this.options = res.data
+        })
       },
       goBuy() {
+      console.log(this.$refs.tree.getCheckedNodes())
         if(!this.formInline.name) {
           this.$message.error('请输入收货人名称~')
           return
         }
+        if(this.attressArr.length === 0) {
+          this.$message.error('请选择所在地区~')
+          return
+        }else {
+          let [province = '', city = '', county = '', town = ''] = this.attressArr
+          this.formInline.province = this.originIdMap[province] || ''
+          this.formInline.city = this.originIdMap[city] || ''
+          this.formInline.county = this.originIdMap[county] || ''
+          this.formInline.town = this.originIdMap[town] || ''
+        }
+        console.log(this.formInline)
         if(!this.formInline.address) {
           this.$message.error('请输入详细地址~')
           return
@@ -232,7 +277,6 @@
            this.$message.error('请勾选协议~')
           return
         }
-        console.log(this.formInline)
         this.$http.send(this.$api.orderSubmit, this.formInline).then(res => {
           this.$message.success('操作成功~')
           this.$router.push({name: 'playOrder', query: {id: this.id, orderId: res.data}})

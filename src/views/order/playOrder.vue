@@ -100,10 +100,9 @@
       <p>（2）提供对公知福电子回单和墨刀账号</p>
       
       <div class="tip">*如有疑问，请您通过在线客服或销售热线（010-52433870）咨询</div>
-      <!-- <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-      </span> -->
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="handleSumbitPay">确认支付</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -138,6 +137,24 @@
           this.dialogVisible = true
         }
       },
+      handleSumbitPay() {
+         this.$http.send(this.$api.orderPay, {
+            id: this.orderId,
+            payType: this.type
+          }).then(res => {
+            this.$confirm('提交成功，系统将在48小时内核查你的款项', '打款成功', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+            }).then(() => {
+              this.dialogVisible = false
+              setTimeout(() => {
+                this.$router.push({name: 'order'})
+              }, 500);
+            }).catch(() => {
+              this.dialogVisible = false
+            });
+          })
+      },
       handleType(type) {
         this.type = type
       },
@@ -146,7 +163,7 @@
            id: this.id
          }).then(res => {
            this.detailObj = res.data
-          })
+         })
       },
     }
   }

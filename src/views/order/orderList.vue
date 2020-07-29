@@ -164,14 +164,15 @@
           statusList: [] 
         },
         statusItems: {
-          0: '待支付',
-          1: '待发货',
+          0: '未支付',
+          1: '待支付',
           2: '待收货',
           3: '已完成',
           4: '已取消',
           11: '待上传资料',
           12: '待资料审核',
-          13: '资料审核失败'
+          13: '资料审核失败',
+          14: '资料审核通过'
         },
         total: 0,
         checked: true,
@@ -245,8 +246,8 @@
          })
          this.$http.send(this.$api.orderPage, params).then(res => {
            this.orderList = res.data.records
-           console.log(this.orderList, 'this.orderList ===')
            this.total = res.data.total
+           window.scrollTo(0,0)
         })
       },
       getHotList() {

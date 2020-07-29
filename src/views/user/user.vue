@@ -29,17 +29,17 @@
               </el-form-item>
               <el-form-item label="所在行业:">
                 <el-select v-model="infoObj.companyCate" clearable filterable placeholder="请选择所从事的主要行业">
-                  <el-option :label="item.label" :value="item.value" v-for="item in companyCateList" :key="item.value"></el-option>
+                  <el-option :label="item" :value="item" v-for="item in companyCateList" :key="item"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="企业规模:">
                 <el-select v-model="infoObj.companyScale" clearable filterable placeholder="请选择您的企业规模">
-                  <el-option :label="item.label" :value="item.value" v-for="item in companyScaleList" :key="item.value"></el-option>
+                  <el-option :label="item" :value="item" v-for="item in companyScaleList" :key="item"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="所在职业:">
                 <el-select v-model="infoObj.companyPosition" clearable filterable placeholder="请选择您的职务">
-                  <el-option :label="item.label" :value="item.value" v-for="item in companyPositionList" :key="item.value"></el-option>
+                  <el-option :label="item" :value="item" v-for="item in companyPositionList" :key="item"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item>
@@ -96,36 +96,11 @@
           name: '',
           type: 1
         },
-        companyCateList: [
-          {
-            value: '互联网金融',
-            label: '互联网金融'
-          },
-          {
-            value: '传统制造行业',
-            label: '传统制造行业'
-          }
+        companyCateList: ['政府机构/公检法', '教育', '医疗卫生', '银行/保险/证券', '高新技术制造业', '传统制造业', '建筑业', '房地产开发', '设计/装潢',
+         '专业事务所', '公用运输/物流', '商业/贸易', '服务业', '传媒/体育/娱乐', '社会团体', '军事机构', '酒店/旅游/餐饮', '零售', '房地产中介', '健身健美', '美容美发', 'P2P/小微金融', '自由职业', '其他'
         ],
-        companyScaleList: [
-          {
-            value: '小型公司',
-            label: '小型公司'
-          },
-          {
-            value: '中型公司',
-            label: '中型公司'
-          },
-          {
-            value: '大型公司',
-            label: '大型公司'
-          }
-        ],
-        companyPositionList: [
-          {
-            value: '软件技术',
-            label: '软件技术'
-          }
-        ],
+        companyScaleList: ['0-20人', '20-99人', '100-499人', '500-999人', '1000-9999人', '10000人'],
+        companyPositionList: ['负责人、法人', '高级管理人员', '一般管理人员', '一般正式员工', '非正式员工(含退休或无业)'],
         ruleForm: {
           name: '',
           region: ''

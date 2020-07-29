@@ -14,7 +14,7 @@
           </div>
           <div class="btn-wrap">
               <el-button size="mini">
-                <a :href="fileObj.templateUrl">
+                <a :href="item.templateUrl">
                 <i class="iconfont">&#xe723;</i>下载模版</a>
               </el-button>
              <el-button size="mini" @click="handleUpload(item)"><i class="iconfont">&#xe71d;</i>上传文件</el-button>

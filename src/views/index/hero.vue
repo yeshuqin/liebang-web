@@ -110,7 +110,7 @@
         showCategory: false,
         isLogin: localStorage.getItem('token') || '',
         info:  {
-          name: localStorage.getItem('phone') || '',
+          name: localStorage.getItem('name') || localStorage.getItem('phone'),
           picture: ''
         },
         bannerList: [], //轮播图列表
