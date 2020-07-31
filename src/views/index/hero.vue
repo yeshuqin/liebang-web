@@ -324,7 +324,7 @@
     width: 262px;
     .user {
       text-align: center;
-      padding: 12px 35px;
+      padding: 12px 25px;
       background: #fff;
       height: 158px;
       margin-bottom: 6px;

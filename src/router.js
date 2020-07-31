@@ -78,6 +78,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: () => import('./views/login/login.vue'),
+    },
+    {
+      path: '/changePwd',
+      name: 'changePwd',
+      component: () => import('./views/user/changePwd.vue'),
     }
   ],
 });

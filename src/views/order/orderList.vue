@@ -137,10 +137,10 @@
           </div>
       </div>
     </div>
-    <ad-list class="mb90" :dataList="hotList">
+    <ad-list class="mb90" :dataList="hotList" swiperName="hotSwiper">
        <h2>热卖单品</h2>
     </ad-list> 
-    <ad-list class="mb90" :dataList="likeList">
+    <ad-list class="mb90" :dataList="likeList" swiperName="likeSwiper">
        <h2>猜你喜欢</h2>
     </ad-list> 
   </div>
@@ -165,7 +165,7 @@
         },
         statusItems: {
           0: '未支付',
-          1: '待支付',
+          1: '支付中',
           2: '待收货',
           3: '已完成',
           4: '已取消',
@@ -254,7 +254,7 @@
         this.$http.send(this.$api.spuPage, {
            showcaseId: '1284753668595380225',
            current: 1,
-           size: 10
+           size: 20
          }).then(res => {
            this.hotList = res.data.records
         })
@@ -263,7 +263,7 @@
         this.$http.send(this.$api.spuPage, {
            showcaseId: '1284760453913899009',
            current: 1,
-           size: 10
+           size: 20
          }).then(res => {
            this.likeList = res.data.records
         })

@@ -4,8 +4,9 @@ export default {
   code: 'account/code', // 获取验证码
   login: 'account/login', // 账号登录
   logout: 'account/logout', // 账号退出
+  resetPassword: 'account/resetPassword', // 重置密码
+  updatePassword: 'account/updatePassword', // 修改密码
   
-
   uploadFile: '/api/upload/file', // 文件上传
 
   // 广告位查询API
@@ -29,6 +30,8 @@ export default {
  userInfo: 'user/info', // 查询当前用户信息
  userUpdate: 'user/update', // 修改用户信息
  userAfq: 'user/afq', // 提交问题咨询
+ userSetMail: 'user/setMail', // 绑定邮箱
+ userActiveMail: 'user/activeMail', // 绑定邮箱
 
   // 系统相关API
   systemNodeList: 'system/nodeList', // 查询地址节点列表

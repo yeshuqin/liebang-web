@@ -5,8 +5,8 @@
         <h3 class="title">当前账户安全区别</h3>
         <div class="account-center-number">
           <div class="progress-wrap">
-            <span>当前安全级系数</span>
-            <el-progress :percentage="percentage" :color="customColors" :format="format" style="width:210px;"></el-progress>
+            <!-- <span>当前安全级系数</span> -->
+            <!-- <el-progress :percentage="percentage" :color="customColors" :format="format" style="width:210px;"></el-progress> -->
           </div>
           <p class="font999">为了更好的保护您的交易安全，建议您通过以下方式提高安全级别</p>
         </div>
@@ -14,16 +14,16 @@
           <li>
             <span class="iconfont fl icon-secure">&#xe64f;</span>
             <div class="fl account-center-desc">
-               <p>账户密码</p>
+               <p style="position: relative;top: 12px;">账户密码</p>
                 <div class="font666">
                   <div class="account-center-desc-l">
-                    当前密码强度:
-                     <el-progress :percentage="percentage" :color="customColors" :format="format" style="width:100px;display:inline-block;"></el-progress>
+                    <!-- 当前密码强度:中 -->
+                     <!-- <el-progress :percentage="percentage" :color="customColors" :format="format" style="width:100px;display:inline-block;"></el-progress> -->
                   </div>
                   <span class="font999 account-center-text">建议您定期修改密码以保护账户安全</span>
                 </div>
             </div>
-            <div class="account-btn fr">
+            <div class="account-btn fr" @click="handlePwd">
               修改
             </div>
           </li>
@@ -32,11 +32,11 @@
             <div class="fl account-center-desc">
                <p>绑定手机</p>
                 <div class="font666">
-                  <div class="account-center-desc-l">已绑：130*****3677</div>
+                  <div class="account-center-desc-l">已绑：{{regPhone()}}</div>
                   <span class="font999 account-center-text">若手机号已丢失或停用，请立即更换，避免账户被盗</span>
                 </div>
             </div>
-            <div class="account-btn fr">
+            <div class="account-btn fr" @click="handlePhone">
               修改
             </div>
           </li>
@@ -49,7 +49,7 @@
                   <span class="font999 account-center-text">若邮箱已丢失或停用，请立即更换，避免账户被盗</span>
                 </div>
             </div>
-            <div class="account-btn bang fr">
+            <div class="account-btn bang fr" @click="handleEmail">
               绑定
             </div>
           </li>
@@ -91,6 +91,37 @@
 
       </div>
     </el-dialog>
+
+     <!-- 修改密码 -->
+    <el-dialog title="账户密码修改" center :visible.sync="showPwdDialog" :append-to-body="true" :close-on-click-modal="false">
+      <el-form label-width="80px" class="form_info">
+        <el-form-item label="原密码">
+          <el-input clearable type="password" v-model.trim="formInfo.oldPassword" placeholder="请输入原密码"></el-input>
+        </el-form-item>
+        <el-form-item label="新密码">
+          <el-input clearable type="password" v-model.trim="formInfo.newPassword" placeholder="请输入新密码"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码">
+          <el-input clearable type="password" v-model.trim="formInfo.confirmPassword" placeholder="请输入确认密码"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer">
+         <el-button @click="showPwdDialog = false">取 消</el-button>
+         <el-button type="primary"  @click="submitPwd">确 定</el-button>
+      </div>
+    </el-dialog>
+    <!-- 修改邮箱 -->
+    <el-dialog title="账户密码修改" center :visible.sync="showEmailDialog" :append-to-body="true" :close-on-click-modal="false">
+      <el-form label-width="80px" class="form_info">
+        <el-form-item label="邮箱账号">
+          <el-input clearable v-model.trim="formInfo.oldPassword" placeholder="请输入原密码"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer">
+         <el-button @click="showPwdDialog = false">取 消</el-button>
+         <el-button type="primary"  @click="submitPwd">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -113,10 +144,26 @@
           {color: '#FF001C', percentage: 35},
           {color: '#FE6A00', percentage: 70},
           {color: '#5cb87a', percentage: 100}
-        ]
+        ],
+        showPwdDialog: false,
+        showEmailDialog: false,
+        formInfo: {
+          oldPassword: '',
+          newPassword: '',
+          confirmPassword: ''
+        },
+        infoObj: {},
+        phone: localStorage.getItem('phone')
       }
     },
+    created() {
+      this.getInfor()
+    },
     methods: {
+      regPhone() {
+        var reg = /^(\d{3})\d{4}(\d{4})$/;
+        return this.phone.replace(reg, "$1****$2");
+      },
       format(percentage) {
         if(percentage<35) {
           return '低'
@@ -125,6 +172,58 @@
         }else {
           return '高'
         }
+      },
+      handlePwd () {
+        this.showPwdDialog = true
+      },
+      submitPwd () {
+        if (!this.formInfo.oldPassword) {
+          this.$message.error('请输入原密码')
+          return
+        }
+        if (!this.formInfo.newPassword || this.formInfo.newPassword.length < 6) {
+          this.$message.error('请正确输入新密码并且长度不少于6')
+          return
+        }
+        let oldPwd = md5(this.formInfo.oldPassword)
+        let newPwd = md5(this.formInfo.newPassword)
+        let confirmPwd = md5(this.formInfo.confirmPassword)
+        if (newPwd !== confirmPwd) {
+          this.$message.error('新密码与确认密码不一致')
+          return
+        }
+        this.loading = true
+        this.$http.send(this.$api.updatePassword, {
+            oldPassword: oldPwd,
+            newPassword: newPwd
+          }).then(res => {
+          this.loading = false
+          this.$message.success('操作成功,请重新登录')
+          this.$http.send(this.$api.logout, {}).then(res => {
+            localStorage.removeItem('token')
+            this.$router.push({name: 'login'})
+            location.reload()
+          })
+        }).catch(res => {
+          this.loading = false
+          // this.$message.error(res.msg)
+        })
+      },
+      getInfor() {
+        this.$http.send(this.$api.userInfo, {}).then(res => {
+           if(res.data) {
+             this.infoObj = res.data
+           }
+        })
+      },
+      handlePhone() {
+        this.$message({
+          message: '暂未开放该功能，敬请期待~',
+          type: 'warning'
+        });
+      },
+      handleEmail() {
+
       },
       goIdentity() {
         this.$router.push({name: 'identity'})

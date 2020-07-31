@@ -30,7 +30,7 @@ Vue.filter('filterMoney', function (value) {
   return (value / 100).toFixed(2)
 })
 
-let whiteList = ['/login', '/index', '/goodsDetail']
+let whiteList = ['/login', '/index', '/goodsDetail', '/changePwd']
 router.beforeEach(async(to, from, next) => {
 
   const hasToken = getToken()

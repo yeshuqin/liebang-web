@@ -4,9 +4,9 @@
       <div class="hot-top">
        <slot></slot>
       </div>
-      <div class="swiper-container">
+      <div class="swiper-container" :class="swiperName">
           <div class="swiper-wrapper hot-ad-list">
-            <div class="swiper-slide" v-for="(item,index) in dataList" :key="index">
+            <div class="swiper-slide" v-for="(item) in dataList" :key="item.id">
               <li class="hot-ad-list-item" @click="handleGoGoodsDetail(item)">
                  <img :src="item.primaryPic" alt="">
                   <h2 class="name">{{item.name}}</h2>
@@ -34,6 +34,10 @@
         default() {
           return []
         }
+      },
+      swiperName: {
+        type: String,
+        default: ''
       }
     },
     data() {
@@ -41,31 +45,41 @@
 
       }
     },
+    watch: {
+      swiperName(val) {
+        if(val) {
+          console.log(val, 'sss')
+          this.$nextTick(() => {
+            // this.initSwiper()
+          })
+        }
+      }
+    },
     mounted() {
       this.$nextTick(() => {
+        console.log(this.swiperName, 'sss')
         this.initSwiper()
       })
-    },
-    computed: {
     },
     methods: {
       handleGoGoodsDetail(obj) {
         this.$router.push({name: 'goodsDetail', query: {id: obj.id}})
       },
       initSwiper() {
-         var mySwiper = new Swiper ('.swiper-container', {
-            loop: true, // 循环模式选项
-            slidesPerView: 5,
-            spaceBetween: 7,
-            slidesPerGroup: 5,
-            loop: true,
-            loopFillGroupWithBlank: true,
-            observer:true,
-            // observeParents:false,
-            navigation: {
-              nextEl: '.swiper-button-next',
-              prevEl: '.swiper-button-prev',
-            }
+        let name = '.' + this.swiperName
+        console.log(name, 'name')
+        var swiper = new Swiper (name, {
+          slidesPerView: 5,
+          spaceBetween: 30,
+          slidesPerGroup: 5,
+          loop: true,
+          observer:true,
+          observeParents:true,
+          loopFillGroupWithBlank: true,
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          }
         })      
       }
     }

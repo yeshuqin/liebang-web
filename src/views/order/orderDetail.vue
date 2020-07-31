@@ -16,8 +16,7 @@
                   <span class="iconfont fontImp">&#xe7fd;</span>
                   请及时关注订单详细信息，已确保您能及时收到货品
                 </div>
-                <!-- 订单状态(0:待支付,11:待上传资料,12:待资料审核,13:资料审核失败,1:待发货,2:待收货,3:已完成) -->
-                <el-steps :active="activeStep" align-center class="step">
+                <el-steps :active="activeStep" align-center class="step" v-if="infoObj.status !== 4">
                   <el-step title="提交订单">
                     <template slot="description">
                       {{infoObj.createTime || ''}}
@@ -26,7 +25,10 @@
                       <span class="iconfont">&#xe696;</span>
                     </template>
                   </el-step>
-                  <el-step title="付款成功">
+                  <el-step>
+                    <template slot="title">
+                      {{infoObj.status === 1 ? '支付中' : '付款成功'}}
+                    </template>
                     <template slot="description">
                       {{infoObj.payTime || ''}}
                     </template>
@@ -39,11 +41,10 @@
                      <span v-if="infoObj.status === 11">待上传资料</span>
                      <span v-else-if="infoObj.status === 12">待资料审核</span>
                      <span v-else-if="infoObj.status === 13">资料审核失败</span>
-                     <span v-else-if="infoObj.status === 1">资料审核成功</span>
+                     <span v-else-if="infoObj.status === 14">资料审核成功</span>
                      <span v-else>审核资料</span>
                     </template>
                      <template slot="description"> 
-                      <!-- <span>2020-01-04 11:52:35</span> -->
                     </template>
                     <template slot="icon"> 
                       <span class="iconfont">&#xe611;</span>
@@ -63,6 +64,24 @@
                     </template>
                     <template slot="description"> 
                       <span>{{infoObj.completeTime || ''}}</span>
+                    </template>
+                  </el-step>
+                </el-steps>
+                <el-steps :active="activeStep" align-center class="step" v-else>
+                  <el-step title="提交订单">
+                    <template slot="description">
+                      {{infoObj.createTime || ''}}
+                    </template>
+                    <template slot="icon"> 
+                      <span class="iconfont">&#xe696;</span>
+                    </template>
+                  </el-step>
+                  <el-step title="已取消">
+                     <template slot="icon"> 
+                      <span class="iconfont">&#xe6a7;</span>
+                    </template>
+                    <template slot="description"> 
+                      <span>{{infoObj.updateTime || ''}}</span>
                     </template>
                   </el-step>
                 </el-steps>
@@ -118,7 +137,7 @@
                   </li>
                 </ul>
               </div>
-              <div class="item">
+              <div class="item" v-if="infoObj.status !== 0 && infoObj.status !== 4">
                 <p class="title">付款信息</p>
                 <ul class="list">
                   <li>
@@ -270,7 +289,7 @@
         ],
         statusNameMapList: {
           0: '未支付',
-          1: '待支付',
+          1: '支付中',
           2: '待收货',
           3: '已完成',
           4: '已取消',
@@ -306,10 +325,12 @@
           console.log(this.infoObj, 'infoObj')
           if(this.infoObj.status === 0) {
             this.activeStep = 1
-          }else if(this.infoObj.status === 11 || this.infoObj.status === 12 || this.infoObj.status === 13) {
-            this.activeStep = 2
           }else if(this.infoObj.status === 1) {
+            this.activeStep = 2
+          }else if(this.infoObj.status === 11 || this.infoObj.status === 12 || this.infoObj.status === 13 || this.infoObj.status === 14) {
             this.activeStep = 3
+          }else if(this.infoObj.status === 3) {
+            this.activeStep = 5
           }else if(this.infoObj.status === 2) {
             this.activeStep = 4
           }else {

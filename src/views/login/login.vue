@@ -49,7 +49,7 @@
                        <span class="free" @click="goRegister">免费注册</span>
                      </el-col>
                      <el-col :span="6">
-                        <div class="noPass">忘记密码</div>
+                        <div class="noPass" @click="handleGoPwd">忘记密码</div>
                      </el-col>
                    </el-row>
                  </div>
@@ -91,7 +91,7 @@
                        <span class="free" @click="goRegister">免费注册</span>
                      </el-col>
                      <el-col :span="6">
-                        <div class="noPass">忘记密码</div>
+                        <div class="noPass" @click="handleGoPwd">忘记密码</div>
                      </el-col>
                    </el-row>
                  </div>
@@ -134,7 +134,7 @@
                        <span class="free" @click="goLogin">去登录</span>
                      </el-col>
                      <el-col :span="6">
-                        <div class="noPass">忘记密码</div>
+                        <div class="noPass" @click="handleGoPwd">忘记密码</div>
                      </el-col>
                    </el-row>
                  </div>
@@ -314,6 +314,9 @@
             }
           }, 1000)
         })
+      },
+      handleGoPwd() {
+        this.$router.push({name: 'changePwd'})
       },
       goRegister() {
         this.isLogin = true
