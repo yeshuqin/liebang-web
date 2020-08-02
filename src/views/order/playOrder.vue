@@ -135,6 +135,24 @@
         }
         if(this.type === 1) {
           this.dialogVisible = true
+        }else {
+          this.$http.send(this.$api.orderPay, {
+            id: this.orderId,
+            payType: this.type
+          }).then(res => {
+             window.location.href = res.data;
+            // this.$confirm('提交成功，系统将在48小时内核查你的款项', '打款成功', {
+            //     confirmButtonText: '确定',
+            //     cancelButtonText: '取消',
+            // }).then(() => {
+            //   this.dialogVisible = false
+            //   setTimeout(() => {
+            //     this.$router.push({name: 'order'})
+            //   }, 500);
+            // }).catch(() => {
+            //   this.dialogVisible = false
+            // });
+          })
         }
       },
       handleSumbitPay() {

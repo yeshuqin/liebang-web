@@ -86,7 +86,7 @@ export default {
         }).then(res => {
         this.loading = false
         this.$message.success('操作成功,请重新登录')
-        // this.$router.push({name: 'login'})
+        this.$router.push({name: 'login'})
       }).catch(res => {
         this.loading = false
       })

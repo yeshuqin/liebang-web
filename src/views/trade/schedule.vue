@@ -98,10 +98,10 @@
         </div>
       </div>
     </div>
-    <ad-list class="mb90" :dataList="hotList">
+    <ad-list class="mb90" :list="hotList">
        <h2>热卖单品</h2>
     </ad-list> 
-    <ad-list class="mb90" :dataList="likeList">
+    <ad-list class="mb90" :list="likeList">
        <h2>猜你喜欢</h2>
     </ad-list> 
   </div>

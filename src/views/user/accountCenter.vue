@@ -41,35 +41,45 @@
             </div>
           </li>
           <li>
-            <span class="iconfont fl icon-secure red">&#xe60d;</span>
+             <span class="iconfont fl icon-secure red" v-if="!infoObj.email">&#xe60d;</span>
+             <span class="iconfont fl icon-secure" v-else>&#xe64f;</span>
             <div class="fl account-center-desc">
                <p>绑定邮箱</p>
                 <div class="font666">
-                  <div class="account-center-desc-l fontImp">未绑定</div>
+                  <div class="account-center-desc-l fontImp" v-if="infoObj.status === 0">未绑定</div>
+                  <div class="account-center-desc-l fontImp" v-else>已认证</div>
                   <span class="font999 account-center-text">若邮箱已丢失或停用，请立即更换，避免账户被盗</span>
                 </div>
             </div>
-            <div class="account-btn bang fr" @click="handleEmail">
+            <div class="account-btn bang fr" @click="handleEmail" v-if="!infoObj.email">
               绑定
+            </div>
+            <div class="account-btn fr" @click="handleEmail" v-else>
+              修改
             </div>
           </li>
           <li>
-            <span class="iconfont fl icon-secure red">&#xe60d;</span>
+            <span class="iconfont fl icon-secure red" v-if="infoObj.status === 0">&#xe60d;</span>
+            <span class="iconfont fl icon-secure" v-else>&#xe64f;</span>
             <div class="fl account-center-desc">
                <p>身份认证</p>
                 <div class="font666">
-                  <div class="account-center-desc-l fontImp">未绑定</div>
+                  <div class="account-center-desc-l fontImp" v-if="infoObj.status === 0">未绑定</div>
+                  <div class="account-center-desc-l fontImp" v-else>已认证</div>
                   <span class="font999 account-center-text">认证后方可进行交易，开通服务等操作</span>
                 </div>
             </div>
-            <div class="account-btn bang fr" @click="goIdentity">
+            <div class="account-btn bang fr" @click="goIdentity" v-if="infoObj.status === 0">
               绑定
+            </div>
+             <div class="account-btn fr" @click="goIdentity" v-else>
+              修改
             </div>
           </li>
         </ul>
     </div>
      <!-- 安全验证 -->
-    <el-dialog title="安全验证" :visible.sync="showCodeDialog" :append-to-body="true" :close-on-click-modal="false" custom-class="counse-dialog">
+    <!-- <el-dialog title="安全验证" :visible.sync="showCodeDialog" :append-to-body="true" :close-on-click-modal="false" custom-class="counse-dialog">
       <div class="body">
           <h2 class="mb20">为确保是您本人的操作，请先验证手机</h2>
           <el-form :model="userFrom" size="medium" label-width="100px">
@@ -90,7 +100,7 @@
       <div class="footer">
 
       </div>
-    </el-dialog>
+    </el-dialog> -->
 
      <!-- 修改密码 -->
     <el-dialog title="账户密码修改" center :visible.sync="showPwdDialog" :append-to-body="true" :close-on-click-modal="false">
@@ -111,15 +121,15 @@
       </div>
     </el-dialog>
     <!-- 修改邮箱 -->
-    <el-dialog title="账户密码修改" center :visible.sync="showEmailDialog" :append-to-body="true" :close-on-click-modal="false">
+    <el-dialog title="绑定邮箱" center :visible.sync="showEmailDialog" width="500px" :append-to-body="true" :close-on-click-modal="false">
       <el-form label-width="80px" class="form_info">
         <el-form-item label="邮箱账号">
-          <el-input clearable v-model.trim="formInfo.oldPassword" placeholder="请输入原密码"></el-input>
+          <el-input clearable v-model.trim="email" placeholder="请输入邮箱账号"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer">
-         <el-button @click="showPwdDialog = false">取 消</el-button>
-         <el-button type="primary"  @click="submitPwd">确 定</el-button>
+         <el-button @click="showEmailDialog = false">取 消</el-button>
+         <el-button type="primary"  @click="submitEmail" :loading="emailloading">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -153,7 +163,9 @@
           confirmPassword: ''
         },
         infoObj: {},
-        phone: localStorage.getItem('phone')
+        phone: localStorage.getItem('phone'),
+        email: '',
+        emailloading: false
       }
     },
     created() {
@@ -223,7 +235,34 @@
         });
       },
       handleEmail() {
-
+        this.showEmailDialog = true
+      },
+      submitEmail() {
+        if(!this.email){
+          this.$message.error('请输入邮箱~')
+          return
+        }
+        var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+        if(!reg.test(this.email)){
+          this.$message.error('邮箱格式不正确~')
+          return
+        }
+        this.emailloading = true
+        this.$http.send(this.$api.userSetMail, {
+          email: this.email
+        }).then(res => {
+          this.showEmailDialog = false
+          this.emailloading = false
+           this.$confirm(`激活邮件已发送致您的邮箱，请在${res.data}内前往邮箱进行激活。`, '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消'
+            }).then(() => {
+             
+            }).catch(() => {
+            });
+        }).catch(()=> {
+          this.emailloading = false
+        })
       },
       goIdentity() {
         this.$router.push({name: 'identity'})

@@ -6,7 +6,7 @@
               <el-form-item label="咨询内容：" required>
                 <el-input v-model="counseFrom.content" type="textarea" :rows="6"></el-input>
               </el-form-item>
-              <el-form-item label="咨询问题：">
+              <el-form-item label="咨询问题：" required>
                 <el-select v-model="counseFrom.type" filterable clearable placeholder="请选择" style="width:100%;">
                   <el-option
                     v-for="item in typeItems"
@@ -92,6 +92,10 @@
       handleSumbit() {
         if(!this.counseFrom.content) {
           this.$message.error('请输入咨询内容')
+          return
+        }
+        if(!this.counseFrom.type) {
+          this.$message.error('请选择咨询问题')
           return
         }
         if(!this.counseFrom.phone) {

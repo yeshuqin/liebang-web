@@ -83,6 +83,11 @@ export default new Router({
       path: '/changePwd',
       name: 'changePwd',
       component: () => import('./views/user/changePwd.vue'),
+    },
+    {
+      path: '/email',
+      name: 'email',
+      component: () => import('./views/user/email.vue'),
     }
   ],
 });

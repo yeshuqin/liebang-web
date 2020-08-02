@@ -8,11 +8,11 @@
         <div>深圳站</div>
       </el-col>
       <el-col :span="12" class="r">
-        <span @click="goLogin">{{isLogin ? '欢迎登录' : '请登录' }}</span>
+        <span @click="goLogin">{{isLogin ? '欢迎您,' + name : '请登录' }}</span>
         <span @click="goUser">个人中心</span>
         <!-- <span @click="goOrder">我的订单</span> -->
         <span @click="goAsk">客服服务</span>
-        <span @click="goLogout">退出</span>
+        <span @click="goLogout" v-if="isLogin">退出</span>
       </el-col>
     </el-row>
     <div class="topbar_search">
@@ -66,7 +66,8 @@
         input: '',
         loading: false,
         value: '',
-        options: []
+        options: [],
+        name: localStorage.getItem('name') || localStorage.getItem('phone')
       }
     },
     methods: {
@@ -94,8 +95,7 @@
         }
         this.$confirm('你还未登录，是否跳转到登录页?', '提示', {
           confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
+          cancelButtonText: '取消'
         }).then(() => {
           this.$router.push({name: 'login'})
         }).catch(() => {
@@ -118,8 +118,7 @@
         }
         this.$confirm('你还未登录，是否跳转到登录页?', '提示', {
           confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
+          cancelButtonText: '取消'
         }).then(() => {
           this.$router.push({name: 'login'})
         }).catch(() => {
@@ -136,8 +135,7 @@
       goLogout() {
         this.$confirm('是否确定退出登录?', '提示', {
           confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
+          cancelButtonText: '取消'
         }).then(() => {
           this.$http.send(this.$api.logout, {}).then(res => {
               localStorage.removeItem('token')

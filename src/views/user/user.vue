@@ -64,12 +64,14 @@
         </div>
       </div>
     </div>
-    <ad-list class="mb70" :dataList="serveList">
-      <h2>行业必备服务</h2>
-    </ad-list> 
-    <ad-list class="mb100" :dataList="professionalList">
-      <h2>专业为您推荐</h2>
-    </ad-list>
+    <div class="content-wrap">
+      <ad-list class="mb70" :list="serveList" :className="'serveSwiper'">
+        <h2>行业必备服务</h2>
+      </ad-list> 
+      <ad-list class="mb100" :list="professionalList" :className="'professionalSwiper'">
+        <h2>专业为您推荐</h2>
+      </ad-list>
+    </div>
     <footer-block></footer-block>
   </div>
 </template>
@@ -135,7 +137,7 @@
         this.$http.send(this.$api.spuPage, {
            showcaseId: '1285837920850276354',
            current: 1,
-           size: 10
+           size: 20
          }).then(res => {
            this.serveList = res.data.records
         })
@@ -144,7 +146,7 @@
         this.$http.send(this.$api.spuPage, {
            showcaseId: '1284778321799933954',
            current: 1,
-           size: 10
+           size: 20
          }).then(res => {
            this.professionalList = res.data.records
         })

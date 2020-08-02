@@ -92,7 +92,7 @@
                           ¥{{item.discountAmount}}
                         </el-col>
                         <el-col :span="2">
-                          <span class="money font999">¥{{item.realAmount}}</span>
+                          <span class="money font999">¥{{item.realAmount | filterMoney}}</span>
                         </el-col>
                         <el-col :span="3">
                           <span class="font999 mb6">{{statusItems[item.status]}}</span>
@@ -137,10 +137,10 @@
           </div>
       </div>
     </div>
-    <ad-list class="mb90" :dataList="hotList" swiperName="hotSwiper">
+    <ad-list class="mb90" :list="hotList" :className="'hotSwiper'">
        <h2>热卖单品</h2>
     </ad-list> 
-    <ad-list class="mb90" :dataList="likeList" swiperName="likeSwiper">
+    <ad-list class="mb90" :list="likeList" className="likeSwiper">
        <h2>猜你喜欢</h2>
     </ad-list> 
   </div>
@@ -254,7 +254,7 @@
         this.$http.send(this.$api.spuPage, {
            showcaseId: '1284753668595380225',
            current: 1,
-           size: 20
+           size: 10
          }).then(res => {
            this.hotList = res.data.records
         })

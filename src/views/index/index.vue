@@ -5,9 +5,7 @@
     <div class="jinpai-list">
        <el-row type="flex" justify="space-between">
           <el-col :span="8" v-for="item in jinpaiList" :key="item.id">
-            <a :href="item.linkUrl" target="_blank">
-              <img :src="item.picUrl" alt="" style="width:100%;height:100%">
-            </a>
+            <img :src="item.picUrl" alt="" style="width:100%;height:100%;" @click="showCounselDialog = true" class="cursor">
           </el-col>
       </el-row>
     </div>
@@ -30,7 +28,7 @@
               <div class="card-desc">
                 <p v-for="(desc, index) in spu.synopsis" :key="index">{{desc}}</p>
               </div>
-              <div class="money-wrap"><span class="money">¥{{spu.minPrice}}</span>起</div>
+              <div class="money-wrap"><span class="money">¥{{spu.minPrice | filterMoney}}</span>起</div>
               <el-button type="primary" size="small" class="buy_btn" @click="handleGoGoodsDetail(spu)">立即购买</el-button>
             </div>
           </div>
@@ -77,6 +75,7 @@
     </div>
     <footer-block></footer-block>
     <Bottombar></Bottombar>
+    <quest-dialog :showCounselDialog.sync="showCounselDialog"></quest-dialog>
   </div>
 </template>
 
@@ -84,12 +83,14 @@
   import Topbar from '../base/Topbar/index'
   import Bottombar from '../base/Bottombar/index'
   import footerBlock from '@/components/footerBlock/footerBlock'
+  import questDialog from '@/components/questDialog/index'
   import hero from './hero'
   export default {
     components: {
       Topbar,
       Bottombar,
       hero,
+      questDialog,
       footerBlock
     },
     data () {
@@ -97,7 +98,8 @@
         jinpaiList: [], //广告位列表
         hotSpuList: [],
         caseList: [], //最新案例
-        hotList: [] //热点资讯
+        hotList: [], //热点资讯
+        showCounselDialog: false
       }
     },
     created() {

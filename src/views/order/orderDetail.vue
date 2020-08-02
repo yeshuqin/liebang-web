@@ -3,7 +3,7 @@
     <div class="order-wrap">
         <left-menu active="/order"></left-menu>
         <div class="order-main">
-          <h2 class="title-warp">我的订单/订单详情</h2>
+          <h2 class="title-warp bold">我的订单/订单详情</h2>
           <div class="order-detail">
             <div class="order-detail-top">
               <div class="l">
@@ -249,10 +249,10 @@
           </div>
       </div>
     </div>
-     <ad-list class="mb90" :dataList="hotList">
+     <ad-list class="mb90" :list="hotList" :className="'detailHotSwiper'">
        <h2>热卖单品</h2>
     </ad-list> 
-    <ad-list class="mb90" :dataList="likeList">
+    <ad-list class="mb90" :list="likeList" :className="'detailLikeSwiper'">
        <h2>猜你喜欢</h2>
     </ad-list> 
   </div>
@@ -342,7 +342,7 @@
         this.$http.send(this.$api.spuPage, {
            showcaseId: '1284753668595380225',
            current: 1,
-           size: 10
+           size: 20
          }).then(res => {
            this.hotList = res.data.records
         })
@@ -351,7 +351,7 @@
         this.$http.send(this.$api.spuPage, {
            showcaseId: '1284760453913899009',
            current: 1,
-           size: 10
+           size: 20
          }).then(res => {
            this.likeList = res.data.records
         })
