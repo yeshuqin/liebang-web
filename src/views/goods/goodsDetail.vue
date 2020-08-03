@@ -124,8 +124,9 @@
               }
             })
             this.attributeList = ObjMap
+            console.log(ObjMap, 'ObjMap')
             for(let attr in ObjMap) {
-              this.$set(this.attributeMap, attr, '')
+              this.$set(this.attributeMap, attr, ObjMap[attr][0])
             }
           })
       },
@@ -141,7 +142,14 @@
             return 
         }
         let attributeValue = JSON.stringify(this.attributeMap)
-        let skuId = this.skuMapList[attributeValue].id
+        let skuId = this.skuMapList[attributeValue] ? this.skuMapList[attributeValue].id : ''
+        if(!skuId) {
+          this.$message({
+            type: 'warning',
+            // message: ''暂时缺货~
+          })
+          return 
+        }
         // console.log(attributeValue, skuId)
         this.$router.push({name: 'confirmOrder', query: {id: skuId}})
       }

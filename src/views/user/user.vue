@@ -21,27 +21,29 @@
                   <el-input v-model="infoObj.idCard" clearable placeholder="请输入身份证号码"></el-input>
                 </el-form-item>
               </div>
-              <el-form-item label="企业名称:">
-                <el-input v-model="infoObj.companyName" clearable placeholder="必须填写营业执照上的企业名称"></el-input>
-              </el-form-item>
-              <el-form-item label="信用代码:">
-                <el-input v-model="infoObj.companyCode" clearable placeholder="必须为13位或18位数字和字母（大写）"></el-input>
-              </el-form-item>
-              <el-form-item label="所在行业:">
-                <el-select v-model="infoObj.companyCate" clearable filterable placeholder="请选择所从事的主要行业">
-                  <el-option :label="item" :value="item" v-for="item in companyCateList" :key="item"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="企业规模:">
-                <el-select v-model="infoObj.companyScale" clearable filterable placeholder="请选择您的企业规模">
-                  <el-option :label="item" :value="item" v-for="item in companyScaleList" :key="item"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="所在职业:">
-                <el-select v-model="infoObj.companyPosition" clearable filterable placeholder="请选择您的职务">
-                  <el-option :label="item" :value="item" v-for="item in companyPositionList" :key="item"></el-option>
-                </el-select>
-              </el-form-item>
+              <div v-else>
+                <el-form-item label="企业名称:">
+                  <el-input v-model="infoObj.companyName" clearable placeholder="必须填写营业执照上的企业名称"></el-input>
+                </el-form-item>
+                <el-form-item label="信用代码:">
+                  <el-input v-model="infoObj.companyCode" clearable placeholder="必须为13位或18位数字和字母（大写）"></el-input>
+                </el-form-item>
+                <el-form-item label="所在行业:">
+                  <el-select v-model="infoObj.companyCate" clearable filterable placeholder="请选择所从事的主要行业">
+                    <el-option :label="item" :value="item" v-for="item in companyCateList" :key="item"></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="企业规模:">
+                  <el-select v-model="infoObj.companyScale" clearable filterable placeholder="请选择您的企业规模">
+                    <el-option :label="item" :value="item" v-for="item in companyScaleList" :key="item"></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="所在职业:">
+                  <el-select v-model="infoObj.companyPosition" clearable filterable placeholder="请选择您的职务">
+                    <el-option :label="item" :value="item" v-for="item in companyPositionList" :key="item"></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
               <el-form-item>
                 <el-button type="primary" @click="handleSumbit">确 定</el-button>
               </el-form-item>
@@ -158,9 +160,9 @@
            size: 4
          }).then(res => {
            this.welfareList = res.data.records
-           this.checkedBox = this.welfareList.map(item => {
-             return item.id
-           })
+          //  this.checkedBox = this.welfareList.map(item => {
+          //    return item.id
+          //  })
         })
       },
       goSave() {

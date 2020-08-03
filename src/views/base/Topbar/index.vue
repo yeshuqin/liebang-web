@@ -8,10 +8,10 @@
         <div>深圳站</div>
       </el-col>
       <el-col :span="12" class="r">
-        <span @click="goLogin">{{isLogin ? '欢迎您,' + name : '请登录' }}</span>
+        <span @click="goLogin">{{isLogin ? '欢迎您，' + name : '请登录' }}</span>
         <span @click="goUser">个人中心</span>
         <!-- <span @click="goOrder">我的订单</span> -->
-        <span @click="goAsk">客服服务</span>
+        <span @click="goAsk">客户服务</span>
         <span @click="goLogout" v-if="isLogin">退出</span>
       </el-col>
     </el-row>

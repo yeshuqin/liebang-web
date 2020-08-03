@@ -111,7 +111,7 @@
                     <span class="value">{{infoObj.name}}</span>
                   </li>
                   <li>
-                    <span class="label">地址：</span>
+                    <span class="label">收件地址：</span>
                     <span class="value">{{infoObj.province}}{{infoObj.city}}{{infoObj.county}}{{infoObj.town}}{{infoObj.address}}</span>
                   </li>
                   <li>
@@ -480,11 +480,11 @@
       text-align: center;
       .header {
         margin-bottom: 5px;
+        padding: 0 14px;
         color: #9F9F9FFF;
       }
       .body {
         padding: 0 14px;
-        
         color: #666666FF;
         .body-main {
           padding: 25px 0 10px;

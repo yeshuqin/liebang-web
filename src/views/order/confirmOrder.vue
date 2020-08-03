@@ -111,7 +111,7 @@
             </el-form-item>
             <el-form-item label="发票抬头类型:" :required="checkType">
               <el-radio-group v-model="formInline.invoiceType" :disabled="!checkType"> 
-                <el-radio :label="2">个人</el-radio>
+                <!-- <el-radio :label="2">个人</el-radio> -->
                 <el-radio :label="1">企业</el-radio>
               </el-radio-group>
             </el-form-item>
@@ -159,11 +159,25 @@
           lazy: true,
           lazyLoad (node, resolve) {
             const { level, value} = node;
+            console.log(level, 'level')
+            var leaf = false
             that.$http.send(that.$api.systemNodeList, {
               level: level+1,
               parentId: value
             }).then(res => {
-              const nodes = res.data
+              // console.log(res, 'res==')
+              // if (value === '166976388464378114') {
+              //   leaf = level >= 2
+              // } else {
+              //   leaf = level >= 3
+              // }
+              console.log(leaf, 'leaf')
+              const nodes = res.data.map(item => ({
+                id: item.id,
+                parentId: item.parentId,
+                nodeName: item.nodeName
+                // leaf: item.id === '166976388464378114' ? true : false
+              }))
               nodes.forEach(item => {
                 that.originIdMap[item.id] = item.nodeName
               })
@@ -184,7 +198,7 @@
           invoiceContent: '',
           invoiceDesc: '',
           invoiceName: '',
-          invoiceType: 2,
+          invoiceType: 1,
           name: '',
           phone: '',
           province: '',

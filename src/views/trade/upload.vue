@@ -44,7 +44,7 @@
           </el-col>
           <el-col :span="22">
             <span class="font666">上传文件</span>
-            <p class="font12">仅支持xlsx、xls、csv，文件大小≤4M。</p>
+            <p class="font12">仅支持xlsx、xls、csv、png、jpg、jpeg、gif，压缩包，文件大小≤4M。</p>
              <el-upload
               :action="$api.uploadFile"
               name="file"
@@ -92,14 +92,13 @@
       this.getDetail()
     },
     watch: {
-      showFileDialog(val) {
-        this.fileList = []
-      }
     },
     methods: {
       handleUpload(row) {
         this.showFileDialog = true
         this.fileObj = row
+        console.log(row,'row')
+        this.fileList = this.fileObj.fileUrl ? [{name:this.fileObj.fileUrl, url: this.fileObj.fileUrl}] : []
       },
       handleFileSuccess(response, file, fileList) { //材料上传资料
         if(response.code === 0) {
@@ -120,10 +119,16 @@
             const extension = testmsg === 'xls'
             const extension2 = testmsg === 'xlsx'
             const extension3 = testmsg === 'csv'
+            const extension4 = testmsg === 'png'
+            const extension5 = testmsg === 'jpg'
+            const extension6 = testmsg === 'jpeg'
+            const extension7 = testmsg === 'gif'
+            const extension8 = testmsg === 'zip'
+            const extension9 = testmsg === 'rar'
             const isLt4M = file.size / 1024 / 1024 < 4
-            if(!extension && !extension2 && !extension3) {
+            if(!extension && !extension2 && !extension3 && !extension4 && !extension5 && !extension6 && !extension7 && !extension8 && !extension9) {
                 this.$message({
-                    message: '上传文件只能是 xlsx、xls、csv格式!',
+                    message: '上传文件只能是 xlsx、xls、csv、png、jpg、jpeg、gif，压缩包格式!',
                     type: 'warning'
                 });
             }
@@ -133,7 +138,7 @@
                     type: 'warning'
                 });
             }
-            return (extension || extension2) && isLt4M
+            return (extension || extension2 || extension3 || extension4 || extension5 || extension6 || extension7 || extension8 || extension9) && isLt4M
       },
       handleFileRemove() {
         this.fileObj.fileUrl = ''
@@ -173,6 +178,7 @@
   }
   .step {
     font-weight: 400px;
+    font-size: 18px;
     margin-top: 16px;
   }
   .title-warp {
