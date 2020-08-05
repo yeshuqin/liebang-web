@@ -287,7 +287,9 @@
     }
    }
   .banner-wrap {
-    flex: 1;
+    // flex: 1;
+    width: 690px;
+    overflow: hidden;
     margin: 0 10px;
     .ad-list {
       padding: 0 20px;

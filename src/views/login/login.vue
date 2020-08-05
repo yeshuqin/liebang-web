@@ -313,6 +313,10 @@
               this.time--;
             }
           }, 1000)
+        }).catch(res => {
+          clearInterval(this.timer);  
+          this.disabledCode = false 
+          this.time = 60
         })
       },
       handleGoPwd() {
@@ -393,7 +397,7 @@
     .banner {
       width:640px;
       height:480px;
-      background: #FE6A00;
+      background: #ffffff;
       background-image: url('../../assets/img/denglu.png');
       background-size: 100% 100%;
     }
