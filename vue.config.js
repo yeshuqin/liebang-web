@@ -8,7 +8,7 @@ module.exports = {
   lintOnSave: false,
   productionSourceMap: false,
   devServer: {
-    port: 8080,
+    port: 7777,
     open: true,
     overlay: {
       warnings: false,
@@ -38,6 +38,6 @@ module.exports = {
     // 移除 preload 插件
     config.plugins.delete('preload');
     config.output.filename('js/[name].[hash].js').end();
-    config.plugin('webpack-bundle-analyzer').use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)//增加这行代码
+    // config.plugin('webpack-bundle-analyzer').use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)//增加这行代码
   }
 }

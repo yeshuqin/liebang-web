@@ -11,8 +11,8 @@
            <div class="desc">
              <div class="desc-item">
                <span>价格：</span>
-               <span class="fontImp font24">￥{{detailObj.minPrice | filterMoney}}</span>
-               <span class="old-price">{{detailObj.maxPrice | filterMoney}}</span>
+               <span class="fontImp font24">￥{{salePrice | filterMoney}}</span>
+               <span class="old-price">{{marketPrice | filterMoney}}</span>
              </div>
              <div class="desc-item">
                <span>说明：</span>
@@ -52,7 +52,7 @@
                   @click="handleActive(key, value)" v-bind:class="{active: value.active, disabled: !value.active && value.disabled}">{{value.name}}</span>
              </li>
            </ul>
-          已经选择：{{ message }}
+          <!-- 已经选择：{{ message }} -->
            <div class="font16">
               <el-checkbox v-model="checked"></el-checkbox> 我已阅读理解并接受 <span class="fontImp">《{{detailObj.name}}服务协议》</span>
            </div>
@@ -93,11 +93,14 @@
         attributeMap: {},
         activeName: '产品内容',
         checked: true,
+        marketPrice: 0,
+        salePrice: 0,
         id: this.$route.query.id,
         skuName: "skuId",
         data: [], //初始化数据结构
         skuId: '', // 选择的skuId
         result: {},
+        priceMap: {},
         list: {}, // 数据集合{list.result list.items}
         keys: [], // 属性名称信息
         message: "",
@@ -151,7 +154,7 @@
       },
       goBuy() {
         if (!this.skuId) {
-          this.$message.error('请选择一条sku属性~')
+          this.$message.error('请选择商品属性~')
           return
         }
         // for(let attr in this.attributeMap) {
@@ -183,17 +186,14 @@
           let skuObj = {}
           skuObj = JSON.parse(item.attribute)
           skuObj.skuId = item.id
-          skuObj.salePrice = this.filterMoney(item.salePrice)
-          skuObj.marketPrice = this.filterMoney(item.marketPrice)
           this.data.push(skuObj)
+          this.priceMap[item.id] = {}
+          this.priceMap[item.id].salePrice = item.salePrice
+          this.priceMap[item.id].marketPrice = item.marketPrice
         })
-        // for (let i = 0; i < this.data.length; i ++) {
-        //     if (skuId == this.data[i][this.skuName]) {
-        //         isHas = true;
-        //         break
-        //     }
-        // }
         this.skuId = this.data[0].skuId
+        this.marketPrice = this.priceMap[this.skuId].marketPrice
+        this.salePrice = this.priceMap[this.skuId].salePrice
         console.log(this.data, 'data数据~~')
         console.log(this.skuId, 'skuId~~')
         this.initResultData()
@@ -432,6 +432,10 @@
                   this.skuId = curr.skus[0];
               }
               this.message = s.join('\u3000-\u3000');
+              this.marketPrice = this.priceMap[this.skuId].marketPrice
+              this.salePrice = this.priceMap[this.skuId].salePrice
+          }else {
+            this.skuId = ''
           }
       },
       powerset(arr) {
