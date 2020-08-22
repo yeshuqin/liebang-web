@@ -75,7 +75,7 @@
             <span style="margin-left:20px">快递费：包邮</span>
           </div>
           <div style="padding-left:20px" class="mb20">
-            配送时间：24点前下单，预计4月28日24:00前送达
+            配送时间：24点前下单，预计{{parseDayTime()}}24:00前送达
           </div>
           <p class="title" style="border-top: 1px solid #E6E6E6FF;padding-left:20px;font-weight: 400;">收货人信息</p>
           <el-form label-position="left" size="small" label-width="90px" style="width:90%;padding-left:20px">
@@ -147,6 +147,7 @@
 </template>
 
 <script>
+  import base from '../../utils/base'
   let that = ''
   export default {
     data() {
@@ -159,7 +160,7 @@
           lazy: true,
           lazyLoad (node, resolve) {
             const { level, value} = node;
-            console.log(level, 'level')
+            // console.log(level, 'level')
             var leaf = false
             that.$http.send(that.$api.systemNodeList, {
               level: level+1,
@@ -171,7 +172,7 @@
               // } else {
               //   leaf = level >= 3
               // }
-              console.log(leaf, 'leaf')
+              // console.log(leaf, 'leaf')
               const nodes = res.data.map(item => ({
                 id: item.id,
                 parentId: item.parentId,
@@ -213,9 +214,15 @@
     },
     created() {
       this.getDetail()
+      // this.getsystemNodeList()
       that = this
     },
     methods: {
+       parseDayTime () {
+        var myDate = new Date()
+        var time = myDate.setDate(myDate.getDate() + 3)
+        return base.parseTimestamp(time, '{m}月{d}日') 
+      },
       getDetail() {
         this.$http.send(this.$api.spuSku, {
            id: this.id

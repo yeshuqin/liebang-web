@@ -143,7 +143,7 @@
     text-align: center;
   }
   .swiper-wrapper {
-    // width: 1200px;
+    // width: 1024px;
     // overflow: hidden;
     position: relative;
   }
@@ -177,7 +177,7 @@
   }
 }
 .swiper-container {
-    width: 1200px;
+    width: 1024px;
     //  background: pink;
     height: 300px;
     .swiper-slide {

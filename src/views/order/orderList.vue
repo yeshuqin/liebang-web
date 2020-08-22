@@ -76,7 +76,7 @@
                             <img :src="item.skuPic" alt="" class="">
                           </div>
                         </el-col>
-                        <el-col :span="5" style="text-align: left;">
+                        <el-col :span="5">
                           <div class="desc">
                             <p>{{item.skuName || '暂无'}}</p>
                             <p>{{item.attribute || '暂无'}}</p>
@@ -293,6 +293,7 @@
   }
   .order-main {
     flex: 1;
+    width: 850px;
     .order-table-wrap {
       background: #ffffff;
       padding: 24px;
@@ -301,7 +302,7 @@
     .order-table{
       text-align: center;
       .order-table-header {
-        width:978px;
+        // width:978px;
         height:34px;
         line-height: 34px;
         background:#F5F5F5;
@@ -316,7 +317,7 @@
           cursor: pointer;
         }
         margin-bottom: 10px;
-        width:978px;
+        // width:978px;
         height:220px;
         border-radius:1px;
         border:1px solid rgba(232,232,232,1);

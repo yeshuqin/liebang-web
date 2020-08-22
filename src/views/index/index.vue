@@ -3,7 +3,7 @@
     <Topbar></Topbar>
     <hero></hero>
     <div class="jinpai-list">
-       <el-row type="flex" justify="space-between">
+       <el-row type="flex">
           <el-col :span="8" v-for="item in jinpaiList" :key="item.id">
             <img :src="item.picUrl" alt="" style="width:100%;height:100%;" @click="showCounselDialog = true" class="cursor">
           </el-col>
@@ -160,7 +160,7 @@
 .index {
   background: #F3F6F9;
   .main {
-    width: 1200px;
+    width: 1024px;
     margin: 20px auto;
   }
   .card-list {
@@ -193,7 +193,7 @@
       height: 404px;
       width: 100%;
       .card-list-main-l {
-        width: 300px;
+        width: 224px;
         // background-size: cover;
         img {
           width: 100%;
@@ -204,7 +204,7 @@
         flex: 1;
         margin-left: 10px;
         .card-list-item {
-          width:294px;
+          width:260px;
           height:200px;
           background: #fff;
           float: left;
@@ -325,7 +325,7 @@
     }
   }
   .jinpai-list {
-    width: 1200px;
+    width: 1024px;
     margin: 22px auto 0 !important;
     .el-col {
       height: 189px;

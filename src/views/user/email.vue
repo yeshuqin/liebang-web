@@ -62,7 +62,7 @@
     background: rgba(255,255,255,1);
     box-shadow: 0px 10px 19px 0px rgba(0,0,0,0.07);
     .login-top-main {
-      width: 1200px;
+      width: 1024px;
       margin: 0 auto;
       overflow: hidden;
       .logo {

@@ -9,6 +9,7 @@
       </el-col>
       <el-col :span="12" class="r">
         <span @click="goLogin">{{isLogin ? '欢迎您，' + name : '请登录' }}</span>
+        <span @click="goIndex">首页</span>
         <span @click="goUser">个人中心</span>
         <!-- <span @click="goOrder">我的订单</span> -->
         <span @click="goAsk">客户服务</span>
@@ -160,14 +161,14 @@
     height: 80px;
     background: #FF6B01FF;
     img {
-      width: 1200px;
+      width: 1024px;
       height: 80px;
       display: block;
       margin: 0 auto;
     }
   }
   .topbar_desc {
-    width: 1200px;
+    width: 1024px;
     margin: 0 auto;
     height: 50px;
     line-height: 50px;
@@ -185,7 +186,7 @@
     }
   }
   .topbar_search {
-    width: 1200px;
+    width: 1024px;
     margin: 0 auto;
     padding: 14px 0;
     .logo {

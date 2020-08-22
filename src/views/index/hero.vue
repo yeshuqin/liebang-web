@@ -188,7 +188,7 @@
 .hero-container {
    display: flex;
    height: 513px;
-   width: 1200px;
+   width: 1024px;
    margin: 10px auto 19px;
    .category-wrap {
      width: 220px;
@@ -323,7 +323,7 @@
     }
   }
   .info-wrap {
-    width: 262px;
+    width: 270px;
     .user {
       text-align: center;
       padding: 12px 25px;

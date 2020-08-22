@@ -68,7 +68,7 @@
   box-sizing: border-box;
   text-align: left;
   .bottom_main {
-    width: 1200px;
+    width: 1024px;
     margin: 0 auto;
     border-bottom: 1px solid #ccc;
   }
