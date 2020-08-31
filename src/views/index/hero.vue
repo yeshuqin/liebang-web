@@ -43,7 +43,7 @@
         </el-carousel-item>
       </el-carousel>
       <el-row class="ad-list" type="flex" justify="space-between">
-        <el-col :span="4" class="ad-item cursor" v-for="(item, index) in spuList" :key="index" @click.native="handleGoGoodsDetail(item)">
+        <el-col :span="4" class="ad-item cursor" v-for="(item, index) in indexShowCateList" :key="index" @click.native="handleGoGoodsDetail(item)">
           <img :src="item.primaryPic" alt="">
           <p>{{item.name}}</p>
           <!-- <span>LOGO/宣传品/VI</span> -->
@@ -116,7 +116,7 @@
         bannerList: [], //轮播图列表
         cateSpuList: [], //报考推荐类别商品
         allCateSpuList: [], //全部类别商品
-        spuList: [] //首页橱窗商品推荐
+        indexShowCateList: [] //首页橱窗商品推荐
       }
     },
     created() {
@@ -161,17 +161,17 @@
         })
       },
       getSpuList() {
-        this.$http.send(this.$api.spuPage, {
-           showcaseId: '1284165023534460930',
-           current: 1,
-           size: 6
+        this.$http.send(this.$api.showcaseSpu, {
+           showcaseNum: 1,
+           code: '001',
+           spuNum: 5
          }).then(res => {
-           this.spuList = res.data.records
+           this.indexShowCateList = res.data.length > 0 ? res.data[0].spuList : []
         })
       },
       getBannerList() {
         this.$http.send(this.$api.bannerList, {
-           code: 'banner',
+           code: 'banner_',
            number: 4
          }).then(res =>{
            this.bannerList = res.data
@@ -188,10 +188,10 @@
 .hero-container {
    display: flex;
    height: 513px;
-   width: 1024px;
+   width: 1200px;
    margin: 10px auto 19px;
    .category-wrap {
-     width: 220px;
+     width: 250px;
      height: 100%;
      background: #fff;
      position: relative;
@@ -288,7 +288,7 @@
    }
   .banner-wrap {
     // flex: 1;
-    width: 690px;
+    width: 670px;
     overflow: hidden;
     margin: 0 10px;
     .ad-list {
@@ -323,7 +323,7 @@
     }
   }
   .info-wrap {
-    width: 270px;
+    width: 260px;
     .user {
       text-align: center;
       padding: 12px 25px;

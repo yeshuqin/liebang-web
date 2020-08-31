@@ -68,17 +68,17 @@
   box-sizing: border-box;
   text-align: left;
   .bottom_main {
-    width: 1024px;
+    width: 1200px;
     margin: 0 auto;
     border-bottom: 1px solid #ccc;
   }
   .title {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 400;
     color: #000000;
     margin-bottom: 14px;
   a {
-      font-size: 20px;
+      font-size: 18px;
       color: #000000;
     }
   }
@@ -86,7 +86,7 @@
     li {
       margin-bottom: 10px;
       a {
-        font-size: 16px;
+        font-size: 14px;
         color: #333333;
       }
     }

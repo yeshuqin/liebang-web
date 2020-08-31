@@ -183,7 +183,7 @@
 }
 .content-main {
   flex: 1;
-  width: 1024px;
+  width: 1200px;
   .user-info {
     display: flex;
     min-height: 400px;

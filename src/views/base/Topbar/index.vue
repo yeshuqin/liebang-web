@@ -1,7 +1,9 @@
 <template>
   <div class="topbar">
     <div class="topbar_banner">
-      <img src="../../../assets/img/banner.png" alt="">
+      <a :href="linkUrl" target="_blank">
+        <img :src="topbannerUrl" alt="">
+      </a>
     </div>
     <el-row class="topbar_desc">
       <el-col :span="12" class="l">
@@ -56,6 +58,7 @@
 
 <script>
   import questDialog from '@/components/questDialog/index';
+  let url = '../../../assets/img/banner.png'
   export default {
     components: {
       questDialog
@@ -68,10 +71,24 @@
         loading: false,
         value: '',
         options: [],
-        name: localStorage.getItem('name') || localStorage.getItem('phone')
+        name: localStorage.getItem('name') || localStorage.getItem('phone'),
+        topbannerUrl: '',
+        linkUrl: ''
       }
     },
+    created() {
+      this.getTopBanner()
+    },
     methods: {
+      getTopBanner() {
+         this.$http.send(this.$api.bannerList, {
+           code: '001',
+           number: 1
+         }).then(res => {
+           this.topbannerUrl = res.data.length > 0 ? res.data[0].picUrl : 'https://liebang.oss-cn-shenzhen.aliyuncs.com/images/2800669529145915.png'
+           this.linkUrl = res.data.length > 0 ? res.data[0].linkUrl : ''
+        })
+      },
       remoteMethod(query) {
         if (query !== '') {
           this.loading = true;
@@ -161,14 +178,14 @@
     height: 80px;
     background: #FF6B01FF;
     img {
-      width: 1024px;
+      width: 100%;
       height: 80px;
       display: block;
       margin: 0 auto;
     }
   }
   .topbar_desc {
-    width: 1024px;
+    width: 1200px;
     margin: 0 auto;
     height: 50px;
     line-height: 50px;
@@ -186,7 +203,7 @@
     }
   }
   .topbar_search {
-    width: 1024px;
+    width: 1200px;
     margin: 0 auto;
     padding: 14px 0;
     .logo {

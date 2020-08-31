@@ -14,7 +14,7 @@
           </div>
           <div class="btn-wrap">
               <el-button size="mini">
-                <a :href="item.templateUrl">
+                <a :href="item.templateUrl" >
                 <i class="iconfont">&#xe723;</i>下载模版</a>
               </el-button>
              <el-button size="mini" @click="handleUpload(item)"><i class="iconfont">&#xe71d;</i>上传文件</el-button>
@@ -189,15 +189,15 @@
     background: #ffffff;
     overflow: hidden;
     .upload-item {
-      width:276px;
+      width:23.5%;
       height:274px;
       border-radius:2px;
       border:1px solid rgba(204,204,204,1);
       float: left;
-      margin-right: 18px;
-      margin-bottom: 14px;
+      margin-right: 2%;
+      margin-bottom: 2%;
       text-align: center;
-      padding-top:20px;
+      padding-top: 20px;
       box-sizing: border-box;
       position: relative;
       .index {
@@ -232,7 +232,7 @@
         margin-top: 6px;
       }
       .status-btn {
-        width:70px;
+        width:60px;
         height:27px;
         background:rgba(245,245,245,1);
         border-radius:4px;

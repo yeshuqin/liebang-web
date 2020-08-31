@@ -11,13 +11,13 @@
     </div>
     <div class="main">
       <div class="card-list" v-for="(item, index) in hotSpuList" :key="index">
-        <div class="title">{{item.cate.name}}</div>
+        <div class="title">{{item.showcase.name}}</div>
         <div class="title-desc">
-          <span v-for="(desc, index) in item.cate.synopsis" :key="index">{{desc}}</span>
+          <span v-for="(desc, index) in item.showcase.synopsis" :key="index">{{desc}}</span>
         </div>
         <div class="card-list-main">
           <div class="card-list-main-l">
-            <img :src="item.cate.picUrl" alt="">
+            <img :src="item.showcase.picUrl" alt="">
           </div>
           <div class="card-list-main-r">
             <div class="card-list-item" v-for="spu in item.spuList" :key="spu.id">
@@ -109,25 +109,26 @@
       this.getHotList()
     },
     methods: {
-       handleGoGoodsDetail(obj) {
+      handleGoGoodsDetail(obj) {
         this.$router.push({name: 'goodsDetail', query: {id: obj.id}})
       },
       getJinpaiBannerList() {
          this.$http.send(this.$api.bannerList, {
-           code: '金牌顾问',
+           code: '003',
            number: 3
          }).then(res => {
            this.jinpaiList = res.data
         })
       },
       getCateSpuList() {
-        this.$http.send(this.$api.spuCateSpu, {
-           cateNum: 3,
+        this.$http.send(this.$api.showcaseSpu, {
+           code: 'cate_',
+           showcaseNum: 3,
            spuNum: 6
          }).then(res => {
            this.hotSpuList = []
            res.data.forEach(item => {
-             item.cate.synopsis = item.cate.synopsis.split(',') || []
+             item.showcase.synopsis = item.showcase.synopsis.split(',') || []
              item.spuList.forEach(spu => {
                spu.tags = spu.tags.split(',') || []
                spu.synopsis = JSON.parse(spu.synopsis).split('\n') || spu.synopsis
@@ -138,7 +139,7 @@
       },
       getCaseList() {
         this.$http.send(this.$api.bannerList, {
-           code: 'case',
+           code: 'case_',
            number: 4
          }).then(res => {
            this.caseList = res.data
@@ -146,7 +147,7 @@
       },
       getHotList() {
         this.$http.send(this.$api.bannerList, {
-           code: 'hot',
+           code: 'hot_',
            number: 4
          }).then(res => {
            this.hotList = res.data
@@ -160,7 +161,7 @@
 .index {
   background: #F3F6F9;
   .main {
-    width: 1024px;
+    width: 1200px;
     margin: 20px auto;
   }
   .card-list {
@@ -193,7 +194,7 @@
       height: 404px;
       width: 100%;
       .card-list-main-l {
-        width: 224px;
+        width: 300px;
         // background-size: cover;
         img {
           width: 100%;
@@ -204,7 +205,7 @@
         flex: 1;
         margin-left: 10px;
         .card-list-item {
-          width:260px;
+          width:294px;
           height:200px;
           background: #fff;
           float: left;
@@ -325,7 +326,7 @@
     }
   }
   .jinpai-list {
-    width: 1024px;
+    width: 1200px;
     margin: 22px auto 0 !important;
     .el-col {
       height: 189px;

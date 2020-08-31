@@ -6,7 +6,7 @@
 
 <style>
 #app {
-  min-width: 1024px;
+  min-width: 1200px;
   overflow-y: auto;
 }
 </style>

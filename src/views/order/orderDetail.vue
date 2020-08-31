@@ -338,22 +338,40 @@
           }
         })
       },
+      // getHotList() {
+      //   this.$http.send(this.$api.spuPage, {
+      //      showcaseId: '1284753668595380225',
+      //      current: 1,
+      //      size: 20
+      //    }).then(res => {
+      //      this.hotList = res.data.records
+      //   })
+      // },
+      // getLikeList() {
+      //   this.$http.send(this.$api.spuPage, {
+      //      showcaseId: '1284760453913899009',
+      //      current: 1,
+      //      size: 20
+      //    }).then(res => {
+      //      this.likeList = res.data.records
+      //   })
+      // },
       getHotList() {
-        this.$http.send(this.$api.spuPage, {
-           showcaseId: '1284753668595380225',
-           current: 1,
-           size: 20
+        this.$http.send(this.$api.showcaseSpu, {
+           showcaseNum: 1,
+           code: '005',
+           spuNum: 10
          }).then(res => {
-           this.hotList = res.data.records
+           this.hotList = res.data.length ? res.data[0].spuList : []
         })
       },
       getLikeList() {
-        this.$http.send(this.$api.spuPage, {
-           showcaseId: '1284760453913899009',
-           current: 1,
-           size: 20
+        this.$http.send(this.$api.showcaseSpu, {
+           showcaseNum: 1,
+           code: '006',
+           spuNum: 10
          }).then(res => {
-           this.likeList = res.data.records
+           this.likeList = res.data.length ? res.data[0].spuList : []
         })
       },
       handleGoBuy(obj) {

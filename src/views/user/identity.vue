@@ -106,8 +106,8 @@
       // line-height: 48px;
     }
     .identity-upload {
-        width:397px;
-        height:179px;
+        width:347px;
+        height:159px;
         overflow: hidden;
         .el-upload--picture-card {
           width:397px;
@@ -119,6 +119,8 @@
           border:1px solid rgba(211,211,211,1);
           img {
             width: 100%;
+            height: 100%;
+            // background-size: cover;
           }
         }
       }

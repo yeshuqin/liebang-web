@@ -454,7 +454,7 @@
 <style lang="scss" scoped>
 .goods-detail {
  .step {
-   margin: 16px 0 29px 0;
+   margin: 16px 0;
  }
  .wrap {
    background: #ffffff;
@@ -477,12 +477,12 @@
      }
    }
    .desc {
-     height:108px;
+    //  height:108px;
      padding-left: 12px;
      padding-top: 8px;
      border: 1px solid #E0E0E0FF;
      margin-bottom: 10px;
-     width: 660px;
+    //  width: 660px;
      box-sizing: border-box;
      background: #FAFAFAFF;
      color: #666666;
@@ -544,12 +544,12 @@
      }
    }
    .btn {
-     width: 218px;
-     height: 54px;
-     left: 54px;
+     width: 200px;
+     height: 50px;
+     left: 50px;
      padding: 0;
      font-size: 16px;
-     margin-right: 30px;
+     margin-right: 20px;
    }
  }
 }
@@ -559,7 +559,7 @@
   .goods-detail {
     .el-tabs .el-tabs__item {
       color:rgba(175,175,175,1);
-      font-size: 18px;
+      font-size: 16px;
     }
     .el-tabs .el-tabs__item.is-active {
       color: #FE6A00;

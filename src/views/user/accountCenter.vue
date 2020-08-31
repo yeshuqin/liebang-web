@@ -320,7 +320,7 @@
         }
         .account-center-desc {
           margin-top: 9px;
-          width: 600px;
+          // width: 600px;
         }
         .account-center-desc-l {
           display: inline-block;

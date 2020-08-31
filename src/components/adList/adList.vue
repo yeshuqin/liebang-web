@@ -134,8 +134,8 @@
 }
 .swiper-father {
   position: relative;
-  width: 1024px;
-  // margin-left: -60px;
+  width: 1270px;
+  margin-left: -35px;
   .swiper-button-prev {
     left: 0;
   }
@@ -144,7 +144,7 @@
 	outline: none!important;
 }
 .swiper-container {
-    width: 1024px;
+    width: 1200px;
     height: 300px;
     .swiper-slide {
       background: #fff;

@@ -90,13 +90,13 @@
     display: inline-block;
     margin: 30px auto;
     li {
-      width: 225px;
-      height: 225px;
+      width: 269px;
+      height: 271px;
       float: left;
       background: #fff;
       margin-right: 41px;
       img {
-        margin: 21px 0 14px 0;
+        margin: 41px 0 14px 0;
       }
       h3 {
         color: #000000;
