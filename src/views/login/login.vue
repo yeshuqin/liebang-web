@@ -2,7 +2,7 @@
   <div class="login">
     <div class="login-top">
       <div class="login-top-main">
-        <div class="logo">
+        <div class="logo" @click="handleGoIndex">
           <img :src="require('@/assets/img/logo.png')" alt="">
         </div>
         <span class="line"></span>
