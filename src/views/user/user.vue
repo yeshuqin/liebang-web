@@ -136,33 +136,30 @@
         })
       },
       getServeList() {
-        this.$http.send(this.$api.spuPage, {
-           showcaseId: '1285837920850276354',
-           current: 1,
-           size: 20
+        this.$http.send(this.$api.showcaseSpu, {
+           showcaseNum: 1,
+           code: '007',
+           spuNum: 10
          }).then(res => {
-           this.serveList = res.data.records
+           this.serveList = res.data.length ? res.data[0].spuList : []
         })
       },
       getProfessionalList() {
-        this.$http.send(this.$api.spuPage, {
-           showcaseId: '1284778321799933954',
-           current: 1,
-           size: 20
+        this.$http.send(this.$api.showcaseSpu, {
+           showcaseNum: 1,
+           code: '008',
+           spuNum: 10
          }).then(res => {
-           this.professionalList = res.data.records
+           this.professionalList = res.data.length ? res.data[0].spuList : []
         })
       },
       getNewWelfareList() {
-        this.$http.send(this.$api.spuPage, {
-           showcaseId: '1287036089298636802',
-           current: 1,
-           size: 4
+        this.$http.send(this.$api.showcaseSpu, {
+           showcaseNum: 1,
+           code: '009',
+           spuNum: 4
          }).then(res => {
-           this.welfareList = res.data.records
-          //  this.checkedBox = this.welfareList.map(item => {
-          //    return item.id
-          //  })
+           this.welfareList = res.data.length ? res.data[0].spuList : []
         })
       },
       goSave() {

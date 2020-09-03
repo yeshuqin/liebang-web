@@ -54,7 +54,7 @@
            </ul>
           <!-- 已经选择：{{ message }} -->
            <div class="font16">
-              <el-checkbox v-model="checked"></el-checkbox> 我已阅读理解并接受 <span class="fontImp">《{{detailObj.name}}服务协议》</span>
+              <el-checkbox v-model="checked"></el-checkbox> 我已阅读理解并接受 <span><router-link target="_blank" class="fontImp" :to="{path:'/serviceContract'}">《猎邦服务协议》</router-link></span>
            </div>
            <div style="margin-top:27px">
              <el-button type="primary" class="btn" @click="goBuy">立即购买</el-button>

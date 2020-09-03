@@ -19,7 +19,9 @@
       </el-col>
     </el-row>
     <div class="topbar_search">
-      <div class="logo" @click="goIndex"></div>
+      <div class="logo" @click="goIndex">
+        <img :src="require('@/assets/img/logo.png')" alt="">
+      </div>
       <div class="search_wrapper">
         <!-- <el-input v-model="input" placeholder="请输入内容">
            <el-button slot="append" icon="el-icon-search"></el-button>
@@ -209,14 +211,17 @@
     .logo {
       display: inline-block;
       width: 120px;
-      height: 22.5px;
+      // height: 22.5px;
       // background: #FE6A00;
-      background:url('../../../assets/img/logo.png') ;
-      background-size: 100% 100%;
+      // background:url('../../../assets/img/logo.png') ;
+      // background-size: 100% 100%;
       margin-right: 40px;
       position: relative;
       cursor: pointer;
       top: -32px;
+      img {
+        width: 100%;
+      }
     }
     .search_wrapper {
       display: inline-block;

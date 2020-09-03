@@ -4,7 +4,7 @@
     <div class="login-top">
       <div class="login-top-main">
         <div class="logo">
-
+          <img :src="require('@/assets/img/logo.png')" alt="">
         </div>
         <span class="line"></span>
         <span class="text" @click="handleGoLogin">登录</span>
@@ -139,12 +139,11 @@ export default {
       margin: 0 auto;
       overflow: hidden;
       .logo {
-          width:119px;
-          height:23px;
+          width:80px;
           float: left;
-          margin-top: 18px;
-          background: url('../../assets/img/logo.png');
-          background-size: 100% 100%;
+          img {
+            width: 100%;
+          }
         }
       .line {
           width:1px;

@@ -3,7 +3,7 @@
     <div class="login-top">
       <div class="login-top-main">
         <div class="logo">
-
+          <img :src="require('@/assets/img/logo.png')" alt="">
         </div>
         <span class="line"></span>
         <span class="text">登录</span>
@@ -124,7 +124,10 @@
                   </template>
                 </el-input>
                 <div style="margin-top:16px">
-                   <el-checkbox v-model="registerForm.checked"></el-checkbox> 同意并遵守《服务条款》和《隐私条款》
+                   <el-checkbox v-model="registerForm.checked"></el-checkbox> 同意并遵守
+                   <router-link target="_blank" :to="{path: '/serviceContract'}" class="blue">《服务条款》</router-link>
+                   和
+                   <router-link target="_blank" :to="{path: '/private'}" class="blue">《隐私条款》</router-link>
                 </div>
                  <el-button type="danger" class="login-btn" @click="handleRegister" style="margin-top:20px">注 册</el-button>
                  <div class="tip">
@@ -354,6 +357,9 @@
   width: 100%;
   min-height: 100vh;
   background: #F3F6F9;
+  .blue {
+    color: #7A9EDEFF;
+  }
   .login-top {
     height: 58px;
     line-height: 58px;
@@ -364,12 +370,12 @@
       margin: 0 auto;
       overflow: hidden;
       .logo {
-          width:119px;
-          height:23px;
+          width:80px;
           float: left;
-          margin-top: 18px;
-          background: url('../../assets/img/logo.png');
           background-size: 100% 100%;
+          img {
+            width: 100%;
+          }
         }
       .line {
           width:1px;

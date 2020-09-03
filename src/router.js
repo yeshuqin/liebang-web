@@ -80,6 +80,16 @@ export default new Router({
       component: () => import('./views/login/login.vue'),
     },
     {
+      path: '/serviceContract',
+      name: 'serviceContract',
+      component: () => import('./views/user/serviceContract.vue'),
+    },
+    {
+      path: '/private',
+      name: 'private',
+      component: () => import('./views/user/private.vue'),
+    },
+    {
       path: '/changePwd',
       name: 'changePwd',
       component: () => import('./views/user/changePwd.vue'),

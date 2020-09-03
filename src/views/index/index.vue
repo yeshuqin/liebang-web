@@ -130,7 +130,7 @@
            res.data.forEach(item => {
              item.showcase.synopsis = item.showcase.synopsis.split(',') || []
              item.spuList.forEach(spu => {
-               spu.tags = spu.tags.split(',') || []
+               spu.tags = spu.tags ? spu.tags.split(',') : []
                spu.synopsis = JSON.parse(spu.synopsis).split('\n') || spu.synopsis
              })
              this.hotSpuList.push(item)

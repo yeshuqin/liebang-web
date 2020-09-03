@@ -22,7 +22,7 @@
             <ul class="link_wrap">
               <li><a href="javascript:void(0)">网站使用条款</a></li>
               <li><a href="javascript:void(0)">扣款服务协议</a></li>
-              <li><a href="javascript:void(0)">隐私保护政策</a></li>
+              <li><router-link target="_blank" :to="{path:'/private'}">隐私保护政策</router-link></li>
             </ul>
         </el-col>
         <el-col :span="4">
