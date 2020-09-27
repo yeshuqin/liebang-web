@@ -37,10 +37,10 @@
        <div class="card-list">
         <div class="title">热点资讯</div>
         <div class="title-desc">
-          <span>公司注册</span>
-          <span>公司注销</span>
-          <span>公司变更</span>
-          <span>公司租赁</span>
+          <span>最新政策</span>
+          <span>时事新闻</span>
+          <span>同业动向</span>
+          <span>创业指</span>
         </div>
         <ul class="case-wrap">
           <li v-for="(item, index) in hotList" :key="index">
@@ -59,10 +59,10 @@
       <div class="card-list">
         <div class="title">最新案例</div>
         <div class="title-desc">
-          <span>公司注册</span>
-          <span>公司注销</span>
-          <span>公司变更</span>
-          <span>公司租赁</span>
+          <span>工商服务</span>
+          <span>知识产权</span>
+          <span>资质申请</span>
+          <span>项目申报</span>
         </div>
         <ul class="case-wrap">
           <li v-for="(item, index) in caseList" :key="index">

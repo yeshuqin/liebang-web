@@ -6,7 +6,7 @@
           <img :src="require('@/assets/img/logo.png')" alt="">
         </div>
         <span class="line"></span>
-        <span class="text" @click="handleGoLogin">登录</span>
+        <!-- <span class="text" @click="handleGoLogin">登录</span> -->
         <span class="name" @click="handleGoIndex">猎邦首页</span>
       </div>
     </div>

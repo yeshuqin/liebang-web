@@ -98,6 +98,11 @@ export default new Router({
       path: '/email',
       name: 'email',
       component: () => import('./views/user/email.vue'),
+    },
+    {
+      path: '/question',
+      name: 'question',
+      component: () => import('./views/user/question.vue'),
     }
-  ],
+  ]
 });

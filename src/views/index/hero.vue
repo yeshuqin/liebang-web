@@ -42,8 +42,8 @@
           </a>
         </el-carousel-item>
       </el-carousel>
-      <el-row class="ad-list" type="flex" justify="space-between">
-        <el-col :span="4" class="ad-item cursor" v-for="(item, index) in indexShowCateList" :key="index" @click.native="handleGoGoodsDetail(item)">
+      <el-row class="new-list" type="flex" justify="space-between">
+        <el-col :span="4" class="new-item cursor" v-for="(item, index) in indexShowCateList" :key="index" @click.native="handleGoGoodsDetail(item)">
           <img :src="item.primaryPic" alt="">
           <p>{{item.name}}</p>
           <!-- <span>LOGO/宣传品/VI</span> -->
@@ -309,13 +309,13 @@
     width: 670px;
     overflow: hidden;
     margin: 0 10px;
-    .ad-list {
+    .new-list {
       padding: 0 20px;
       height: 102px;
       background: #fff;
       margin-top: 8px;
     }
-    .ad-item {
+    .new-item {
       text-align: center;
       img {
         width: 52px;

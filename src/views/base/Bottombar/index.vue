@@ -95,7 +95,7 @@
     width: 90px;
     height: 90px;
     margin: 0 auto;
-    background: url('../../../assets/img/code.png');
+    background: url('../../../assets/img/code.jpeg');
     background-size: 100% 100%;
   }
   .code_tip {
