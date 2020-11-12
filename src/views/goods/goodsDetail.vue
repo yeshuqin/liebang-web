@@ -513,7 +513,7 @@
    .attribute-list {
      margin-bottom: 30px;
      .title {
-       width: 80px;
+       min-width: 100px;
        display: inline-block;
        margin-right: 10px;
        font-size: 16px;
@@ -527,7 +527,7 @@
        display: inline-block;
        color: #333;
        padding: 0 12px;
-       width: 110px;
+      //  min-width: 110px;
        box-sizing: border-box;
        margin-right: 10px;
        margin-bottom: 10px;
